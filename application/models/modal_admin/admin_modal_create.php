@@ -1,6 +1,6 @@
 <?php
 
-Class Admin_Modal_Create extends CI_Model {
+Class Admin_modal_create extends CI_Model {
 
     function save_user_role($user_id,$roles_id){
 

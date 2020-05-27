@@ -1,6 +1,6 @@
 <?php
 
-Class Admin_Modal_Select extends CI_Model {
+Class Admin_modal_select extends CI_Model {
 	
 
     function get_user_by_id($id){

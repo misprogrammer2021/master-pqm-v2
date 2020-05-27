@@ -1,5 +1,5 @@
 <?php
-class Modal_Update extends CI_Model
+class Modal_update extends CI_Model
 {
     function update_section1($data){
 

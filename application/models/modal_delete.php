@@ -1,5 +1,5 @@
 <?php
-class Modal_Delete extends CI_Model
+class Modal_delete extends CI_Model
 {
     //section 3 QA inspection results
     function delete_inspection_data($machine_breakdown_id=0,$root_cause_submission_id=0){

@@ -1,5 +1,5 @@
 <?php
-class Modal_Master extends CI_Model 
+class Modal_master extends CI_Model 
 {
     private $qan_id;
     private $defect_id;

@@ -1,5 +1,5 @@
 <?php
-class SuperUser_Modal_Select extends CI_Model 
+class SuperUser_modal_select extends CI_Model 
 {
     private $qan_id;
     private $defect_id;

@@ -1,5 +1,5 @@
 <?php
-class SuperUser_Modal_Create extends CI_Model
+class SuperUser_modal_create extends CI_Model
 {
    
     function saveMachineBreakdownRecords($qan_no,$issueby_user_id,$issueto_user,$issued_dept,$to_dept,$shift,$ooc,$oos,$datetime)

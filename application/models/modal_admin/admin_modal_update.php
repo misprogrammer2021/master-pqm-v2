@@ -1,6 +1,6 @@
 <?php
 
-Class Admin_Modal_Update extends CI_Model {
+Class Admin_modal_update extends CI_Model {
 
     function update_user_records($id,$username,$password,$email,$fullname,$commodity,$dept_id,$title,$employee_no,$role_id,$created_date,$modified_date,$is_deleted)
 	{

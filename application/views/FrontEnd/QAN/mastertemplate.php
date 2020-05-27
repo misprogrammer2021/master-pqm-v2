@@ -1,15 +1,15 @@
 <?php 
 
 if(@$show_section1 == TRUE OR @$show_allsection == TRUE)
-include('D:\xampp\htdocs\PQM\application\views\FrontEnd\section1.php');
+include(APPPATH .'views\FrontEnd\section1.php');
 if(@$show_section3 == TRUE OR @$show_allsection == TRUE)
-include('D:\xampp\htdocs\PQM\application\views\FrontEnd\section3.php');
+include(APPPATH .'views\FrontEnd\section3.php');
 if(@$show_section4 == TRUE OR @$show_allsection == TRUE)
-include('D:\xampp\htdocs\PQM\application\views\FrontEnd\section4.php');
+include(APPPATH .'views\FrontEnd\section4.php');
 if(@$show_section2 == TRUE OR @$show_allsection == TRUE)
-include('D:\xampp\htdocs\PQM\application\views\FrontEnd\section2.php');
+include(APPPATH .'views\FrontEnd\section2.php');
 if(@$show_section5 == TRUE OR @$show_allsection == TRUE)
-include('D:\xampp\htdocs\PQM\application\views\FrontEnd\section5.php');
+include(APPPATH .'views\FrontEnd\section5.php');
 
 
 
