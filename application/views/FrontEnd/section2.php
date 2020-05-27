@@ -76,8 +76,7 @@ $jsselect = TRUE;
     </div>
 </section>-->
 
-
-<div class="row clearfix">
+<div class="row clearfix" id="section2">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
             <div class="header">
@@ -140,7 +139,7 @@ $jsselect = TRUE;
                                                     }
                                                     echo '
                                                     <tr>
-                                                        <td>'.$loctopurge->process_name.'</td>
+                                                        <td>'.$loctopurge->purge_name.'</td>
                                                         <td align="center">';
                                                             if(!@$section['S2.1']['de']){
                                                                 echo '<input type="hidden" name="loc_purge['.$loctopurge->id.']" value="'.($tempqty1 > 0 ?"on":"").'"/>';

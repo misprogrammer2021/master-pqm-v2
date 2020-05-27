@@ -39,69 +39,69 @@ $jsselect = TRUE;
                         }
                         ?> 
                             <form method="post" class="form-horizontal" role="form" action="<?php echo base_url().'FrontEnd/AddPermision' ?>">
-                            <div class="table-responsive">
-                            <button type="button" data-toggle="modal" data-target="#addNewRole" class="btn btn-primary"><i class="material-icons">add_box</i><span class="icon-name">Add New Role</span></button>
-                            <a href="<?php echo base_url(); ?>FrontEnd/ViewSection"><button type="button" class="btn btn-primary"><i class="material-icons">pageview</i><span class="icon-name">View Section</span></button></a>
-                            <!-- <button type="button" class="btn btn-default waves-effect m-r-20" data-toggle="modal" data-target="#defaultModal">MODAL - DEFAULT SIZE</button> -->
-                                <table class="table table-bordered table-striped table-hover js-basic-example dataTable" >
-                                    <thead>
-                                        <tr>
-                                            <th style="width:10%"></th>
-                                            <!-- <th style="width:10%">No</th> -->
-                                            <th style="width:10%">Role ID</th>
-                                            <th style="width:10%">Role Name</th>
-                                            <th style="width:10%">Selected Section</th>
-                                            
-                                            
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    <?php
-                                        $i=1;
-                                        foreach($roles_sections as $role_name => $role_section)
-                                        {
-                                        
-                                        echo '
-                                        <tr>
-                                            <td align="center">
-                                                <input type="checkbox" id="role'.($role_section['role_id']).'" name="role_id['.($role_section['role_id']).']" class="filled-in checkbox-active">
-                                                <label for="role'.($role_section['role_id']).'"></label>
-                                            </td>
-                                            <td>'.$role_section['role_id'].'</td> 
-                                            <td>
-                                                <input type="text" name="role_name['.($role_section['role_id']).']" value="'.($role_name).'" class="form-control roleid" disabled>
-                                            </td>
-                                            <td>
-                                            
-                                                <select id="section_edit" class="chosen_section ms" name="section_id['.$role_section['role_id'].'][]" data-placeholder="Choose Sections..." multiple disabled>';
+                                <div class="table-responsive">
+                                <button type="button" data-toggle="modal" data-target="#addNewRole" class="btn btn-primary"><i class="material-icons">add_box</i><span class="icon-name">Add New Role</span></button>
+                                <a href="<?php echo base_url(); ?>FrontEnd/ViewSection"><button type="button" class="btn btn-primary"><i class="material-icons">pageview</i><span class="icon-name">View Section</span></button></a>
+                                <!-- <button type="button" class="btn btn-default waves-effect m-r-20" data-toggle="modal" data-target="#defaultModal">MODAL - DEFAULT SIZE</button> -->
+                                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable" >
+                                        <thead>
+                                            <tr>
+                                                <th style="width:10%"></th>
+                                                <!-- <th style="width:10%">No</th> -->
+                                                <th style="width:10%">Role ID</th>
+                                                <th style="width:10%">Role Name</th>
+                                                <th style="width:10%">Selected Section</th>
                                                 
-                                                foreach($sections as $section)
-                                                {   
-                                                    $selected='';
-                                                    if(in_array($section['section_name'],$role_section['section_name']))
-                                                        $selected='selected';
-                                                    echo '<option value="'.$section['id'].'" '.$selected.'>'.$section['section_name'].'</option>';
-                                                }
-                                                    // echo '<input type="text" class="form-control" data-role="tagsinput" value="'.implode(',',$role_section['section_name']).'" >';
-                                        echo ' </select> 
-                                            </div>
-                                            </td>
-                                            <!-- <td>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php
+                                            $i=1;
+                                            foreach($roles_sections as $role_name => $role_section)
+                                            {
                                             
-                                            <button id="form" type="submit" name="update" value="SUBMIT" class="btn btn-primary" disabled><i class="material-icons">update</i><span class="icon-name">Edit Role</span></button>
-                                            </td>  -->
-                                        </tr>    
-                                        
-                                        ';
-                                        $i++;
-                                        }
-                                        ?>
-                                    </tbody>
-                                </table>
-                                <button id="form" type="submit" name="submit" value="SUBMIT" class="btn btn-success m-t-15 waves-effect pull-right"><i class="material-icons">save</i><span class="icon-name">Save Changes</span></button>
-                                <!-- <button id="form" type="submit" name="submit" value="SUBMIT" class="btn btn-primary"><i class="material-icons">save</i><span class="icon-name">Save Changes</span></button> -->
+                                            echo '
+                                            <tr>
+                                                <td align="center">
+                                                    <input type="checkbox" id="role'.($role_section['role_id']).'" name="role_id['.($role_section['role_id']).']" class="filled-in checkbox-active">
+                                                    <label for="role'.($role_section['role_id']).'"></label>
+                                                </td>
+                                                <td>'.$role_section['role_id'].'</td> 
+                                                <td>
+                                                    <input type="text" name="role_name['.($role_section['role_id']).']" value="'.($role_name).'" class="form-control roleid" disabled>
+                                                </td>
+                                                <td>
+                                                
+                                                    <select id="section_edit" class="chosen_section ms" name="section_id['.$role_section['role_id'].'][]" data-placeholder="Choose Sections..." multiple disabled>';
+                                                    
+                                                    foreach($sections as $section)
+                                                    {   
+                                                        $selected='';
+                                                        if(in_array($section['section_name'],$role_section['section_name']))
+                                                            $selected='selected';
+                                                        echo '<option value="'.$section['id'].'" '.$selected.'>'.$section['section_name'].'</option>';
+                                                    }
+                                                        // echo '<input type="text" class="form-control" data-role="tagsinput" value="'.implode(',',$role_section['section_name']).'" >';
+                                            echo ' </select> 
+                                                </div>
+                                                </td>
+                                                <!-- <td>
+                                                
+                                                <button id="form" type="submit" name="update" value="SUBMIT" class="btn btn-primary" disabled><i class="material-icons">update</i><span class="icon-name">Edit Role</span></button>
+                                                </td>  -->
+                                            </tr>    
+                                            
+                                            ';
+                                            $i++;
+                                            }
+                                            ?>
+                                        </tbody>
+                                    </table>
+                                    <button id="form" type="submit" name="submit" value="SUBMIT" class="btn btn-success m-t-15 waves-effect pull-right"><i class="material-icons">save</i><span class="icon-name">Save Changes</span></button>
+                                    <!-- <button id="form" type="submit" name="submit" value="SUBMIT" class="btn btn-primary"><i class="material-icons">save</i><span class="icon-name">Save Changes</span></button> -->
+                                </div>
                             </div>
-                        </div>
                         </form>
                     </div>
                 </div>
@@ -125,10 +125,18 @@ $jsselect = TRUE;
                             <form method="post" class="form-horizontal" role="form" action="<?php echo base_url().'FrontEnd/ViewUserRole' ?>">
                                 <div class="col-md-6 col-sm-6">
                                     <div class="col-md-6"> 
-                                        <label class="form-label">Role</label>
+                                        <label class="form-label">Role ID</label>
                                     </div>
                                     <div class="form-line">
                                         <input type="text" name="role_id" class="form-control" placeholder="Enter Role ID"><br/>
+                                        <!-- <input type="text" name="role_name" class="form-control" placeholder="Enter Role Name"> -->
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="col-md-6"> 
+                                        <label class="form-label">Role Name</label>
+                                    </div>
+                                    <div class="form-line">
                                         <input type="text" name="role_name" class="form-control" placeholder="Enter Role Name">
                                     </div>
                                 </div>

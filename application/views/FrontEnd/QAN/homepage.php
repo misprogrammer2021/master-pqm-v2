@@ -1,20 +1,35 @@
+<?php
+
+$section = $this->session->userdata['permission'];
+
+?>
+
 <section class="content">
     <div class="container-fluid">
         <div class="block-header"><h2>DASHBOARD</h2></div>
 
         <div class="row clearfix">
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                <div class="info-box bg-pink hover-expand-effect">
-                    <div class="icon">
-                    <a href="<?php echo base_url().'FrontEnd/mastertemplate'; ?>"><i class="material-icons">playlist_add_check</i></a>
-                    </div>
-                    <div class="content">
-                        <p>CREATE NEW MACHINE BREAKDOWN FORM</p>
-                        <div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20"></div>
-                    </div>
-                </div>
-            </div>
+        <?php 
+        
+            $hidemenu = '';
+            if(@$this->session->userdata['permission']['S6']['view'] OR @$this->session->userdata['permission']['S6']['de']) {
 
+                $hidemenu = 'hidemenu';
+            
+            echo    '<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" id="'.$hidemenu.'">
+                        <div class="info-box bg-pink hover-expand-effect">
+                            <div class="icon">
+                                <a href="FrontEnd/mastertemplate"><i class="material-icons">playlist_add_check</i></a>
+                            </div>
+                            <div class="content">
+                                <p>CREATE NEW MACHINE BREAKDOWN FORM</p>
+                                <div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20"></div>
+                            </div>
+                        </div>
+                    </div>';
+            
+                }
+            ?>
             <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                 <div class="info-box bg-blue hover-expand-effect">
                     <div class="icon">
@@ -153,52 +168,53 @@
             </div>
         </div> -->
 
-            <!-- QAN New Task -->
-            <div class="row clearfix">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <div class="card">
-                        <div class="header">
-                            <div class="row clearfix">
-                                <div class="col-xs-12 col-sm-6">
-                                    <h2>New Task</h2>
-                                </div>
-                                <div class="col-xs-12 col-sm-6 align-right">
-                                    
-                                </div>
+        <!-- QAN New Task -->
+        <div class="row clearfix">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="header">
+                        <div class="row clearfix">
+                            <div class="col-xs-12 col-sm-6">
+                                <h2>New Task</h2>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 align-right">
+                                
                             </div>
                         </div>
-                        <div class="body">
-                        
-                            <table id="qan_task_list" class="table table-bordered table-striped table-condensed table-hover dataTable">
-                                <thead>
-                                    <tr>
-                                        <th width="2%">Seq</th>
-                                        <th>QAN NO</th>
-                                        <th>Status</th>
-                                        <!-- <th>Acknowledge</th> -->
-                                        <th>Description</th>
-                                    </tr>
-                                </thead>
-                                
-                                <tfoot>
-                                    <tr>
-                                        <th width="2%">Seq</th>
-                                        <th>QAN NO</th>
-                                        <th>Status</th>
-                                        <!-- <th>Acknowledge</th> -->
-                                        <th>Description</th>
-                                    </tr>
-                                </tfoot>
-                            </table>
+                    </div>
+                    <div class="body">
+                    
+                        <table id="qan_task_list" class="table table-bordered table-striped table-condensed table-hover dataTable">
+                            <thead>
+                                <tr>
+                                    <th width="2%">Seq</th>
+                                    <th>QAN NO</th>
+                                    <th>Status</th>
+                                    <!-- <th>Acknowledge</th> -->
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            
+                            <tfoot>
+                                <tr>
+                                    <th width="2%">Seq</th>
+                                    <th>QAN NO</th>
+                                    <th>Status</th>
+                                    <!-- <th>Acknowledge</th> -->
+                                    <th>Description</th>
+                                </tr>
+                            </tfoot>
+                        </table>
 
-                        </div>
                     </div>
                 </div>
+            </div>
+            <!-- END QAN New Task -->
 
-                <!-- <div class="col-md-6">
-                    <div class="card">
+            <!-- <div class="col-md-6">
+                <div class="card">
                     <div class="body bg-teal">
-                            <div class="font-bold m-b--35">ANSWERED TICKETS</div>
+                        <div class="font-bold m-b--35">ANSWERED TICKETS</div>
                             <ul class="dashboard-stat-list">
                                 <li>
                                     TODAY
@@ -229,7 +245,6 @@
                     </div>
                 </div> -->
             </div>
-            <!-- #END# QAN New Task --> 
 
             <!-- QAN Active List -->
             <div class="row clearfix">
@@ -286,9 +301,9 @@
                 </div>
             </div>
             <!-- #END# QAN Active List -->  
-
-
-
+            
+    </div>
+</section>
 
 
 

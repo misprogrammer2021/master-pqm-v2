@@ -42,10 +42,28 @@
                 <ul class="list">
                     <li class="header">MAIN NAVIGATION</li>
                     <li class='active'>
-                        <a href="<?=base_url()?>">
+                        <!-- <a href="<?=base_url()?>">
                             <i class="material-icons">home</i>
                             <span>Home</span>
-                        </a>
+                        </a> -->
+                        <?php
+
+                            if(@$this->session->userdata['permission']['QASU1']['de'] OR @$this->session->userdata['permission']['QASU3']['de'] OR @$this->session->userdata['permission']['QASU4']['de'] OR @$this->session->userdata['permission']['QASU5']['de'] OR @$this->session->userdata['permission']['PRODSU2']['de'] OR @$this->session->userdata['permission']['ENGSU3']['de']) 
+                            { ?>
+                             
+                                <a href="<?=base_url('SuperUser/homepage')?>">
+                                    <i class="material-icons">home</i>
+                                    <span>Home</span>
+                                </a>
+                      <?php }
+                            else{
+                                ?>
+                                    <a href="<?=base_url()?>">
+                                        <i class="material-icons">home</i>
+                                        <span>Home</span>
+                                    </a>
+                            <?php }
+                        ?>
                     </li>
                     <li>
                         <a href="javascript:void(0);" class="menu-toggle">
@@ -53,96 +71,90 @@
                             <span>QAN</span>
                         </a>
                         <ul class="ml-menu">
+                            <?php 
+        
+                                $hidemenu = '';
+                                if(@$this->session->userdata['permission']['S6']['view'] OR @$this->session->userdata['permission']['S6']['de']) {
+
+                                    $hidemenu = 'hidemenu';
+
+                                    echo    '<li id="'.$hidemenu.'">
+                                                <a href="FrontEnd/mastertemplate">
+                                                    <i class="material-icons">assignment</i>
+                                                    <span>CREATE NEW MACHINE BREAKDOWN FORM</span>
+                                                </a>
+                                            </li>';
+                                }
+                            ?>
                             <li>
-                                <a href="<?=base_url('FrontEnd/mastertemplate')?>">
-                                    <i class="material-icons">assignment</i>
-                                    <span>CREATE NEW MACHINE BREAKDOWN FORM</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="<?=base_url('FrontEnd/dashboard_closed_ticket')?>">
+                                <!-- <a href="<?=base_url('FrontEnd/dashboard_closed_ticket')?>">
                                     <i class="material-icons">view_list</i>
                                     <span>ALL CLOSED TICKETS</span>
-                                </a>
-                            </li>
-                            
-                            <!-- <li>
-                                <a href="<?=base_url('DashboardMachineBreakdown')?>">
-                                    <i class="material-icons">assignment</i>
-                                    <span>Machine Break Down</span>
-                                </a>
-                            </li>
-                            <li>
-                            <a href="<?=base_url('DashboardMaterialReviewBoard')?>">
-                                    <i class="material-icons">view_list</i>
-                                    <span>Material Review Board</span>
-                                </a>
-                            </li>
-                            <li>
-                            <a href="<?=base_url('DashboardRootCauseFailure')?>">
-                                    <i class="material-icons">view_list</i>
-                                    <span>Root Cause Failure Analysis</span>
-                                </a>
-                            </li>
-                            <li>
-                            <a href="<?=base_url('DashboardForQAUseOnly')?>">
-                                    <i class="material-icons">view_list</i>
-                                    <span>Final QA Review</span>
-                                </a>
-                            </li> -->
-                        </ul>
-                    </li>
-                    <!-- <li>
-                        <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">pages</i>
-                            <span>QPM</span>
-                        </a>
-                        <ul class="ml-menu">
-                            <li>
-                                <a href="javascript:void(0);">
-                                    <span>List</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0);">
-                                    <span>Detail</span>
-                                </a>
+                                </a> -->
+
+                            <?php
+
+                                if(@$this->session->userdata['permission']['QASU1']['de'] OR @$this->session->userdata['permission']['QASU3']['de'] OR @$this->session->userdata['permission']['QASU4']['de'] OR @$this->session->userdata['permission']['QASU5']['de'] OR @$this->session->userdata['permission']['PRODSU2']['de'] OR @$this->session->userdata['permission']['ENGSU3']['de']) 
+                                { ?>
+                                
+                                    <a href="<?=base_url('SuperUser/dashboard_closed_ticket')?>">
+                                        <i class="material-icons">view_list</i>
+                                        <span>ALL CLOSED TICKETS</span>
+                                    </a>
+                                <?php }
+                                else{
+                                    ?>
+                                    <a href="<?=base_url('FrontEnd/dashboard_closed_ticket')?>">
+                                        <i class="material-icons">view_list</i>
+                                        <span>ALL CLOSED TICKETS</span>
+                                    </a>
+                                <?php } ?>
                             </li>
                         </ul>
-                    </li> -->
-                    <li class="header">CONFIGURATION</li>
-                    <li>
-                        <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">person</i>
-                            <span>Admin</span>
-                        </a>
-                        <ul class="ml-menu">
-                            <li>
-                                <a href="<?=base_url('register')?>">
-                                    <i class="material-icons">assignment</i>
-                                    <span>User Registration Form</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="<?=base_url('viewuserinfo')?>">
-                                    <i class="material-icons">view_list</i>
-                                    <span>View User Details</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="<?=base_url('ViewRolePermission')?>">
-                                    <i class="material-icons">view_list</i>
-                                    <span>View Role Permission</span>
-                                </a>
-                            </li>
-                            <!-- <li>
-                                <a href="<?=base_url('addnewuserroles')?>">
-                                    <i class="material-icons">view_list</i>
-                                    <span>Add New User Roles</span>
-                                </a>
-                            </li> -->
-                        </ul
                     </li>
+                    <?php
+                    
+                        $hideconf = '';
+                        if(@$this->session->userdata['permission']['C1']['de'] OR @$this->session->userdata['permission']['C1.1']['de'] OR @$this->session->userdata['permission']['C1.2']['de'] OR @$this->session->userdata['permission']['C1.3']['de']OR @$this->session->userdata['permission']['C1.4']['de']) 
+                        {
+
+                            $hideconf = 'hideconf';
+                        
+                        echo    '<li class="header" id="'.$hideconf.'">CONFIGURATION</li>';
+                        echo    '<li>
+                                    <a href="javascript:void(0);" class="menu-toggle">
+                                        <i class="material-icons">person</i>
+                                        <span>Administrator</span>
+                                    </a>
+                                    <ul class="ml-menu">
+                                        <li>
+                                            <a href="register">
+                                                <i class="material-icons">assignment</i>
+                                                <span>User Registration Form</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="view_user_info">
+                                                <i class="material-icons">view_list</i>
+                                                <span>View User Details</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="view_role_permission">
+                                                <i class="material-icons">card_membership</i>
+                                                <span>User Permission & Role Management</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="view_setting">
+                                                <i class="material-icons">settings</i>
+                                                <span>Setting Management</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>';
+                        }
+                    ?>
                 </ul>
             </div>
             <!-- #Menu -->

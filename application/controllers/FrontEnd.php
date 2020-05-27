@@ -20,14 +20,15 @@ class FrontEnd extends MY_FrontEnd {
 		    // Load database
             $this->load->model('login_database');
             $this->load->model('Function_users');
-            $this->load->model('Function_machinebreakdown');
+            // $this->load->model('Function_machinebreakdown');
             $this->load->model('Function_materialreviewboard');
             $this->load->model('Function_rootcausefailure');
-            $this->load->model('Function_qa_review');
+            // $this->load->model('Function_qa_review');
             $this->load->model('modal_master');
             $this->load->model('modal_create');
             $this->load->model('modal_update');
             $this->load->model('modal_delete');
+            $this->load->model('modal_admin/admin_modal_select');
         
             date_default_timezone_set('Asia/Kuala_Lumpur');
     }
@@ -125,7 +126,7 @@ class FrontEnd extends MY_FrontEnd {
             // $this->modal_master->section1_task_informer();
             // exit;
             $this->data['title'] = "JCY Product Quality System";
-            $this->data['pageName'] = "Homepage";
+            $this->data['pageName'] = "QUALITY ACTION NOTICE (QAN) & MACHINE BREAKDOWN FORM";
             $this->data['description'] = "Overview";
 
             $this->header($this->data);
@@ -190,7 +191,7 @@ class FrontEnd extends MY_FrontEnd {
             $result[$i]->ack =  $this->modal_master->get_sec1_ack_list($row->id);
             $result[$i]->submission = $this->modal_master->get_submission_result($row->id);
             $result[$i]->aff_rej = $this->modal_master->get_aff_rej_qty($row->id);
-            $result[$i]->defect = $this->modal_master->get_defect_info($row->id,'defect_description');
+            $result[$i]->defect = $this->modal_master->get_defect_info($row->id,'defect_description_name');
             
         }
         $data = array(
@@ -224,7 +225,7 @@ class FrontEnd extends MY_FrontEnd {
             $result[$i]->ack =  $this->modal_master->get_sec1_ack_list($row->id);
             $result[$i]->submission = $this->modal_master->get_submission_result($row->id);
             $result[$i]->aff_rej = $this->modal_master->get_aff_rej_qty($row->id);
-            $result[$i]->defect = $this->modal_master->get_defect_info($row->id,'defect_description');
+            $result[$i]->defect = $this->modal_master->get_defect_info($row->id,'defect_description_name');
             
         }
         $data = array(
@@ -233,10 +234,30 @@ class FrontEnd extends MY_FrontEnd {
         echo json_encode($data);
     }
 
+    public function get_defect_desc(){
+        // print_r($this->modal_master->get_defect_desc(9));
+        // exit;
+        $types = $this->input->post('defect_type');
+        if($types == ''){
+            $result = array();
+        }else{
+            $result = $this->modal_master->get_defect_desc(0,$types);
+        }
+        
+        echo json_encode($result);
+    }
+
+    public function get_machine(){
+        //echo $this->input->post('sector_id');
+        $sector_id = $this->input->post('sector_id')>0?$this->input->post('sector_id'):0;
+        $result = $this->modal_master->get_machine_no($sector_id,true);
+        echo json_encode($result);
+    }
+
     public function mastertemplate($qan_id=0){
         
         $this->data['title'] = "JCY Product Quality System";
-        $this->data['pageName'] = "Homepage";
+        $this->data['pageName'] = "QUALITY ACTION NOTICE (QAN) & MACHINE BREAKDOWN FORM";
         $this->data['description'] = "Overview";
         $this->data['jsselect'] = TRUE;
 
@@ -244,8 +265,6 @@ class FrontEnd extends MY_FrontEnd {
         $this->topbar($this->data);
         $this->leftsidebar($this->data);
         $this->rightsidebar($this->data);
-
-        
 
         if($qan_id > 0){
 
@@ -267,7 +286,7 @@ class FrontEnd extends MY_FrontEnd {
             //if(strlen($view['data']->datetime)<5) $view['data']->datetime = date("Y-m-d H:i:s");
 
             if(@$this->session->userdata['permission']['S1']['de'] OR @$this->session->userdata['permission']['S1']['ack'] OR @$this->session->userdata['permission']['S1']['app'])
-            { 
+            {    
                 $view['data']->submit_button->s1 = array();
 
                 if((@$this->session->userdata['permission']['S1']['de']) and $view['data']->status < '3'){
@@ -281,7 +300,7 @@ class FrontEnd extends MY_FrontEnd {
                 if((@$this->session->userdata['permission']['S1']['ack']) and ($view['data']->status == '1' or $view['data']->status == '3')){
                     $user_id = $this->session->userdata['logged_in']['id'];
 
-                    if(!($view['data']->ack_eng_user==$user_id or $view['data']->ack_prod_user==$user_id or $view['data']->ack_qa_user==$user_id )){
+                    if(!(@$view['data']->ack_eng_user==$user_id or @$view['data']->ack_prod_user==$user_id or @$view['data']->ack_qa_user==$user_id )){
                         $button_obj = new stdClass();
                         $button_obj->name = 'ACKNOWLEDGE';
                         $button_obj->value = 'update_section1_ack';
@@ -292,7 +311,7 @@ class FrontEnd extends MY_FrontEnd {
       
             }
 
-            if( (@$this->session->userdata['permission']['S2']['de'] OR @$this->session->userdata['permission']['S2']['ack'] OR @$this->session->userdata['permission']['S2']['app']) and ($view['data']->status >= 3 and $view['data']->status < 7)) //6
+            if( (@$this->session->userdata['permission']['S2']['de'] OR @$this->session->userdata['permission']['S2']['ack'] OR @$this->session->userdata['permission']['S2']['app']) and ($view['data']->status > 3 and $view['data']->status < 7)) //6
             {
                 $show_create_update = true;
                 $show_finalize = true;
@@ -307,20 +326,57 @@ class FrontEnd extends MY_FrontEnd {
                 }
 
                 if($show_create_update){
-                    $view['data']->submit_button->s2 = array();
+
                     $button_obj = new stdClass();
-                    $button_obj->name = @$view['data']->mrb_id > 0?'UPDATE':'CREATE';
-                    $button_obj->value = @$view['data']->mrb_id > 0?'update_section2':'create_section2';
-                    $button_obj->action = base_url().'FrontEnd/mastertemplate/';
-                    array_push($view['data']->submit_button->s2,$button_obj);
+                    $btn_sec2 = '';
+                    $val_sec2 = 'update_section2';
+
+                    if((@$this->session->userdata['permission']['S2']['de'] OR @$this->session->userdata['permission']['S2.1']['de'] OR @$this->session->userdata['permission']['S2.2']['de'] OR @$this->session->userdata['permission']['S2.3']['de'] OR @$this->session->userdata['permission']['S2.4']['de'])) //NEW ADDED and ($view['data']->status == '6')
+                    {
+                        // $view['data']->submit_button->s2 = array();
+                        // $button_obj = new stdClass();
+                        // $button_obj->name = @$view['data']->mrb_id > 0?'UPDATE':'CREATE';
+                        // $button_obj->value = @$view['data']->mrb_id > 0?'update_section2':'create_section2';
+                        // $button_obj->action = base_url().'FrontEnd/mastertemplate/';
+                        // array_push($view['data']->submit_button->s2,$button_obj);
+                        
+                        $view['data']->submit_button->s2 = array();
+
+                        if( (@$this->session->userdata['permission']['S2.2']['de'] OR @$this->session->userdata['permission']['S2.3']['de']) AND (@$view['data']->mrb_id > 0)){
+                            $btn_sec2 = 'UPDATE';
+                            $val_sec2 = 'update_section2';
+                        }
+
+                        if(@$this->session->userdata['permission']['S2.1']['de']){
+                            if(@$view['data']->mrb_id > 0){
+                                $btn_sec2 = 'UPDATE';
+                                $val_sec2 = 'update_section2';
+                            }else{
+                                $btn_sec2 = 'CREATE';
+                                $val_sec2 = 'create_section2';
+                            } 
+                        }
+                            
+
+                        if($btn_sec2 !== ''){
+                            $button_obj->name = $btn_sec2;
+                            $button_obj->value = $val_sec2;
+                            $button_obj->action = base_url().'FrontEnd/mastertemplate/';
+                            array_push($view['data']->submit_button->s2,$button_obj);
+                        }
+                        
+                    }
                 }
 
                 if($show_finalize){
-                    $button_obj = new stdClass();
-                    $button_obj->name = 'FINALIZE';
-                    $button_obj->value = 'final_section2';
-                    $button_obj->action = base_url().'FrontEnd/mastertemplate/';
-                    array_push($view['data']->submit_button->s2,$button_obj);
+                    // if((@$this->session->userdata['permission']['S2']['de'] OR @$this->session->userdata['permission']['S2.1']['de'] OR @$this->session->userdata['permission']['S2.2']['de'] OR @$this->session->userdata['permission']['S2.3']['de'] OR @$this->session->userdata['permission']['S2.4']['de']) and ($view['data']->status == '6')) //NEW ADDED
+                    // {
+                        $button_obj = new stdClass();
+                        $button_obj->name = 'FINALIZE';
+                        $button_obj->value = 'final_section2';
+                        $button_obj->action = base_url().'FrontEnd/mastertemplate/';
+                        array_push($view['data']->submit_button->s2,$button_obj);
+                    // }
                 }
             }
 
@@ -334,52 +390,94 @@ class FrontEnd extends MY_FrontEnd {
                 //     $button_obj->action = base_url().'FrontEnd/mastertemplate/';
                 //     array_push($view['data']->submit_button->s3,$button_obj);
                 // }
-                if((@$this->session->userdata['permission']['S3']['de'] or @$this->session->userdata['permission']['S3']['ack']) and ($view['data']->status == '4')){
+                // if((@$this->session->userdata['permission']['S3']['de'] or @$this->session->userdata['permission']['S3']['ack']) and ($view['data']->status == '4')){
+                //     $button_obj = new stdClass();
+                //     $button_obj->name = @$view['data']->inspection_machine_data[0]->submission_id > 0?'UPDATE':'CREATE';
+                //     $button_obj->value = @$view['data']->inspection_machine_data[0]->submission_id > 0?'update_section3':'create_section3';
+                //     $button_obj->action = base_url().'FrontEnd/mastertemplate/';
+                //     array_push($view['data']->submit_button->s3,$button_obj);
+                // }
+
+                if((@$this->session->userdata['permission']['S3']['de'] or @$this->session->userdata['permission']['S3']['ack']) and ($view['data']->status == '4'))
+                {
                     $button_obj = new stdClass();
-                    $button_obj->name = @$view['data']->inspection_machine_data[0]->submission_id > 0?'UPDATE':'CREATE';
-                    $button_obj->value = @$view['data']->inspection_machine_data[0]->submission_id > 0?'update_section3':'create_section3';
-                    $button_obj->action = base_url().'FrontEnd/mastertemplate/';
-                    array_push($view['data']->submit_button->s3,$button_obj);
+                    $btn = '';
+                    $val = 'update_section3';
+
+                    $last_inspection_data = @$view['data']->inspection_machine_data;
+                    
+                    if(count( @$view['data']->inspection_machine_data))
+                    $last_inspection_data = array_values(array_slice(@$view['data']->inspection_machine_data, -1))[0];
+
+                    if(@$this->session->userdata['permission']['S3.2']['de'] AND (is_array(@$last_inspection_data->inspection_data) AND count(@$last_inspection_data->inspection_data) == 0))
+                    {
+                        $btn = 'UPDATE';
+                    }
+                    
+                    if(@$this->session->userdata['permission']['S3.1']['de'])
+                    {
+                        if(is_array(@$last_inspection_data->inspection_data) AND count(@$last_inspection_data->inspection_data) == 0)
+                            $btn = 'UPDATE';
+                        else $btn = 'CREATE';
+                             $val = 'create_section3';
+                    }
+                    
+                    if($btn !== ''){
+                        $button_obj->name = $btn;
+                        $button_obj->value = $val;
+                        $button_obj->action = base_url().'FrontEnd/mastertemplate/';
+                        array_push($view['data']->submit_button->s3,$button_obj);
+                    }
                 }
             }
+        
             if( (@$this->session->userdata['permission']['S4']['de'] OR @$this->session->userdata['permission']['S4']['ack'] OR @$this->session->userdata['permission']['S4']['app']) and ($view['data']->status == '5'))
             {
                 $view['data']->submit_button->s4 = array();
                 $button_obj = new stdClass();
                 $button_obj->name = 'APPROVE';
                 $button_obj->value = 'update_section4';
-                $button_obj->action = base_url().'FrontEnd/mastertemplate/';
+                $button_obj->action = base_url().'FrontEnd/mastertemplate/'.$qan_id;
                 array_push($view['data']->submit_button->s4,$button_obj);
             }
-            if( (@$this->session->userdata['permission']['S5']['de'] OR @$this->session->userdata['permission']['S5']['ack'] OR @$this->session->userdata['permission']['S5']['app']) and ($view['data']->status == '7'))
+            if( (@$this->session->userdata['permission']['S5']['de'] OR @$this->session->userdata['permission']['S5']['ack'] OR @$this->session->userdata['permission']['S5']['app']) and ($view['data']->status == '6') OR ($view['data']->status == '7'))
             {
                 $view['data']->submit_button->s5 = array();
                 $button_obj = new stdClass();
-                $button_obj->name = 'CLOSED';
-                $button_obj->value = 'update_section5';
-                $button_obj->action = base_url().'FrontEnd/mastertemplate/';
-                array_push($view['data']->submit_button->s5,$button_obj);
+                if(@$view['data']->confirmation >= 11 AND @$this->session->userdata['permission']['S5']['de']){
+                    $button_obj->name = 'CLOSED';
+                    $button_obj->value = 'update_section5';
+                    $button_obj->action = base_url().'FrontEnd/mastertemplate/';
+                    array_push($view['data']->submit_button->s5,$button_obj);
+                }
+                
             }
             
         }else{
             
+            if(!( count($_POST) OR (@$this->session->userdata['permission']['S6']['view'] OR @$this->session->userdata['permission']['S6']['de']) )) { //(@$this->session->userdata['permission']['S6']['view'] OR @$this->session->userdata['permission']['S6']['de']
+                redirect("FrontEnd/notauthorized");
+                exit;
+            }
+
             $this->modal_master->load_new_qan();
             $view['data'] = $this->modal_master->get_data();
             $view['data']->submit_button = new stdClass();
-            $view['data']->submit_button->s1 = array();
-            $button_obj = new stdClass();
-            $button_obj->name = 'CREATE NEW';
-            $button_obj->value = 'create_section1';
-            $button_obj->action = base_url().'FrontEnd/mastertemplate';
-            array_push($view['data']->submit_button->s1,$button_obj);
-
+            if(@$this->session->userdata['permission']['S1']['de'] OR @$this->session->userdata['permission']['S1']['ack'] OR @$this->session->userdata['permission']['S1']['app'] OR @$this->session->userdata['permission']['S1']['app']){
+                $view['data']->submit_button->s1 = array();
+                $button_obj = new stdClass();
+                $button_obj->name = 'CREATE NEW';
+                $button_obj->value = 'create_section1';
+                $button_obj->action = base_url().'FrontEnd/mastertemplate';
+                array_push($view['data']->submit_button->s1,$button_obj);
+            }
         }
        
         // echo '<br><br><pre>';
         // print_r($this->session->userdata['permission']);
         // echo '</pre>';
 
-        $view['data']->user->{$this->session->userdata['logged_in']['id']} = $this->Function_materialreviewboard->getUserById($this->session->userdata['logged_in']['id']);
+        $view['data']->user->{$this->session->userdata['logged_in']['id']} = $this->admin_modal_select->get_user_by_id($this->session->userdata['logged_in']['id']);
         
         if(@$view['data']->issueby_user_id<1 and (@$this->session->userdata['permission']['S1.1']['de'] or @$this->session->userdata['permission']['S1.3']['de']) ){
             $view['data']->issueby_user_id = $this->session->userdata['logged_in']['id'];
@@ -439,7 +537,9 @@ class FrontEnd extends MY_FrontEnd {
         }
 
         $last_submit_result = $this->modal_master->get_submission_validation_result($qan_id);
-    
+        // print_r($last_submit_result);
+        // exit;
+        
 
         if($i < 0 OR (@$this->session->userdata['permission']['S3.1']['de'] and $i<$last_submit_result['total_submission'] and $last_submit_result['result']!='PASS')){
 
@@ -538,13 +638,17 @@ class FrontEnd extends MY_FrontEnd {
         if(isset($_POST['shift'])) $data->shift = $this->input->post('shift');
         if(isset($_POST['ooc'])) $data->ooc= $this->input->post('ooc');
         if(isset($_POST['oos'])) $data->oos= $this->input->post('oos');
+        if(isset($_POST['visual'])) $data->visual= $this->input->post('visual');
         if(isset($_POST['part_name'])) $data->part_name = $this->input->post('part_name'); 
-        if(isset($_POST['machine_no'])) $data->machine_no = $this->input->post('machine_no');
+        if(isset($_POST['machine_no_id'])) $data->machine_no_id = $this->input->post('machine_no_id');
+        // if(isset($_POST['machine_no'])) $data->machine_no = $this->input->post('machine_no'); temporary
         if(isset($_POST['process'])) $data->process= $this->input->post('process');
-        if(isset($_POST['cav_no'])) $data->cav_no = $this->input->post('cav_no');
-        if(isset($_POST['up_affected'])) $data->up_affected = $this->input->post('up_affected');
+        // if(isset($_POST['cav_no'])) $data->cav_no = $this->input->post('cav_no'); no longer use
+        // if(isset($_POST['up_affected'])) $data->up_affected = $this->input->post('up_affected'); no longer use
         if(isset($_POST['detectedby_user'])) $data->detectedby_user = $this->input->post('detectedby_user');
-        if(isset($_POST['defect_description'])) $data->defect_description = $this->input->post('defect_description');
+        if(isset($_POST['defect_description_name'])) $data->defect_description_id = $this->input->post('defect_description_name');
+        if(isset($_POST['defect_description_others'])) $data->defect_description_others = $this->input->post('defect_description_others');
+        //if(isset($_POST['defect_description'])) $data->defect_description = $this->input->post('defect_description');
         if(isset($_POST['last_passed_sample'])) $data->last_passed_sample = $this->input->post('last_passed_sample');
         if(isset($_POST['purge_from'])) $data->purge_from = $this->input->post('purge_from');
         if(isset($_POST['estimate_qty'])) $data->estimate_qty = $this->input->post('estimate_qty');
@@ -746,11 +850,13 @@ class FrontEnd extends MY_FrontEnd {
 
         //captured engineering submission part
         if(isset($_POST['machine_breakdown_id'])) $data->qan_id = $this->input->post('machine_breakdown_id');
-        if(isset($_POST['root_cause'])) $data->root_cause = $this->input->post('root_cause');
-        if(isset($_POST['corrective_action'])) $data->corrective_action = $this->input->post('corrective_action');
+        if(isset($_POST['root_cause'])) $data->root_cause_id = $this->input->post('root_cause');
+        // if(isset($_POST['root_cause'])) $data->root_cause = $this->input->post('root_cause');
+        if(isset($_POST['corrective_action'])) $data->corrective_action_id = $this->input->post('corrective_action');
+        // if(isset($_POST['corrective_action'])) $data->corrective_action = $this->input->post('corrective_action');
         if(isset($_POST['rcfa_pic_user_id'])) $data->rcfa_pic_user_id = $this->input->post('rcfa_pic_user_id');
         if(isset($_POST['rcfa_ack_user_id'])) $data->rcfa_ack_user_id = $this->input->post('rcfa_ack_user_id');
-        if(isset($_POST['rcfa_appr_user_id'])) $data->rcfa_appr_user_id = $this->input->post('rcfa_appr_user_id');
+        // if(isset($_POST['rcfa_appr_user_id'])) $data->rcfa_appr_user_id = $this->input->post('rcfa_appr_user_id');
         if(isset($_POST['completion_user_id'])) $data->completion_user_id = $this->input->post('completion_user_id');
         if(isset($_POST['completion_datetime'])) $data->completion_datetime = $this->input->post('completion_datetime');
         if(isset($_POST['submission_no'])) $data->submission_no = $this->input->post('submission_no');
@@ -768,41 +874,45 @@ class FrontEnd extends MY_FrontEnd {
         $data->new_inspection_machine_data = array();
         $data->inspection_result_data = array();
 
+        
         //lets check only previous submission has been given result then we allow to save next new
         $last_submit_result = $this->modal_master->get_submission_validation_result($data->qan_id);
-
+        // print_r($data);
+        // print_r($last_submit_result);
+        
         if(isset($data->rcfa_pic_user_id) and count($data->rcfa_pic_user_id)>0){
 
             foreach($data->rcfa_pic_user_id as $i => $null){
 
-                if($i==0){
+                if($i==0 OR (count($data->rcfa_pic_user_id)-1)>$i){
                     continue; //skip tab 0
                 } 
                 if($data->submission_no[$i] > ($last_submit_result['total_submission']+1) and $last_submit_result['result']=='PASS'){
                     continue; //skip if user send more than one submission or result that got pass result
                 }
+                
                 if(isset($data->submission_id[$i]) and $data->submission_id[$i]>0){
                     //for update part
                     $data->inspection_machine_data[$i] = new stdClass();
                     $data->inspection_machine_data[$i]->submission_id = $data->submission_id[$i];
-                    $data->inspection_machine_data[$i]->root_cause = @$data->root_cause[$i];
-                    $data->inspection_machine_data[$i]->corrective_action = @$data->corrective_action[$i];
+                    $data->inspection_machine_data[$i]->root_cause_id = @$data->root_cause_id[$i];
+                    $data->inspection_machine_data[$i]->corrective_action_id = @$data->corrective_action_id[$i];
                     $data->inspection_machine_data[$i]->submission_no = $data->submission_no[$i];
                     $data->inspection_machine_data[$i]->rcfa_pic_user_id = $data->rcfa_pic_user_id[$i];
                     $data->inspection_machine_data[$i]->rcfa_ack_user_id = $data->rcfa_ack_user_id[$i];
-                    $data->inspection_machine_data[$i]->rcfa_appr_user_id = $data->rcfa_appr_user_id[$i];
+                    // $data->inspection_machine_data[$i]->rcfa_appr_user_id = $data->rcfa_appr_user_id[$i];
                     $data->inspection_machine_data[$i]->completion_user_id = $data->completion_user_id[$i];
 
                 }
                 else{
                     //for insert part
                     $data->new_inspection_machine_data[$i] = new stdClass();
-                    $data->new_inspection_machine_data[$i]->root_cause = $data->root_cause[$i];
-                    $data->new_inspection_machine_data[$i]->corrective_action = $data->corrective_action[$i];
+                    $data->new_inspection_machine_data[$i]->root_cause_id = $data->root_cause_id[$i];
+                    $data->new_inspection_machine_data[$i]->corrective_action_id = $data->corrective_action_id[$i];
                     $data->new_inspection_machine_data[$i]->submission_no = $data->submission_no[$i];
                     $data->new_inspection_machine_data[$i]->rcfa_pic_user_id = $data->rcfa_pic_user_id[$i];
                     $data->new_inspection_machine_data[$i]->rcfa_ack_user_id = $data->rcfa_ack_user_id[$i];
-                    $data->new_inspection_machine_data[$i]->rcfa_appr_user_id = $data->rcfa_appr_user_id[$i];
+                    // $data->new_inspection_machine_data[$i]->rcfa_appr_user_id = $data->rcfa_appr_user_id[$i];
                     $data->new_inspection_machine_data[$i]->completion_user_id = $data->completion_user_id[$i];
 
                 }
@@ -849,8 +959,9 @@ class FrontEnd extends MY_FrontEnd {
             }
         }
 
-        //print_r($_POST);
+        // print_r($_POST);
         // echo '<pre>';
+        // print_r($data);
         // print_r($root_cause_submission_id);
         // print_r($data->_inspection_machine_id);
         // exit;
@@ -861,9 +972,10 @@ class FrontEnd extends MY_FrontEnd {
         if($this->input->post('submit') == 'create_section3' OR count($data->new_inspection_machine_data)>0 OR count($data->inspection_result_data)>0 OR @count($data->_inspection_machine_id)){
         //    print_r($root_cause_submission_id);
         //    exit;
-            if(count(@$root_cause_submission_id)>0 and count($data->inspection_result_data)>0){
-                $this->modal_delete->delete_inspection_data($data->qan_id,array_keys($root_cause_submission_id));
-            }
+      
+            // if(count(@$root_cause_submission_id)>0 and count($data->inspection_result_data)>0){
+            //     $this->modal_delete->delete_inspection_data($data->qan_id,array_keys($root_cause_submission_id));
+            // }
             $this->modal_create->save_section3($data);
             $success_msg = 'Record Saved Successfully';
 
@@ -887,14 +999,15 @@ class FrontEnd extends MY_FrontEnd {
         redirect("FrontEnd/successmaster");
     } //end of submit section3
 
-    
     if($this->input->post('submit') == 'update_section4') {
+        // echo @$view['data']->confirmation;
+        // exit; 
         $data = new stdClass();
         if(isset($_POST['machine_breakdown_id'])) $data->qan_id = $this->input->post('machine_breakdown_id');
         if(isset($_POST['approval_user_id'])) $data->approval_user_id = $this->input->post('approval_user_id');
         if(isset($_POST['machine_status'])) $data->machine_status = $this->input->post('machine_status');
         if(isset($_POST['machine_stop_reason'])) $data->machine_stop_reason = $this->input->post('machine_stop_reason');
-
+        
         $this->modal_update->update_section4($data);
         if(@$view['data']->confirmation >= 11)
             $this->modal_update->update_status($data->qan_id,'7');
@@ -925,6 +1038,9 @@ class FrontEnd extends MY_FrontEnd {
         // print_r($this->session->userdata['permission']);
         // print_r($this->session->userdata);
         //exit;
+        $view['machine_no']=$this->modal_master->get_machine_no();
+        $view['detected_by']=$this->modal_master->get_detected_by();
+        // $view['defect_description']=$this->modal_master->get_defect_desc();
         $this->load->view('FrontEnd/QAN/mastertemplate',$view);
         $this->footer($this->data);
 }
@@ -932,7 +1048,7 @@ class FrontEnd extends MY_FrontEnd {
     public function successmaster(){
 
         $this->data['title'] = "JCY Product Quality System";
-        $this->data['pageName'] = "View Machine Breakdown Records";
+        $this->data['pageName'] = "QUALITY ACTION NOTICE (QAN) & MACHINE BREAKDOWN FORM";
         $this->data['description'] = "Overview";
 
         $this->header($this->data);
@@ -946,6 +1062,21 @@ class FrontEnd extends MY_FrontEnd {
         $view['data']->redirect = base_url()."FrontEnd/mastertemplate/".$this->session->userdata('last_created_machine_id');
         $this->load->view('FrontEnd/successmaster',$view);
         $this->footer();
+    }
+
+    public function notauthorized(){
+
+        $this->data['title'] = "JCY Product Quality System";
+        $this->data['pageName'] = "QUALITY ACTION NOTICE (QAN) & MACHINE BREAKDOWN FORM";
+        $this->data['description'] = "Overview";
+
+        $this->header($this->data);
+        $this->topbar($this->data);
+        $this->leftsidebar($this->data);
+        $this->rightsidebar($this->data);
+
+        $this->load->view('FrontEnd/notauthorized',$this->data);
+        $this->footer($this->data);
     }
 
     public function Section1(){
@@ -4007,7 +4138,7 @@ class FrontEnd extends MY_FrontEnd {
 
 	    // Active Header, must include in every public function
         $this->data['title'] = "JCY Product Quality System";
-        $this->data['pageName'] = "View User Details";
+        $this->data['pageName'] = "QUALITY ACTION NOTICE (QAN) & MACHINE BREAKDOWN FORM";
         $this->data['description'] = "Overview";
 
         // Start controller code here
@@ -4054,6 +4185,7 @@ class FrontEnd extends MY_FrontEnd {
                 $title=$this->input->post('title');
                 $employee_no=$this->input->post('employee_no');
                 $role_id=$this->input->post('role_id');
+                $created_date=date("Y-m-d H:i:s");
                 $created_date=$this->input->post('created_date');
                 $modified_date=$this->input->post('modified_date');
                 $is_deleted=$this->input->post('is_deleted');
@@ -4065,7 +4197,7 @@ class FrontEnd extends MY_FrontEnd {
             $this->footer($this->data);
     }
 
-    public function AddPermision() {
+    public function ProcessingPermission() { //AddPermision->old
 
         // Active Header, must include in every public function
         $this->data['title'] = "JCY Product Quality System";
@@ -4084,25 +4216,24 @@ class FrontEnd extends MY_FrontEnd {
 
             // print_r($_POST);
             // exit; 
+
+            // $data = array();
             $role_ids=$this->input->post('role_id');
             $section_ids=$this->input->post('section_id');
 
             foreach($role_ids as $role_id => $on){
 
-                foreach($section_ids[$role_id] as $section_id){
-            
-                
-                    $data = array(
-                        'role_id' => $role_id,
-                        'section_id' => $section_id
-                    );
-                //         print_r($_POST);
-                // exit;
-                        $this->Function_users->savePermission($data);
-                    
-                }	
+                if(is_array($section_ids) AND count($section_ids) > 0){
+                    foreach($section_ids[$role_id] as $section_id){
+                        $data = array(
+                            'role_id' => $role_id,
+                            'section_id' => $section_id
+                        );
+                        $this->modal_create->save_permission($data);//savePermission->old
+                        // $this->modal_update->update_permission($data);//savePermission->old
+                    }	
+                }
             }
-        
             $role_ids=$this->input->post('role_id');
             $role_names=$this->input->post('role_name');
     
@@ -4111,15 +4242,12 @@ class FrontEnd extends MY_FrontEnd {
                 $data = array(
                     'name' => $role_names[$role_id]
                 );
-                //         print_r($_POST);
-                // exit;
-                $this->Function_users->updatePermissionRecords($role_id,$data);
-                    
-            }	
+                
+                $this->modal_update->update_role($role_id,$data); //updatePermissionRecords->old
+            }
         }
-        
-
-        $roles_sections = $this->Function_users->GetRoleSection();
+           
+        $roles_sections = $this->modal_master->GetRoleSection();
         $temp_role_section = array();
         foreach($roles_sections as $role_section){
             $temp_role_section[$role_section->role_name]['role_id'] = $role_section->role_id;
@@ -4127,14 +4255,15 @@ class FrontEnd extends MY_FrontEnd {
             $temp_role_section[$role_section->role_name]['section_name'][] = $role_section->section_name;
         }
         $result['roles_sections'] = $temp_role_section;
-        $result['sections']=$this->Function_users->getSectionsDropdown();
+        $result['sections']=$this->modal_master->displayListSection();
+        $result['section1']=$this->modal_master->displayListSection1();
+        $result['permission']=$this->modal_master->GetUserRolePermision();
 
-        
-        $this->load->view('FrontEnd/QAN/viewandaddnewroles',$result);
+        $this->load->view('FrontEnd/QAN/viewrolepermission',$result);//FrontEnd/QAN/viewandaddnewroles
         $this->footer($this->data);
     }
 
-    public function AddRolePermission() {
+    public function ProcessingRolePermission() { //AddRolePermission->old
 
         // Active Header, must include in every public function
         $this->data['title'] = "JCY Product Quality System";
@@ -4206,16 +4335,24 @@ class FrontEnd extends MY_FrontEnd {
                         
                         $$to_permission = $permission_val;// double $
                     }
-
-                    $this->Function_users->updateRolePermissionRecords($role_id,$section_id,$view_permission,$data_entry_permission,$approval_permission,$acknowledger_permission);
+                    //$this->Function_users->updateRolePermissionRecords ->old
+                    $this->modal_update->update_role_permission($role_id,$section_id,$view_permission,$data_entry_permission,$approval_permission,$acknowledger_permission);
                                                   
                 }
             }
-           
-        $result['sections']=$this->Function_users->getSectionsDropdown();
-        $result['permission']=$this->Function_users->GetUserRolePermision();
+        $roles_sections = $this->modal_master->GetRoleSection();
+        $temp_role_section = array();
+        foreach($roles_sections as $role_section){
+            $temp_role_section[$role_section->role_name]['role_id'] = $role_section->role_id;
+            $temp_role_section[$role_section->role_name]['section_id'][] =  $role_section->section_id;
+            $temp_role_section[$role_section->role_name]['section_name'][] = $role_section->section_name;
+        }
+        $result['roles_sections'] = $temp_role_section;   
+        $result['sections']=$this->modal_master->displayListSection();
+        $result['section1']=$this->modal_master->displayListSection1();
+        $result['permission']=$this->modal_master->GetUserRolePermision();
         
-        $result['roles']=$this->Function_users->GetRoleDropdown();
+        // $result['roles']=$this->Function_users->GetRoleDropdown();
         $this->load->view('FrontEnd/QAN/viewrolepermission',$result);
         $this->footer($this->data);
     }
@@ -4236,9 +4373,19 @@ class FrontEnd extends MY_FrontEnd {
         $this->topbar($this->data);
         $this->leftsidebar($this->data);
         $this->rightsidebar($this->data);
-        // $result['user_id']=$user_id;
-        $result['permission']=$this->Function_users->GetUserRolePermision();
-        $result['roles']=$this->Function_users->GetRoleDropdown();
+
+         
+        $result['sections']=$this->modal_master->displayListSection();
+        $result['section1']=$this->modal_master->displayListSection1();
+        $result['permission']=$this->modal_master->GetUserRolePermision();
+        $roles_sections = $this->modal_master->GetRoleSection();
+        $temp_role_section = array();
+        foreach($roles_sections as $role_section){
+            $temp_role_section[$role_section->role_name]['role_id'] = $role_section->role_id;
+            $temp_role_section[$role_section->role_name]['section_id'][] =  $role_section->section_id;
+            $temp_role_section[$role_section->role_name]['section_name'][] = $role_section->section_name;
+        }
+        $result['roles_sections'] = $temp_role_section;
         $this->load->view('FrontEnd/QAN/viewrolepermission',$result);
         $this->footer($this->data);
     }
@@ -4283,7 +4430,7 @@ class FrontEnd extends MY_FrontEnd {
             $this->footer($this->data);
     }
 
-    public function ViewUserRole(){
+    public function ProcessingRole(){ //ViewUserRole->old
         
         $this->data['title'] = "JCY Product Quality System";
         $this->data['pageName'] = "QUALITY ACTION NOTICE (QAN) & MACHINE BREAKDOWN FORM";
@@ -4295,7 +4442,7 @@ class FrontEnd extends MY_FrontEnd {
         $this->leftsidebar($this->data);
         $this->rightsidebar($this->data);
      
-        $roles_sections = $this->Function_users->GetRoleSection();
+        $roles_sections = $this->modal_master->GetRoleSection();
         $temp_role_section = array();
         foreach($roles_sections as $role_section){
             $temp_role_section[$role_section->role_name]['role_id'] = $role_section->role_id;
@@ -4303,22 +4450,19 @@ class FrontEnd extends MY_FrontEnd {
             $temp_role_section[$role_section->role_name]['section_name'][] = $role_section->section_name;
         }
         $result['roles_sections'] = $temp_role_section;
-        $result['sections']=$this->Function_users->getSectionsDropdown();
+        $result['sections']=$this->modal_master->displayListSection();
 
         //Check submit button 
         if($this->input->post('submit')) {
-
-            //  print_r($_POST);
-            //  exit; 
             
             $role_id=$this->input->post('role_id');
             $role_name=$this->input->post('role_name');
             
-        $result['message_display'] = $this->Function_users->saveAddNewRole($role_id,$role_name);	
- 
+            $result['message_display'] = $this->modal_create->save_role($role_id,$role_name);	
         }
-        
-        $this->load->view('FrontEnd/QAN/viewandaddnewroles',$result);
+        $result['permission']=$this->modal_master->GetUserRolePermision();
+        $result['section1']=$this->modal_master->displayListSection1();
+        $this->load->view('FrontEnd/QAN/viewrolepermission',$result);
         $this->footer($this->data);
     }
 
@@ -4394,7 +4538,7 @@ class FrontEnd extends MY_FrontEnd {
         $this->footer($this->data);
     }
     
-	public function ViewSection(){
+	public function ProcessingSection(){ //ViewSection->old
         
         $this->data['title'] = "JCY Product Quality System";
         $this->data['pageName'] = "QUALITY ACTION NOTICE (QAN) & MACHINE BREAKDOWN FORM";
@@ -4409,19 +4553,46 @@ class FrontEnd extends MY_FrontEnd {
         //Check submit button 
         if($this->input->post('submit')) {
 
-            // print_r($_POST);
-            // exit; 
-            
             $section=$this->input->post('section');
             $description=$this->input->post('description');
          
-         $result['message_display'] = $this->Function_users->saveAddNewSection($section,$description);		
+            $result['message_display'] = $this->modal_create->save_section($section,$description); //Function_users->saveAddNewSection->old
  
-         }
+        }else{
 
-        $result['sections']=$this->Function_users->displayListSection();
-        $result['sections1']=$this->Function_users->getSectionsDropdown();
-        $this->load->view('FrontEnd/QAN/viewsection',$result);
+            if($this->input->post('update')) {
+
+                $section_id=$this->input->post('sectionid');
+                $section=$this->input->post('section');
+                $description=$this->input->post('description'); 
+    
+                foreach($section_id as $id => $on ){
+                    $data_update = array(
+                        'section_name' => $section[$id],
+                        'description' => $description[$id]
+                    );
+                    if($this->modal_update->update_section($id,$data_update)) //$this->Function_users->updateSectionRecords->old
+                    {
+                        $result['msg'] = 'Success!!';
+                    }
+                    else{
+                        $result['msg'] = 'Not Success!!';
+                    }
+                }
+            }
+        }
+        $roles_sections = $this->modal_master->GetRoleSection();
+        $temp_role_section = array();
+        foreach($roles_sections as $role_section){
+            $temp_role_section[$role_section->role_name]['role_id'] = $role_section->role_id;
+            $temp_role_section[$role_section->role_name]['section_id'][] =  $role_section->section_id;
+            $temp_role_section[$role_section->role_name]['section_name'][] = $role_section->section_name;
+        }
+        $result['roles_sections'] = $temp_role_section;
+        $result['permission']=$this->modal_master->GetUserRolePermision();
+        $result['sections']=$this->modal_master->displayListSection();
+        $result['section1']=$this->modal_master->displayListSection1();
+        $this->load->view('FrontEnd/QAN/viewrolepermission',$result); //'FrontEnd/QAN/viewsection'->old
         $this->footer($this->data);
     }
 
@@ -4498,6 +4669,364 @@ class FrontEnd extends MY_FrontEnd {
         $this->load->view('FrontEnd/QAN/viewsection',$result);
         $this->footer($this->data);
     }
+
+    public function ViewSetting(){
+
+	    // Active Header, must include in every public function
+        $this->data['title'] = "JCY Product Quality System";
+        $this->data['pageName'] = "QUALITY ACTION NOTICE (QAN) & MACHINE BREAKDOWN FORM";
+        $this->data['description'] = "Overview";
+        $this->data['jsselect'] = TRUE;
+
+        // Start controller code here
+
+        // Load View
+        $this->header($this->data);
+        $this->topbar($this->data);
+        $this->leftsidebar($this->data);
+        $this->rightsidebar($this->data);
+       
+        $result['part_name']=$this->modal_master->displayListPartName();
+        $result['purge_name']=$this->modal_master->displayListPurge();
+        $result['defect_description']=$this->modal_master->displayListDefectDescription();
+        $result['root_cause']=$this->modal_master->displayListRootCause();
+        $result['corrective_action']=$this->modal_master->displayListCorrectiveAction();
+        
+        $this->load->view('FrontEnd/QAN/viewsetting',$result);
+        $this->footer($this->data);
+    }
+
+    public function ProcessingPartName() {
+
+        // Active Header, must include in every public function
+        $this->data['title'] = "JCY Product Quality System";
+        $this->data['pageName'] = "QUALITY ACTION NOTICE (QAN) & MACHINE BREAKDOWN FORM";
+        $this->data['description'] = "Overview";
+        $this->data['jsselect'] = TRUE;
+
+        // Load View
+        $this->header($this->data);
+        $this->topbar($this->data);
+        $this->leftsidebar($this->data);
+        $this->rightsidebar($this->data);
+
+        //Check submit button 
+        if($this->input->post('submit')) {
+
+            $part_name=$this->input->post('part_name');
+            $is_deleted_partname=$this->input->post('is_deleted_partname');
+        
+        $result['message_display'] = $this->modal_create->save_part_name($part_name,$is_deleted_partname);		
+
+        }else {
+
+            if($this->input->post('update')) {
+            
+                $part_name_id=$this->input->post('part_name_id');
+                $part_name=$this->input->post('part_name');
+                $is_deleted_partname=$this->input->post('is_deleted_partname');
+
+                foreach($part_name_id as $id => $on ){
+                    $data_update = array(
+                        'part_name' => $part_name[$id],
+                        'is_deleted' => $is_deleted_partname[$id]
+                    );
+                    if($this->modal_update->update_part_name($id,$data_update))
+                    {
+                        $result['msg'] = 'Success!!';
+                    }
+                    else{
+                        $result['msg'] = 'Not Success!!';
+                    }
+                }
+            }
+        }
+
+        $result['part_name']=$this->modal_master->displayListPartName();
+        $result['purge_name']=$this->modal_master->displayListPurge();
+        $result['defect_description']=$this->modal_master->displayListDefectDescription();
+        $result['root_cause']=$this->modal_master->displayListRootCause();
+        $result['corrective_action']=$this->modal_master->displayListCorrectiveAction();
+        $this->load->view('FrontEnd/QAN/viewsetting',$result);
+        $this->footer($this->data);
+        
+    }
+
+    public function ProcessingPurgeLocation() {
+
+        // Active Header, must include in every public function
+        $this->data['title'] = "JCY Product Quality System";
+        $this->data['pageName'] = "QUALITY ACTION NOTICE (QAN) & MACHINE BREAKDOWN FORM";
+        $this->data['description'] = "Overview";
+        $this->data['jsselect'] = TRUE;
+
+        // Load View
+        $this->header($this->data);
+        $this->topbar($this->data);
+        $this->leftsidebar($this->data);
+        $this->rightsidebar($this->data);
+
+        //Check submit button 
+        if($this->input->post('submit')) {
+
+            $purge_name=$this->input->post('purge_name');
+            $order_no=$this->input->post('order_no');
+            $is_deleted_purge_name=$this->input->post('is_deleted_purge_name');
+        
+        $result['message_display'] = $this->modal_create->save_purge_location($purge_name,$order_no,$is_deleted_purge_name);		
+
+        }else {
+
+            if($this->input->post('update')) {
+            
+                $purge_name_id=$this->input->post('purge_name_id');
+                $purge_name=$this->input->post('purge_name');
+                $order_no=$this->input->post('order_no');
+                $is_deleted_purge_name=$this->input->post('is_deleted_purge_name');
+
+                foreach($purge_name_id as $id => $on ){
+                    $data_update = array(
+                        'purge_name' => $purge_name[$id],
+                        'order_no' => $order_no[$id],
+                        'is_deleted' => $is_deleted_purge_name[$id]
+                    );
+                    if($this->modal_update->update_purge_location($id,$data_update))
+                    {
+                        $result['msg'] = 'Success!!';
+                    }
+                    else{
+                        $result['msg'] = 'Not Success!!';
+                    }
+                }
+            }
+        }
+
+        $result['part_name']=$this->modal_master->displayListPartName();
+        $result['purge_name']=$this->modal_master->displayListPurge();
+        $result['defect_description']=$this->modal_master->displayListDefectDescription();
+        $result['root_cause']=$this->modal_master->displayListRootCause();
+        $result['corrective_action']=$this->modal_master->displayListCorrectiveAction();
+        $this->load->view('FrontEnd/QAN/viewsetting',$result);
+        $this->footer($this->data);
+    }
+
+    public function ProcessingDefectDescription() {
+
+        // Active Header, must include in every public function
+        $this->data['title'] = "JCY Product Quality System";
+        $this->data['pageName'] = "QUALITY ACTION NOTICE (QAN) & MACHINE BREAKDOWN FORM";
+        $this->data['description'] = "Overview";
+        $this->data['jsselect'] = TRUE;
+
+        // Load View
+        $this->header($this->data);
+        $this->topbar($this->data);
+        $this->leftsidebar($this->data);
+        $this->rightsidebar($this->data);
+
+        //Check submit button 
+        if($this->input->post('submit')) {
+
+            $constant_no=$this->input->post('constant_no');
+            $defect_description=$this->input->post('defect_description');
+            $is_deleted_defect_description=$this->input->post('is_deleted_defect_description');
+        
+        $result['message_display'] = $this->modal_create->save_defect_description($constant_no,$defect_description,$is_deleted_defect_description);		
+
+        }else {
+
+            if($this->input->post('update')) {
+            
+                $defect_description_id=$this->input->post('defect_description_id');
+                $constant_no=$this->input->post('constant_no');
+                $defect_description=$this->input->post('defect_description');
+                $is_deleted_defect_description=$this->input->post('is_deleted_defect_description');
+
+                foreach($defect_description_id as $id => $on ){
+                    $data_update = array(
+                        'constant_no' => $constant_no[$id],
+                        'defect_description' => $defect_description[$id],
+                        'is_deleted' => $is_deleted_defect_description[$id]
+                    );
+                    if($this->modal_update->update_defect_description($id,$data_update))
+                    {
+                        $result['msg'] = 'Success!!';
+                    }
+                    else{
+                        $result['msg'] = 'Not Success!!';
+                    }
+                }
+            }
+        }
+
+        $result['part_name']=$this->modal_master->displayListPartName();
+        $result['purge_name']=$this->modal_master->displayListPurge();
+        $result['defect_description']=$this->modal_master->displayListDefectDescription();
+        $result['root_cause']=$this->modal_master->displayListRootCause();
+        $result['corrective_action']=$this->modal_master->displayListCorrectiveAction();
+        $this->load->view('FrontEnd/QAN/viewsetting',$result);
+        $this->footer($this->data);
+    }
+
+    public function ProcessingRootCause() {
+
+        // Active Header, must include in every public function
+        $this->data['title'] = "JCY Product Quality System";
+        $this->data['pageName'] = "QUALITY ACTION NOTICE (QAN) & MACHINE BREAKDOWN FORM";
+        $this->data['description'] = "Overview";
+        $this->data['jsselect'] = TRUE;
+
+        // Load View
+        $this->header($this->data);
+        $this->topbar($this->data);
+        $this->leftsidebar($this->data);
+        $this->rightsidebar($this->data);
+
+        //Check submit button 
+        if($this->input->post('submit')) {
+
+            $constant_no=$this->input->post('constant_no');
+            $root_cause=$this->input->post('root_cause');
+            $is_deleted_root_cause=$this->input->post('is_deleted_root_cause');
+        
+        $result['message_display'] = $this->modal_create->save_root_cause($constant_no,$root_cause,$is_deleted_root_cause);		
+
+        }else {
+
+            if($this->input->post('update')) {
+            
+                $root_cause_id=$this->input->post('root_cause_id');
+                $constant_no=$this->input->post('constant_no');
+                $root_cause=$this->input->post('root_cause');
+                $is_deleted_root_cause=$this->input->post('is_deleted_root_cause');
+
+                foreach($root_cause_id as $id => $on ){
+                    $data_update = array(
+                        'constant_no' => $constant_no[$id],
+                        'root_cause' => $root_cause[$id],
+                        'is_deleted' => $is_deleted_root_cause[$id]
+                    );
+                    if($this->modal_update->update_root_cause($id,$data_update))
+                    {
+                        $result['msg'] = 'Success!!';
+                    }
+                    else{
+                        $result['msg'] = 'Not Success!!';
+                    }
+                }
+            }
+        }
+
+        $result['part_name']=$this->modal_master->displayListPartName();
+        $result['purge_name']=$this->modal_master->displayListPurge();
+        $result['defect_description']=$this->modal_master->displayListDefectDescription();
+        $result['root_cause']=$this->modal_master->displayListRootCause();
+        $result['corrective_action']=$this->modal_master->displayListCorrectiveAction();
+        $this->load->view('FrontEnd/QAN/viewsetting',$result);
+        $this->footer($this->data);
+    }
+
+    public function ProcessingCorrectiveAction() {
+
+        // Active Header, must include in every public function
+        $this->data['title'] = "JCY Product Quality System";
+        $this->data['pageName'] = "QUALITY ACTION NOTICE (QAN) & MACHINE BREAKDOWN FORM";
+        $this->data['description'] = "Overview";
+        $this->data['jsselect'] = TRUE;
+
+        // Load View
+        $this->header($this->data);
+        $this->topbar($this->data);
+        $this->leftsidebar($this->data);
+        $this->rightsidebar($this->data);
+
+        //Check submit button 
+        if($this->input->post('submit')) {
+
+            $constant_no=$this->input->post('constant_no');
+            $corrective_action=$this->input->post('corrective_action');
+            $is_deleted_corrective_action=$this->input->post('is_deleted_corrective_action');
+        
+        $result['message_display'] = $this->modal_create->save_corrective_action($constant_no,$corrective_action,$is_deleted_corrective_action);		
+
+        }else {
+
+            if($this->input->post('update')) {
+            
+                $corrective_action_id=$this->input->post('corrective_action_id');
+                $constant_no=$this->input->post('constant_no');
+                $corrective_action=$this->input->post('corrective_action'); 
+                $is_deleted_corrective_action=$this->input->post('is_deleted_corrective_action');
+
+                foreach($corrective_action_id as $id => $on ){
+                    $data_update = array(
+                        'constant_no' => $constant_no[$id],
+                        'corrective_action' => $corrective_action[$id],
+                        'is_deleted' => $is_deleted_corrective_action[$id]
+                    );
+                    if($this->modal_update->update_corrective_action($id,$data_update))
+                    {
+                        $result['msg'] = 'Success!!';
+                    }
+                    else{
+                        $result['msg'] = 'Not Success!!';
+                    }
+                }
+            }
+        }
+
+        $result['part_name']=$this->modal_master->displayListPartName();
+        $result['purge_name']=$this->modal_master->displayListPurge();
+        $result['defect_description']=$this->modal_master->displayListDefectDescription();
+        $result['root_cause']=$this->modal_master->displayListRootCause();
+        $result['corrective_action']=$this->modal_master->displayListCorrectiveAction();
+        $this->load->view('FrontEnd/QAN/viewsetting',$result);
+        $this->footer($this->data);
+    }
+
+
+
+    // public function UpdateCorrectiveAction(){
+
+    //     $this->data['title'] = "JCY Product Quality System";
+    //     $this->data['pageName'] = "QUALITY ACTION NOTICE (QAN) & MACHINE BREAKDOWN FORM";
+    //     $this->data['description'] = "Overview";
+    //     $this->data['jsselect'] = TRUE;
+
+    //     $this->header($this->data);
+    //     $this->topbar($this->data);
+    //     $this->leftsidebar($this->data);
+    //     $this->rightsidebar($this->data);
+
+    //     $result['msg'] = '';
+        
+    //     if($this->input->post('update')) {
+
+    //         $corrective_action_id=$this->input->post('corrective_action_id');
+    //         $constant_no=$this->input->post('constant_no');
+    //         $corrective_action=$this->input->post('corrective_action'); 
+    //         $is_deleted=$this->input->post('is_deleted');
+
+    //         foreach($corrective_action_id as $id => $on ){
+    //             $data_update = array(
+    //                 'constant_no' => $constant_no[$id],
+    //                 'corrective_action' => $corrective_action[$id],
+    //                 'is_deleted' => $is_deleted[$id]
+    //             );
+    //             if($this->Function_users->updateCorrectiveActionRecords($id,$data_update))
+    //             {
+    //                 $result['msg'] = 'Success!!';
+    //             }
+    //             else{
+    //                 $result['msg'] = 'Not Success!!';
+    //             }
+    //         }
+    //     }
+
+    //     $result['corrective_action']=$this->Function_users->displayListCorrectiveAction();
+    //     $this->load->view('FrontEnd/QAN/viewsetting',$result);
+    //     $this->footer($this->data);
+    // }
 
 
 }

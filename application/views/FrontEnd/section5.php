@@ -51,7 +51,7 @@ $jsselect = TRUE;
     </div>
 </section> -->
 
-<div class="row clearfix">
+<div class="row clearfix" id="section5">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
             <div class="body">
@@ -91,7 +91,7 @@ $jsselect = TRUE;
                                 <label for="notify_next2">NO</label>
                                 <div class="form-group form-float">
                                     <div class="form-line">
-                                        <input type="text" id="closed_datetime" name="closed_datetime" class="form-control" value='<?php echo @$data->closed_datetime;?>' <?php echo @$section['S5']['de']?'':'disabled';?>>    
+                                        <input type="text" id="closed_datetime" name="closed_datetime" class="form-control" value='<?php echo @$data->closed_datetime;?>' disabled>    
                                         <label class="form-label">CLOSED DATE</label>
                                     </div>
                                 </div>

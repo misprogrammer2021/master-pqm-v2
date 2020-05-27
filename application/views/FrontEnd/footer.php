@@ -6,7 +6,7 @@
 
 
     <!-- Select Plugin Js -->
-    <script src="<?=@$footer['jsselect']?base_url('assets/templates/plugins/bootstrap-select/js/bootstrap-select.js'):''?>"></script>
+    <script src="<?=@$footer['jsselect']?base_url('assets/templates/plugins/bootstrap-select/js/v1.12.4/bootstrap-select.js'):''?>"></script>
 
     <!-- Slimscroll Plugin Js -->
     <script src="<?=base_url('assets/templates/plugins/jquery-slimscroll/jquery.slimscroll.js')?>"></script>

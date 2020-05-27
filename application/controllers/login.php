@@ -94,8 +94,14 @@ class Login extends CI_Controller {
                 // Add user data in session
                     $this->session->set_userdata('logged_in', $session_data);
                     $this->session->set_userdata('permission', $session_data_permission);
-                   
-                    redirect('/homepage', 'refresh');
+    
+                    if($this->session->userdata['logged_in']['username'] == 'qasuperuser' OR $this->session->userdata['logged_in']['username'] == 'engsuperuser' OR $this->session->userdata['logged_in']['username'] == 'prodsuperuser' OR $this->session->userdata['logged_in']['username'] == 'mrbsuperuser'){
+                        redirect('SuperUser/homepage', 'refresh');
+
+                    }else{
+                        redirect('/homepage', 'refresh');
+                    }
+                    
                 }
 
                

@@ -59,7 +59,7 @@ $jsselect = TRUE;
     </div>
 </section> -->
 
-<div class="row clearfix">
+<div class="row clearfix" id="section3">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
             <div class="header">
@@ -304,11 +304,11 @@ $jsselect = TRUE;
 
                         <?php
 
-                           // if(@$data->inspection_machine_data) 
+                        //    if(@$data->inspection_machine_data) 
                         //    echo '<pre>';
                         //    print_r($data->inspection_machine_data);
                         //    exit;
-                                
+                            
                             foreach(@$data->inspection_machine_data as $i => $rcsubmissiondata){
                                 $subno = $i+1;
                                 //$submissionid = $rcsubmissiondata->root_cause_submission_id;
@@ -318,25 +318,87 @@ $jsselect = TRUE;
                                 echo '<input type="hidden" name="submission_id['.$subno.']" value="'.$rcsubmissiondata->submission_id.'">';  
                                 echo '<input type="hidden" name="submission_no['.$subno.']" value="'.$subno.'">';      
                         ?>
-                        
-                        
+                        <br/>
+                        <div class="clearfix"></div>
+                        <div class="col-md-6 col-sm-6">
+                            <div class="col-md-4">
+                                <label class="form-label">ROOT CAUSE</label>
+                            </div>
+                            <div class="col-md-8">
+                            <!-- <select id="root_cause" name="root_cause[<?php echo $subno;?>]" data-show-subtext="true" data-live-search="true" class="<?php echo @$section['S3.1']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S3.1']['de']?'':'disabled';?> required> -->
+                            <?php
 
-                        <div class="col-md-12 col-sm-12">
+                                // print_r($data);
+                                // exit;
+                                $disabled_str = '';
+                                if((is_array(@$rcsubmissiondata->inspection_data) and count(@$rcsubmissiondata->inspection_data))) {
+                                    $disabled_str = 'disabled';
+                                }
+                                
+                                    echo '<select id="root_cause" name="root_cause['.$subno.']" data-show-subtext="true" data-live-search="true" class="'.(@$section['S3.1']['de']?'show-tick':'') .' form-control"'.' '.(@$section['S3.1']['de']?'':'disabled').' '.$disabled_str.' required>';
+                                    echo '<option value="">--Please Select--</option>';
+                                
+                                    foreach($data->list_rootcause as $id => $root_cause)
+                                    {
+                                        $selected = '';
+                                        if (@$rcsubmissiondata->root_cause_id == $id){
+                                            $selected = 'selected';
+                                        }
+                                        echo '<option value="'.$id.'" '.$selected.'>'.$root_cause.'</option>';
+                                    }
+                                    
+                                    echo '</select>';
+                            ?>
+                            </div>
+                        </div>
+                      
+                        <!-- <div class="col-md-12 col-sm-12">
                             <div class="form-group form-float">
                                 <div class="form-line">
                                     <textarea id="root_cause" name="root_cause[<?php echo $subno;?>]" class="form-control" <?php echo @$section['S3.1']['de']?'':'disabled';?>><?php echo @$rcsubmissiondata->root_cause;?></textarea>
                                     <label class="form-label">ROOT CAUSE</label>
                                 </div>
                             </div>
+                        </div> -->
+                        <div class="col-md-6 col-sm-6">
+                            <div class="col-md-4">
+                                <label class="form-label">CORRECTIVE ACTION</label>
+                            </div>
+                            <div class="col-md-8">
+                                <!-- <select id="corrective_action" name="corrective_action[<?php echo $subno;?>]" data-show-subtext="true" data-live-search="true" class="<?php echo @$section['S3.1']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S3.1']['de']?'':'disabled';?> required>  -->
+                                <?php
+
+                                    $disabled_str = '';
+                                    if((is_array(@$rcsubmissiondata->inspection_data) and count(@$rcsubmissiondata->inspection_data))) {
+                                        $disabled_str = 'disabled';
+                                    }
+                                  
+                                    // if(@$rcsubmissiondata->corrective_action_id<1 AND !(is_array(@$rcsubmissiondata->inspection_data) and count(@$rcsubmissiondata->inspection_data)) )
+                                    
+                                        echo '<select id="corrective_action" name="corrective_action['.$subno.']" data-show-subtext="true" data-live-search="true" class="'.(@$section['S3.1']['de']?'show-tick':'') .' form-control"'.' '.(@$section['S3.1']['de']?'':'disabled').' '.$disabled_str.' required>';
+                                        echo '<option value="">--Please Select--</option>';
+                                        
+                                        foreach($data->list_corrective_action as $id => $corrective_action)
+                                        {
+                                            $selected = '';
+                                            if (@$rcsubmissiondata->corrective_action_id == $id){
+                                                $selected = 'selected';
+                                            }
+                                            echo '<option value="'.$id.'" '.$selected.'>'.$corrective_action.'</option>';
+                                        }
+                                        echo '</select>';
+                                    
+                                ?>
+                            </div>
                         </div>
-                        <div class="col-md-12 col-sm-12">
+                        <!-- <div class="col-md-12 col-sm-12">
                             <div class="form-group form-float">
                                 <div class="form-line">
                                     <textarea id="corrective_action" name="corrective_action[<?php echo $subno;?>]" class="form-control" <?php echo @$section['S3.1']['de']?'':'disabled';?>><?php echo @$rcsubmissiondata->corrective_action;?></textarea>
                                     <label class="form-label">CORRECTIVE ACTION</label>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-md-6">
                             <div class="form-group form-float">
                                 <div class="form-line">
@@ -368,7 +430,7 @@ $jsselect = TRUE;
                         </div>  -->
 
                         
-                        
+                        <div class="clearfix"></div>
                         <b>QA Inspection Data - <?php echo ordinal($i+1);?> Submission</b>
                         <h5>Job Completion By Engineering</h5>           
                         <div class="col-md-4 col-sm-4">
@@ -398,7 +460,7 @@ $jsselect = TRUE;
                             $row[2][0] = 'Time Start';
                             $row[3][0] = 'Time End';
                             $row[4][0] = 'Result';
-                            
+
                             if(@$data->inspection_machine)
                             foreach(@$data->inspection_machine as $m_index => $inspectionmachine)
                             {
@@ -410,6 +472,10 @@ $jsselect = TRUE;
                                 $input_time_start = '';
                                 $input_time_end = '';
                                 $input_result = '';
+
+                                // print_r($data);
+                                // print_r(@$rcsubmissiondata);
+                                // exit;
 
                                 if(@$rcsubmissiondata->inspection_data)
                                 foreach(@$rcsubmissiondata->inspection_data as $dataobject){
@@ -466,10 +532,20 @@ $jsselect = TRUE;
 
                                             echo '<th align="center">';
                                             //insp_machine_1_machine
-                                            echo '<input type="checkbox" id="'.$cb_id_val.'" name="qa_insp_machine['.$subno.']['.$cb_id.']" class="filled-in checkbox-tab"'.(@$section['S3.2']['de']?'':'disabled').' '.$cb_checked.'/>';
+                                            $disabled_input = '';
+                                            if(@$rcsubmissiondata->inspection_data) {
+                                                $disabled_input = 'disabled';
+                                            }
+                                            echo '<input type="checkbox" id="'.$cb_id_val.'" name="qa_insp_machine['.$subno.']['.$cb_id.']" class="filled-in checkbox-tab"'.(@$section['S3.2']['de']?'':'disabled').' '.$cb_checked.' '.$disabled_input.'/>';
                                             echo '<label for="'.$cb_id_val.'"></label>'.$cb_name;
                                             echo '<input type="hidden" name="_qa_insp_machine['.$subno.']['.$cb_id.']" value="'.($cb_checked=="checked"?"on":"").'"/>';
 
+                                        }
+
+                                        $inspect_by_group = array();
+
+                                        foreach($detected_by as $key => $obj){
+                                            $inspect_by_group[$obj->detected_group][$obj->id] = $obj->detected_by_name;
                                         }
 
                                         if($tablerow==1){
@@ -482,12 +558,17 @@ $jsselect = TRUE;
                                             }
                                             echo '<div class="selectresult">';
                                             //inspect_by1_2
-                                            echo '<select id="'.$insp_id_val.'" class="form-control show-tick"'.(@$section['S3.2']['de']?'':'disabled').' name="inspect_by['.$subno.']['.$cb_id.']">';
+                                            echo '<select id="'.$insp_id_val.'" class="form-control show-tick"'.(@$section['S3.2']['de']?'':'disabled').' '.$disabled_input.' name="inspect_by['.$subno.']['.$cb_id.']">';
                                             echo '<option value="" disabled '.$select_default.'>-- Please Select --</option>';
-                                            foreach(@$data->inspect_user as $id => $inspectby)
-                                            {   
-                                                $user_selected = ($input_insp_by != '' AND $id==$input_insp_by)?'selected':'';
-                                                echo '<option value="'.$id.'" '.$user_selected.'>'.$inspectby->fullname.'</option>';
+                                            // foreach(@$data->inspect_user as $id => $inspectby)
+                                            // {   
+                                            //     $user_selected = ($input_insp_by != '' AND $id==$input_insp_by)?'selected':'';
+                                            //     echo '<option value="'.$id.'" '.$user_selected.'>'.$inspectby->fullname.'</option>';
+                                            // }
+                                            foreach($inspect_by_group[$cb_name] as $id => $detected_by_name)
+                                            {
+                                                $selected = ($input_insp_by != '' AND $id==$input_insp_by)?'selected':'';
+                                                echo '<option value="'.$id.'" '.$selected.'>'.$detected_by_name.'</option>';
                                             }
                                             echo '</select>';
                                             echo '</div>';
@@ -520,7 +601,7 @@ $jsselect = TRUE;
                                             }
 
                                             echo '<div class="selectresult">';
-                                            echo '<select id="'.$result_id_val.'" class="form-control show-tick"'.(@$section['S3.2']['de']?'':'disabled').' name="rc_result['.$subno.']['.$cb_id.']">';
+                                            echo '<select id="'.$result_id_val.'" class="form-control show-tick"'.(@$section['S3.2']['de']?'':'disabled').' '.$disabled_input.' name="rc_result['.$subno.']['.$cb_id.']">';
                                             echo '    <option value="" disabled '.$select_default.'>-- Please Select --</option>';
                                             echo '    <option value="1" '.$pass_select.'>PASS</option>';
                                             echo '    <option value="0" '.$fail_select.'>FAIL</option>';
@@ -558,7 +639,6 @@ $jsselect = TRUE;
                                     foreach($data->submit_button->s3 as $form){
                                     //$form = $data->submit_button->s1;
                                 ?>
-
                                     <button id="form" type="submit" name="submit" value="<?php echo $form->value;?>" class="btn btn-success m-t-15 waves-effect"><?php echo $form->name;?></button>
 
                                 <?php }} ?>

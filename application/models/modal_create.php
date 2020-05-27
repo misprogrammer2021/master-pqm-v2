@@ -192,6 +192,7 @@ class Modal_Create extends CI_Model
 			if(isset($data->shift)) $savetodb['shift'] = $data->shift;
 			if(isset($data->ooc)) $savetodb['ooc'] = $data->ooc;
 			if(isset($data->oos)) $savetodb['oos'] = $data->oos;
+			if(isset($data->visual)) $savetodb['visual'] = $data->visual;
 			//if(isset($data->datetime)) $savetodb['datetime'] = $data->datetime;
 
 			$data_table_qan_machinebreakdown = $savetodb;
@@ -207,12 +208,20 @@ class Modal_Create extends CI_Model
 			if(isset($data->qan_id)) $savetodb['machine_breakdown_id'] = $data->qan_id;
 			// $savetodb['machine_breakdown_id'] = $data->qan_id;
 			if(isset($data->part_name)) $savetodb['part_name'] = $data->part_name;
-			if(isset($data->machine_no)) $savetodb['machine_no'] = $data->machine_no;
+			if(isset($data->sector_id)) $savetodb['sector_id'] = $data->sector_id;
+        	if(isset($data->machine_no_id)) $savetodb['machine_no_id'] = $data->machine_no_id;
+			// if(isset($data->machine_no)) $savetodb['machine_no'] = $data->machine_no;
 			if(isset($data->process)) $savetodb['process'] = $data->process;
-			if(isset($data->cav_no)) $savetodb['cav_no'] = $data->cav_no;
-			if(isset($data->up_affected)) $savetodb['up_affected'] = $data->up_affected;
+			// if(isset($data->cav_no)) $savetodb['cav_no'] = $data->cav_no; no longer use
+			// if(isset($data->up_affected)) $savetodb['up_affected'] = $data->up_affected; no longer use
 			if(isset($data->detectedby_user)) $savetodb['detectedby_user'] = $data->detectedby_user;
-			if(isset($data->defect_description)) $savetodb['defect_description'] = $data->defect_description;
+			if(isset($data->defect_description_id)) $savetodb['defect_description_id'] = $data->defect_description_id;
+			if(isset($data->defect_description_id)) {
+				$defect_list = @$this->modal_master->get_defect_desc($data->defect_description_id)[0];
+				$defect_desc = $defect_list->defect_description_name;
+				$savetodb['defect_description_name'] = $defect_desc;
+			}
+			if(isset($data->defect_description_others)) $savetodb['defect_description_others'] = $data->defect_description_others;
 			if(isset($data->last_passed_sample)) $savetodb['last_passed_sample'] = $data->last_passed_sample;
 			if(isset($data->purge_from)) $savetodb['purge_from'] = $data->purge_from;
 			if(isset($data->estimate_qty)) $savetodb['estimate_qty'] = $data->estimate_qty;
@@ -242,6 +251,9 @@ class Modal_Create extends CI_Model
 			
 			if(is_array(@$data->production_qty) AND (count($data->production_qty) > 0)){
 				foreach($data->production_qty as $i => $prodqty){
+
+					//do not save 0 value
+					if($prodqty->prodquantity<1) continue;
 					
 					$data_table_production_records = array(
 						'prod_id' => $prodqty->prod_id,
@@ -346,11 +358,25 @@ class Modal_Create extends CI_Model
 		foreach($data->new_inspection_machine_data AS $qan_validation_submission){
 			$savetodb = array();
 			$savetodb['machine_breakdown_id'] = $data->qan_id;
-			if(isset($qan_validation_submission->root_cause)) $savetodb['root_cause'] = $qan_validation_submission->root_cause;
-			if(isset($qan_validation_submission->corrective_action)) $savetodb['corrective_action'] = $qan_validation_submission->corrective_action;
+			if(isset($qan_validation_submission->root_cause_id)) $savetodb['root_cause_id'] = $qan_validation_submission->root_cause_id;
+			if(isset($qan_validation_submission->root_cause_id)) {
+				$rootcause_list = $this->modal_master->get_rootcause($qan_validation_submission->root_cause_id);
+				$rootcause = $rootcause_list->root_cause;
+				$savetodb['root_cause'] = $rootcause;
+			}
+			//if(isset($qan_validation_submission->root_cause)) $savetodb['root_cause'] = $qan_validation_submission->root_cause;
+
+			if(isset($qan_validation_submission->corrective_action_id)) $savetodb['corrective_action_id'] = $qan_validation_submission->corrective_action_id;
+			if(isset($qan_validation_submission->corrective_action_id)) {
+				$corrective_list = $this->modal_master->get_corrective_action($qan_validation_submission->corrective_action_id);
+				$corrective = $corrective_list->corrective_action;
+				$savetodb['corrective_action'] = $corrective;
+			}
+			//if(isset($qan_validation_submission->corrective_action)) $savetodb['corrective_action'] = $qan_validation_submission->corrective_action;
+
 			if(isset($qan_validation_submission->rcfa_pic_user_id)) $savetodb['rcfa_pic_user_id'] = $qan_validation_submission->rcfa_pic_user_id;
 			if(isset($qan_validation_submission->rcfa_ack_user_id)) $savetodb['rcfa_ack_user_id'] = $qan_validation_submission->rcfa_ack_user_id;
-			if(isset($qan_validation_submission->rcfa_appr_user_id)) $savetodb['rcfa_appr_user_id'] = $qan_validation_submission->rcfa_appr_user_id;
+			// if(isset($qan_validation_submission->rcfa_appr_user_id)) $savetodb['rcfa_appr_user_id'] = $qan_validation_submission->rcfa_appr_user_id;
 			if(isset($qan_validation_submission->completion_user_id)) $savetodb['completion_user_id'] = $qan_validation_submission->completion_user_id;
 			if(isset($qan_validation_submission->completion_datetime)) $savetodb['completion_datetime'] = $qan_validation_submission->completion_datetime;
 			if(isset($qan_validation_submission->submission_no)) $savetodb['submission_no'] = $qan_validation_submission->submission_no;
@@ -360,7 +386,7 @@ class Modal_Create extends CI_Model
 
 			$data_table_qan_validation_submission = $savetodb;
 			// print_r($savetodb);exit;	
-			if($savetodb['root_cause'] != '' AND $savetodb['corrective_action'] != ''){
+			if($savetodb['root_cause_id'] != '' AND $savetodb['corrective_action_id'] != ''){
 				$this->db->insert('qan_validation_submission', $data_table_qan_validation_submission);
 				$data->validation_submission_id = $this->db->insert_id();
 			}
@@ -390,9 +416,6 @@ class Modal_Create extends CI_Model
 				}
 				$i++;
 			}
-			
 		}
-		
 	}
-
 }

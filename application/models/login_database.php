@@ -26,7 +26,7 @@ public function registration_insert($data) {
     }
 }
 
-function saveUserRegistration($username,$password,$email,$fullname,$commodity,$dept_id,$title,$employee_no,$created_date,$modified_date,$is_deleted){
+function save_user_registration($username,$password,$email,$fullname,$commodity,$dept_id,$title,$employee_no,$created_date,$modified_date,$is_deleted){
 
     // Query to check whether username already exist or not
     $condition = "username =" . "'" . $username . "'";
@@ -68,7 +68,7 @@ function saveUserRegistration($username,$password,$email,$fullname,$commodity,$d
     
 }
 
-function saveUserRole($user_id,$roles_id){
+function save_user_role($user_id,$roles_id){
 
     foreach($roles_id as $role_id){
         $data = array(

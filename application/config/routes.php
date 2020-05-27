@@ -58,12 +58,15 @@ $route['translate_uri_dashes'] = FALSE;
 //$route['login'] = "FrontEnd/login";
 //$route['logout'] = 'FrontEnd/logout';
 $route['logout'] = 'login/logout';
-$route['register'] = 'FrontEnd/register';
+$route['register'] = 'BackEnd/register';
+$route['view_user_info'] = "BackEnd/view_user_info";
+$route['update_user_records'] = "BackEnd/update_user_records";
 $route['AddNewRole'] = 'FrontEnd/AddNewRole';
-$route['ViewRolePermission'] = 'FrontEnd/ViewRolePermission';
+$route['view_role_permission'] = 'BackEnd/view_role_permission';
 $route['ViewUserRole'] = 'FrontEnd/ViewUserRole';
 $route['ViewSection'] = 'FrontEnd/ViewSection';
 $route['UpdateSection'] = 'FrontEnd/UpdateSection';
+$route['view_setting'] = 'BackEnd/view_setting';
 
 // QAN
 $route['machinebreakdown'] = "FrontEnd/machinebreakdown";
@@ -73,7 +76,6 @@ $route['materialreviewboardform'] = "FrontEnd/materialreviewboardform";
 $route['materialreviewboardform/(:any)'] = "FrontEnd/materialreviewboardform/$1";
 $route['rootcausefailureform'] = "FrontEnd/rootcausefailureform";
 $route['qareviewform'] = "FrontEnd/qareviewform";
-$route['viewuserinfo'] = "FrontEnd/viewuserinfo";
 $route['updateduserinfo'] = "FrontEnd/updateduserinfo";
 $route['viewmachinerecords/([0-9]*)'] = "FrontEnd/viewmachinerecords/$1";
 $route['viewallbyqamachinebreakdown/([0-9]*)'] = "FrontEnd/viewallbyqamachinebreakdown/$1";

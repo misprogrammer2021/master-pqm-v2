@@ -8,7 +8,7 @@ $jsselect = TRUE;
     <div class="container-fluid">
         <div class="block-header">
             <ol class="breadcrumb breadcrumb-col-teal">
-                <li class="active"><a href="<?=base_url('DashboardMachineBreakdown')?>"><i class="material-icons">home</i> Home</a></li>
+                <li class="active"><a href="<?=base_url('homepage')?>"><i class="material-icons">home</i> Home</a></li>
                 <li><i class="material-icons">library_books</i> User Registration Form</li>
             </ol>
         </div>

@@ -130,7 +130,7 @@ $jsselect = TRUE;
 
 <!-- Vertical Layout | With Floating Label -->
 
-            <div class="row clearfix">
+            <div class="row clearfix" id="section1">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
@@ -201,30 +201,41 @@ $jsselect = TRUE;
                                         <label for="ooc">OOC (OUT OF CONTROL)</label> -->
                                     </div>
                                     <div class="col-md-4 col-sm-4">
-                                        <div class="form-group">
+                                        <div class="form-group form-float">
+                                            <div class="form-line">
+                                                <input type="text" id="issued_dept" name="issued_dept" class="form-control" value='QA' <?php echo @$data->issued_dept;?> disabled/>
+                                                <label class="form-label">ISSUED DEPT</label>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="form-group">
                                             <div class="col-md-4">
                                                 <label class="form-label">ISSUED DEPT</label>
                                             </div>
                                             <div class="col-md-8">
-                                                <select id="issued_dept" name="issued_dept" class="<?php echo @$section['S1.1']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S1.1']['de']?'':'disabled';?> required>
+                                                <select id="issued_dept" name="issued_dept" class="<?php //echo @$section['S1.1']['de']?'show-tick':'';?>  form-control" <?php //echo @$section['S1.1']['de']?'':'disabled';?> required>
                                                     <option value="">--Please Select--</option>
-                                                    <option value="QA" <?php if (@$data->issued_dept == 'QA') echo 'selected';?>>QA</option>
+                                                    <option value="QA" <?php //if (@$data->issued_dept == 'QA') echo 'selected';?>>QA</option>
                                                 </select>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <div class="clearfix"></div>
-                                        <div class="form-group">
+                                        <div class="form-group form-float">
+                                            <div class="form-line">
+                                                <input type="text" id="to_dept" name="to_dept" class="form-control" value='Engineering' <?php echo @$data->to_dept;?> disabled/>
+                                                <label class="form-label">TO DEPT</label>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="form-group">
                                             <div class="col-md-4">
                                                 <label class="form-label">TO DEPT</label>
                                             </div>
                                             <div class="col-md-8">
-                                                <select id="to_dept" name="to_dept" class="<?php echo @$section['S1.1']['de']?'show-tick':'';?>  form-control" <?php echo (@$section['S1.1']['de'] and ($data->issueby_user_id<1 OR $data->issueby_user_id==$this->session->userdata['logged_in']['id']))?'':'disabled';?>>
+                                                <select id="to_dept" name="to_dept" class="<?php //echo @$section['S1.1']['de']?'show-tick':'';?>  form-control" <?php //echo (@$section['S1.1']['de'] and ($data->issueby_user_id<1 OR $data->issueby_user_id==$this->session->userdata['logged_in']['id']))?'':'disabled';?>>
                                                     <option value="">--Please Select--</option>
-                                                    <!-- <option value="Production" <?php //if (@$data->to_dept == 'Production') echo 'selected';?>>Production</option> -->
-                                                    <option value="Engineering" <?php if (@$data->to_dept == 'Engineering') echo 'selected';?>>Engineering</option>
+                                                    <option value="Engineering" <?php //if (@$data->to_dept == 'Engineering') echo 'selected';?>>Engineering</option>
                                                 </select>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <div class="clearfix"></div>
                                         <div class="form-group">
                                             <div class="col-md-4">
@@ -244,28 +255,21 @@ $jsselect = TRUE;
                                             <label for="group51">OOS (OUT OF SPEC)</label>
                                             <input id="group52" name="group5" type="radio" value="ooc" class="with-gap radio-col-teal" <?php if (@$data->ooc == '1') echo 'checked';?> <?php echo @$section['S1.1']['de']?'':'disabled';?>/>
                                             <label for="group52">OOC (OUT OF CONTROL)</label> -->
-                                            <input type="hidden" name="oos" value="0">
-                                            <input type="hidden" name="ooc" value="0">
-                                            <input type="checkbox" id="oos" name="oos" class="filled-in" value="1" <?php if (@$data->oos == '1') echo 'checked';?> <?php echo @$section['S1.1']['de']?'':'disabled';?>>
-                                            <label for="oos">OOS (OUT OF SPEC)</label>
-                                            <input type="checkbox" id="ooc" name="ooc" class="filled-in" value="1" <?php if (@$data->ooc == '1') echo 'checked';?> <?php echo @$section['S1.1']['de']?'':'disabled';?>>
-                                            <label for="ooc">OOC (OUT OF CONTROL)</label>
+                                            <div id="defect_checkbox">
+                                                <input type="hidden" name="oos" value="0">
+                                                <input type="hidden" name="ooc" value="0">
+                                                <input type="hidden" name="visual" value="0">
+                                                <!-- <span class="label label-warning" style="font-size: 10pt">Only one checkbox must be selected and the Defect Description dropdown will showed</span><br/><br/> -->
+                                                <input type="checkbox" id="oos" name="oos" class="filled-in checkbox-active" data-type="spc" value="1" <?php if (@$data->oos == '1') echo 'checked';?> <?php echo @$section['S1.1']['de']?'':'disabled';?>>
+                                                <label for="oos">OOS (OUT OF SPEC)</label>
+                                                <input type="checkbox" id="ooc" name="ooc" class="filled-in checkbox-active" data-type="spc" value="1" <?php if (@$data->ooc == '1') echo 'checked';?> <?php echo @$section['S1.1']['de']?'':'disabled';?>>
+                                                <label for="ooc">OOC (OUT OF CONTROL)</label>
+                                                <input type="checkbox" id="visual" name="visual" class="filled-in checkbox-active" data-type="visual" value="1" <?php if (@$data->visual == '1') echo 'checked';?> <?php echo @$section['S1.1']['de']?'':'disabled';?>>
+                                                <label for="visual">VISUAL</label> 
+                                            </div>
                                             
                                     </div>
                                 </div>
-                                <!-- <div class="row clearfix">
-                                    <h5>DEFECT INFORMATION <i>(To be filled in by QA)</i></h5><br/>
-                                    <div class="col-md-4 col-sm-4">
-                                        <div class="form-group">
-                                            <div class="col-md-4">
-                                            <label class="form-label">PART NAME</label>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div class="form-line">
-                                                    <input type="text" id="part_name" name="part_name" class="form-control" value='<?php //echo @$data->list->{$data->part_name};?>' disabled/>
-                                                </div>
-                                            </div>
-                                        </div><br/> -->
                                 <div class="row clearfix">
                                     <h5>DEFECT INFORMATION <i>(To be filled in by QA)</i></h5><br/>
                                     <div class="col-md-4 col-sm-4">
@@ -274,7 +278,7 @@ $jsselect = TRUE;
                                             <label class="form-label">PART NAME</label>
                                             </div>
                                             <div class="col-md-8">
-                                                <select id="part_name" name="part_name" class="<?php echo @$section['S1.2']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S1.2']['de']?'':'disabled';?> required>
+                                                <select id="part_name" name="part_name" data-show-subtext="true" data-live-search="true" class="<?php echo @$section['S1.2']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S1.2']['de']?'':'disabled';?> required>
                                                 <option value="">--Please Select--</option>
                                                 <?php
                                                     foreach($data->list_partname as $id => $part_name)
@@ -288,102 +292,190 @@ $jsselect = TRUE;
                                                     ?>
                                                 </select>
                                             </div>
-                                        </div><br/>        
-                                        <div class="form-group form-float"><br/>
+                                        </div><br/> 
+                                        <!-- not longer use -->       
+                                        <!-- <div class="form-group form-float"><br/>
                                             <div class="form-line">
                                                 <input type="text" id="cav_no" name="cav_no" class="form-control" value='<?php echo @$data->cav_no;?>' <?php echo @$section['S1.2']['de']?'':'disabled';?> />
                                                 <label class="form-label">CAV NO (if any)</label>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <div class="col-md-4 col-sm-4">
-                                        <div class="form-group form-float">
+                                        <!-- <div class="form-group form-float">
                                             <div class="form-line">
                                                 <input type="text" id="machine_no" name="machine_no" class="form-control" value='<?php echo @$data->machine_no;?>' <?php echo @$section['S1.2']['de']?'':'disabled';?> required/>
                                                 <label class="form-label">M/C NO</label>
                                             </div>
-                                        </div>
-                                        <div class="form-group form-float">
+                                        </div> -->
+
+                                        <!-- <div class="form-group">
+                                            <div class="col-md-4">
+                                                <label class="form-label">SECTOR</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <select id="select_sector" name="sector_id" data-show-subtext="true" data-live-search="true" class="<?php echo @$section['S1.2']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S1.2']['de']?'':'disabled';?> required>
+                                                    <option value="">--Please Select--</option>
+                                                    <?php
+                                                    // foreach($data->list_sector as $id => $sector_name)
+                                                    // {
+                                                    //     $selected = '';
+                                                    //     if (@$data->sector_name == $id){
+                                                    //         $selected = 'selected';
+                                                    //     }
+                                                    //     echo '<option value="'.$id.'" '.$selected.'>'.$sector_name.'</option>';
+                                                    // }
+                                                    ?>
+                                                </select>               
+                                            </div>
+                                        </div> -->
+                                      
+                                           
+                                            <div class="form-group">
+                                                <div class="col-md-4">
+                                                    <label class="form-label">M/C NO</label>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <select id="select_machine_no" name="machine_no_id" data-show-subtext="true" data-live-search="true" class="<?php echo @$section['S1.2']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S1.2']['de']?'':'disabled';?> required>
+                                                        <option value="">--Please Select--</option>
+                                                        
+                                                       <?php
+                                                        $selected = '';
+                                                        foreach($machine_no as $index => $machine_row){
+                                                            $selected = $data->machine_no_id == $machine_row->sector_id?'selected':'';
+                                                            echo '<option value="'.$machine_row->sector_id.'" '.$selected.'>'.$machine_row->machine_name.' ['.$machine_row->sector_name.']</option>';
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            
+                                        
+
+                                        <!-- not longer use -->  
+                                        <!-- <div class="form-group form-float">
                                             <div class="form-line">
                                                 <input type="text" id="up_affected" name="up_affected" class="form-control" value='<?php echo @$data->up_affected;?>' <?php echo @$section['S1.2']['de']?'':'disabled';?> />
                                                 <label class="form-label">UP AFFECTED</label>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
-                                    <!-- <div class="col-md-4 col-sm-4">
+                                    <div class="col-md-4 col-sm-4">
                                         <div class="form-group">
                                             <div class="col-md-4">
                                                 <label class="form-label">PROCESS</label>
                                             </div>
                                             <div class="col-md-8">
-                                                <div class="form-line">
-                                                    <input type="text" id="process" name="process" class="form-control" value='<?php //echo @$data->list_process->{$data->process};?>' disabled/>
-                                                </div>
-                                            </div>
-                                        </div><br/> -->
-                                        <div class="col-md-4 col-sm-4">
-                                        <div class="form-group">
-                                            <div class="col-md-4">
-                                                <label class="form-label">PROCESS</label>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <select id="process" name="process" class="<?php echo @$section['S1.2']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S1.2']['de']?'':'disabled';?> required>
+                                                <select id="process" name="process" data-show-subtext="true" data-live-search="true" class="<?php echo @$section['S1.2']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S1.2']['de']?'':'disabled';?> required>
                                                 <option value="">--Please Select--</option>
                                                 <?php
-                                                    foreach($data->loc_to_purge as $purgeloc)
+                                                    foreach($data->list_process as $id => $purge)
                                                     {
                                                         $selected = '';
-                                                        if (@$data->process == $purgeloc->id){
+                                                        if (@$data->process == $id){
                                                             $selected = 'selected';
                                                         }
-                                                        echo '<option value="'.$purgeloc->id.'" '.$selected.'>'.$purgeloc->process_name.'</option>';
+                                                        echo '<option value="'.$id.'" '.$selected.'>'.$purge.'</option>';
                                                     }
                                                     
                                                     ?>
                                                 </select>
                                             </div>
-                                        </div><br/>    
-                                        <!-- <div class="form-group">
+                                        </div>  
+
+                                        <div class="form-group">
                                             <div class="col-md-4">
                                                 <label class="form-label">DETECTED BY</label>
                                             </div>
                                             <div class="col-md-8">
-                                                <div class="form-line">
-                                                    <input type="text" id="detectedby_user" name="detectedby_user" class="form-control" value='<?php //echo @$data->user->{$data->detectedby_user};?>' disabled/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> -->
-                                    <div class="form-group">
-                                            <div class="col-md-4">
-                                                <label class="form-label">DETECTED BY</label>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <select id="detectedby_user" name="detectedby_user" class="<?php echo @$section['S1.2']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S1.2']['de']?'':'disabled';?> required>
+                                                <select id="detectedby_user" name="detectedby_user" data-show-subtext="true" data-live-search="true" class="<?php echo @$section['S1.2']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S1.2']['de']?'':'disabled';?> required>
                                                 <option value="">--Please Select--</option>
                                                 <?php
-                                                    foreach($data->user as $id => $detectedby)
-                                                    {
-                                                        if($detectedby=='')continue;//bypass empty list
-                                                        $selected = '';
-                                                        if (@$data->detectedby_user == $id){
-                                                            $selected = 'selected';
+
+                                                    $selected = '';
+                                                    foreach($detected_by as $index => $detectedby_row){
+                                                        if($detectedby_row->show_detectedby == 0){
+                                                            $selected = $data->detectedby_user == $detectedby_row->id?'selected':'';
+                                                            echo '<option value="'.$detectedby_row->id.'" '.$selected.'>'.$detectedby_row->detected_by_name.' ['.$detectedby_row->detected_group.']</option>';
                                                         }
-                                                        echo '<option value="'.$id.'" '.$selected.'>'.$detectedby.'</option>';
                                                     }
+                                                    
+                                                    //no longer use
+                                                    // foreach($data->user as $id => $detectedby)
+                                                    // {
+                                                    //     if($detectedby=='')continue;//bypass empty list
+                                                    //     $selected = '';
+                                                    //     if (@$data->detectedby_user == $id){
+                                                    //         $selected = 'selected';
+                                                    //     }
+                                                    //     echo '<option value="'.$id.'" '.$selected.'>'.$detectedby.'</option>';
+                                                    // }
                                                     ?>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12 col-sm-12">
+                                    
+                                    <div class="clearfix"></div>                
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="col-md-4">
+                                            <label class="form-label">DEFECT DESCRIPTION <span style="color: red">*</span></label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <span id="defectives"> <!--style="display:none"-->
+                                                <select id="select_defect" name="defect_description_name" data-show-subtext="true" data-live-search="true" class="<?php echo @$section['S1.2']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S1.2']['de']?'':'disabled';?> required>
+                                                <option value="">--Please Select--</option>
+                                                <?php
+                                                        // print_r($defect_description);
+                                                        // exit;
+                                                        // $selected = '';
+                                                        // foreach($defect_description as $index => $defect_row){
+                                                            
+                                                        //     $selected = $data->defect_description_id == $defect_row->id?'selected':'';
+                                                        //     echo '<option value="'.$defect_row->id.'" '.$selected.'>'.$defect_row->defect_description_name.'</option>';
+                                                        // }
+                                                    foreach($data->list_defect as $id => $defect_description)
+                                                    {
+                                                        // print_r($data->list_defect);
+                                                        // exit;
+                                                        $selected = '';
+                                                        if (@$data->defect_description_id == $id){
+                                                            $selected = 'selected';
+                                                        }
+                                                        echo '<option value="'.$id.'" '.$selected.'>'.$defect_description.'</option>';
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
                                         <div class="form-group form-float">
+                                            <div class="form-line">
+                                                <input type="text" id="others" name="defect_description_others" class="form-control" value='<?php echo @$data->defect_description_others;?>' <?php echo @$section['S1.2']['de']?'':'disabled';?> />    
+                                                <label class="form-label">DEFECT DESCRIPTION (OTHERS)</label>
+                                            </div> 
+                                        </div>     
+                                    </div>      
+                                    
+                                    
+                                   
+                                    
+                                    <!-- <div class="col-md-4 col-sm-4">
+                                        <div class="form-group form-float">
+                                            <div class="form-line">
+                                                <input type="text" id="defect_description" name="defect_description" class="form-control" value='<?php echo @$data->defect_description;?>' <?php echo @$section['S1.2']['de']?'':'disabled';?> required/>
+                                                <label class="form-label">DEFECT DESCRIPTION</label>
+                                            </div>
+                                        </div> -->
+                                        <!-- <div class="form-group form-float">
                                             <div class="form-line">
                                                 <textarea id="defect_description" name="defect_description" class="form-control" <?php echo @$section['S1.2']['de']?'':'disabled';?>><?php echo @$data->defect_description;?></textarea>
                                                 <label class="form-label">DEFECT DESCRIPTION</label>
                                             </div>
-                                        </div>
-                                    </div>
+                                        </div> -->
+                                    <!-- </div> -->
+                                    <div class="clearfix"></div> 
                                     <div class="col-md-4 col-sm-4">
                                         <div class="form-group form-float">
                                             <div class="form-line">
@@ -391,17 +483,6 @@ $jsselect = TRUE;
                                                 <label class="form-label">LAST PASSED SAMPLE DATETIME</label>
                                             </div>
                                         </div>
-                                        <!-- <div class="form-group">
-                                            <div class="col-md-4">
-                                                <label class="form-label">ACKNOWLEDGED BY ENGINEERING<i>(Tech & Above)</i></label>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div class="form-line">
-                                                    <input type="text" id="ack_eng_user" name="ack_eng_user" class="form-control" value='<?php // echo @$data->user->{$data->ack_eng_user};?>' disabled/>                                    
-                                                </div>
-                                            </div>
-                                        </div><br/>
-                                    </div>  -->
                                        <div class="form-group">
                                             <div class="col-md-4">
                                                 <label class="form-label">ACKNOWLEDGED BY ENGINEERING<i>(Tech & Above)</i></label>
@@ -421,16 +502,6 @@ $jsselect = TRUE;
                                                 <label class="form-label">PURGE FROM DATETIME</label>
                                             </div>
                                         </div>
-                                        <!-- <div class="form-group">
-                                            <div class="col-md-4">
-                                                <label class="form-label">ACKNOWLEDGED BY PRODUCTION<i>(Leader & Above)</i></label>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div class="form-line">
-                                                    <input type="text" id="ack_prod_user" name="ack_prod_user" class="form-control" value='<?php echo @$data->user->{$data->ack_prod_user};?>' disabled/>
-                                                </div>
-                                            </div>
-                                        </div><br/>  -->
                                         <div class="form-group">
                                             <div class="col-md-4">
                                                 <label class="form-label">ACKNOWLEDGED BY PRODUCTION<i>(Leader & Above)</i></label>
@@ -586,7 +657,7 @@ $jsselect = TRUE;
                                         foreach($data->submit_button->s1 as $form){
                                         //$form = $data->submit_button->s1;
                                     ?>
-                                    
+
                                         <button id="form" type="submit" name="submit" value="<?php echo $form->value;?>" class="btn btn-success m-t-15 waves-effect"><?php echo $form->name;?></button>
                                     
                                     <?php }} ?>
@@ -603,3 +674,5 @@ $jsselect = TRUE;
                     echo form_close();
                 }
             ?>
+ 
+   

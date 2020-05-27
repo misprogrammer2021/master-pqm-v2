@@ -39,10 +39,12 @@ class Modal_Update extends CI_Model
         // $data_table_qan_machinebreakdown = array
         if(isset($data->modified_date)) $savetodb['modified_date'] = $data->modified_date;
         if(isset($data->issueto_user)) $savetodb['issueto_user'] = $data->issueto_user;
+        if(isset($data->issued_dept)) $savetodb['issued_dept'] = $data->issued_dept;
         if(isset($data->to_dept)) $savetodb['to_dept'] = $data->to_dept;
         if(isset($data->shift)) $savetodb['shift'] = $data->shift;
         if(isset($data->ooc)) $savetodb['ooc'] = $data->ooc;
         if(isset($data->oos)) $savetodb['oos'] = $data->oos;
+        if(isset($data->visual)) $savetodb['visual'] = $data->visual;
         if(isset($data->datetime)) $savetodb['datetime'] = $data->datetime;
 
         $data_table_qan_machinebreakdown = $savetodb;
@@ -70,18 +72,28 @@ class Modal_Update extends CI_Model
 
         $savetodb = array();
         if(isset($data->part_name)) $savetodb['part_name'] = $data->part_name;
-        if(isset($data->machine_no)) $savetodb['machine_no'] = $data->machine_no;
+        if(isset($data->machine_no_id)) $savetodb['machine_no_id'] = $data->machine_no_id;
+        // if(isset($data->machine_no)) $savetodb['machine_no'] = $data->machine_no; temporary
         if(isset($data->process)) $savetodb['process'] = $data->process;
-        if(isset($data->cav_no)) $savetodb['cav_no'] = $data->cav_no;
-        if(isset($data->up_affected)) $savetodb['up_affected'] = $data->up_affected;
+        // if(isset($data->cav_no)) $savetodb['cav_no'] = $data->cav_no; no longer use
+        // if(isset($data->up_affected)) $savetodb['up_affected'] = $data->up_affected; no longer use
         if(isset($data->detectedby_user)) $savetodb['detectedby_user'] = $data->detectedby_user;
-        if(isset($data->defect_description)) $savetodb['defect_description'] = $data->defect_description;
+        if(isset($data->defect_description_id)) $savetodb['defect_description_id'] = $data->defect_description_id;
+        if(isset($data->defect_description_id)) {
+            $defect_list = @$this->modal_master->get_defect_desc($data->defect_description_id)[0];
+            $defect_desc = $defect_list->defect_description_name;
+            $savetodb['defect_description_name'] = $defect_desc;
+        } 
+        if(isset($data->defect_description_others)) $savetodb['defect_description_others'] = $data->defect_description_others;
+        // if(isset($data->defect_description)) $savetodb['defect_description'] = $data->defect_description;
         if(isset($data->last_passed_sample)) $savetodb['last_passed_sample'] = $data->last_passed_sample;
         if(isset($data->purge_from)) $savetodb['purge_from'] = $data->purge_from;
 
         if(isset($data->ack_eng_user)) $savetodb['ack_eng_user'] = $data->ack_eng_user;
         if(isset($data->ack_prod_user)) $savetodb['ack_prod_user'] = $data->ack_prod_user;
         if(isset($data->ack_qa_user)) $savetodb['ack_qa_user'] = $data->ack_qa_user;
+        
+
         $data_table_qan_defect_info = $savetodb;
 
         // $data_table_qan_defect_info = array(
@@ -368,11 +380,26 @@ class Modal_Update extends CI_Model
         if(count($data->inspection_machine_data)>0){
             foreach($data->inspection_machine_data AS $qan_validation_submission){
                 $savetodb = array();
-                if(isset($qan_validation_submission->root_cause)) $savetodb['root_cause'] = $qan_validation_submission->root_cause;
-                if(isset($qan_validation_submission->corrective_action)) $savetodb['corrective_action'] = $qan_validation_submission->corrective_action;
+                if(isset($qan_validation_submission->root_cause_id)) $savetodb['root_cause_id'] = $qan_validation_submission->root_cause_id;
+                if(isset($qan_validation_submission->root_cause_id)) {
+                    $rootcause_list = $this->modal_master->get_rootcause($qan_validation_submission->root_cause_id);
+                    $rootcause = $rootcause_list->root_cause;
+                    $savetodb['root_cause'] = $rootcause;
+                }
+                // if(isset($qan_validation_submission->root_cause)) $savetodb['root_cause'] = $qan_validation_submission->root_cause;
+                
+                if(isset($qan_validation_submission->corrective_action_id)) $savetodb['corrective_action_id'] = $qan_validation_submission->corrective_action_id;
+                if(isset($qan_validation_submission->corrective_action_id)) {
+                    $corrective_list = $this->modal_master->get_corrective_action($qan_validation_submission->corrective_action_id);
+                    $corrective = $corrective_list->corrective_action;
+                    $savetodb['corrective_action'] = $corrective;
+                }
+                
+                // if(isset($qan_validation_submission->corrective_action)) $savetodb['corrective_action'] = $qan_validation_submission->corrective_action;
+                
                 if(isset($qan_validation_submission->rcfa_pic_user_id)) $savetodb['rcfa_pic_user_id'] = $qan_validation_submission->rcfa_pic_user_id;
                 if(isset($qan_validation_submission->rcfa_ack_user_id)) $savetodb['rcfa_ack_user_id'] = $qan_validation_submission->rcfa_ack_user_id;
-                if(isset($qan_validation_submission->rcfa_appr_user_id)) $savetodb['rcfa_appr_user_id'] = $qan_validation_submission->rcfa_appr_user_id;
+                // if(isset($qan_validation_submission->rcfa_appr_user_id)) $savetodb['rcfa_appr_user_id'] = $qan_validation_submission->rcfa_appr_user_id;
                 if(isset($qan_validation_submission->completion_user_id)) $savetodb['completion_user_id'] = $qan_validation_submission->completion_user_id;
                 if(isset($qan_validation_submission->completion_datetime)) $savetodb['completion_datetime'] = $qan_validation_submission->completion_datetime;
                 if(isset($qan_validation_submission->submission_no)) $savetodb['submission_no'] = $qan_validation_submission->submission_no;
@@ -506,5 +533,51 @@ class Modal_Update extends CI_Model
 
         return $data;
     }
+
+    // function update_role_permission($role_id,$section_id,$view_permission,$data_entry_permission,$approval_permission,$acknowledger_permission)
+	// {
+	// 	$data = array(
+	// 		'role_id' => $role_id,
+	// 		'section_id' => $section_id,
+	// 		'view_permission' => $view_permission,
+	// 		'data_entry_permission' => $data_entry_permission,
+	// 		'approval_permission' => $approval_permission,
+	// 		'acknowledger_permission' => $acknowledger_permission
+	// 	  );
+		  
+	// 	  $this->db->where('role_id',$role_id);
+	// 	  $this->db->where('section_id',$section_id);
+	// 	  $this->db->delete('role_permission');
+	// 	  $this->db->insert('role_permission', $data);	  
+    // }
+
+    // function update_permission($data)
+	// {
+    
+	// 	$result = $this->modal_master->GetRoleSection($data[0]['role_id'],$data[0]['section_id']);
+       
+	// 	if($result){
+	// 		return array('error','Duplicate');
+	// 	}
+        
+	// 	  $this->db->where('role_id',$data[0]['role_id']);
+	// 	  $this->db->where('section_id',$data[0]['section_id']);
+	// 	  $this->db->delete('role_permission');
+	// 	  $this->db->insert('role_permission', $data);	  
+    // }
+    
+    // function update_permission($role_id,$data){
+	
+    //     $this->db->where('role_id',$role_id);
+    //     // echo $query = $this->db->get_compiled_select();
+    //     // exit;
+	// 	$this->db->update('role', $data);
+		
+	// 	if ($this->db->affected_rows() > 0) {
+	// 		return true;
+	// 	}else{
+	// 		return false;
+	// 	}
+    // }
 
 }

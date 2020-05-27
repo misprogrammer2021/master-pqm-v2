@@ -20,14 +20,106 @@ include('D:\xampp\htdocs\PQM\application\views\FrontEnd\section5.php');
 <script src="<?=base_url('/assets/templates/plugins/momentjs/moment.js')?>"></script>
 <!-- Bootstrap Date Time Picker Js -->
 <script src="<?=base_url('/assets/templates/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js')?>"></script>
+
+
 <script>
 $( document ).ready(function() {
     if(!$('#scrap').length == 0) enableDisableAll();
     
-    $('input[name^=oo]').click(function() {
-        $('input[name^=oo]').not(this).prop('checked', false);
+    $('input[data-type="spc"],input[data-type="visual"]').click(function() {
+        if($(this).attr('data-type') !="spc") $('input[data-type="spc"]').prop('checked', false);
+        else $('input[data-type="visual"]').prop('checked', false);
     });
+
+   
+    $("#select_sector").on('change', function() {
+            var selected_sector_id = this.value
+            $.post("get_machine",{ sector_id: selected_sector_id })
+            .done(function(data) {
+
+                $("#select_machine_no").html('');
+                $.each(JSON.parse(data),function(key, value) 
+                {
+                    $("#select_machine_no").append('<option value="'+ value.id +'">'+ value.machine_name +'</option>')
+                    .selectpicker('refresh');
+                });
+                
+            })
+            .fail(function() {
+                alert( "error" );
+            })
+            .always(function() {
+                //alert( "finished" );
+            });
+                // var sector=$("#select_sector").val();
+                // $.ajax({
+                // type:"post",
+                // url:"/FrontEnd/get_sector",
+                // data:"select_sector="+sector,
+                // success:function(data){
+                //         $("#select_machine_no").html(data);
+                // }
+                // });
+    });
+
+        $("div#defect_checkbox input[type='checkbox']").on('change', defect_desc_dropdown);
+
+        defect_desc_dropdown();
+    
 });
+
+
+//Function Populate Defect Description Dropdown
+
+function defect_desc_dropdown(){
+    var types = '';
+    var showOrHide;
+    $("div#defect_checkbox input[type='checkbox']").each(function () {
+        if (this.checked){
+            types +=  $(this).attr('data-type') + ',';
+        }
+        
+    });
+    if(types == ''){
+        showOrHide = false;
+    }else{
+        types = types.replace(/,\s*$/, "");
+        $.post("<?=base_url('FrontEnd/get_defect_desc');?>",{ defect_type: types })
+        .done(function(data) {
+            showOrHide = true;
+            $("#select_defect").html('<option value="">--Please Select--</option>');//'<option value="">--Please Select--</option>'
+            // $("#defect_description").append('<option value="">--Others--</option>')
+            $.each(JSON.parse(data),function(key, value) 
+            {
+                $("#select_defect").append('<option value="'+ value.id +'">'+ value.defect_description_name +'</option>')
+                .selectpicker('refresh');
+                
+            });
+            <?php 
+            
+                if(@$data->defect_description_id) {
+                    
+            ?>
+                $('#select_defect').val(<?php echo @$data->defect_description_id;?>).selectpicker('refresh');
+            <?php        
+                }
+
+            ?>
+            
+
+        })
+        
+        .fail(function() {
+            alert( "error" );
+        })
+        .always(function() {
+            //alert( "finished" );
+        });
+            
+    }
+    // $("#defectives").toggle(showOrHide);
+    // $('[name="defect_description_name"]').toggleClass('required',showOrHide )
+}
 
 //Datetimepicker plugin
 $('.datetimepicker').bootstrapMaterialDatePicker({
@@ -56,7 +148,8 @@ $('#reported_by_mrb').attr('disabled', true);
 $('table.mrb-form').find('input.form-control').hide();
 
 $('table.mrb-form').find("input.checkbox-active:checked").parents('tr').find('input.form-control').show();
-    
+
+  
 $('table.mrb-form').find('input.qasample-qty').show();
 $('table.mrb-form').find('input.total_affected_qty').show();
 $('table.mrb-form').find('input.total_good_qty').show();
@@ -104,6 +197,11 @@ $('input#total-rejqty').each(function(){
 $('#total_rej_qty').val(totalRejQty);
 
 
+// $(function() { 
+//     $('#defect_opt').change(function() {
+//          $('#defect_description').val($(this).val());
+//     }).change(); // Trigger the event
+// });
 
 $("input.checkbox-active").click(function(){
     if ($(this).prop('checked')) {
@@ -273,6 +371,15 @@ $('#add_sub').click(function (e) {
 
     
 });
+
+// function CheckOthers(val){
+// //  var element=document.getElementById('others');
+// var element=$("#defectives option:selected").text();
+//  if(val=='Others')
+//    element.style.display='block';
+//  else  
+//    element.style.display='none';
+// }
 
 function ordinal_suffix_of(i) {
     var j = i % 10,
