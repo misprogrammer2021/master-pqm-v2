@@ -1,14 +1,3 @@
-<?php
-
-    // $data = {
-
-    //     $message = "Record Saved Successfully";
-    //     $redirect = "FrontEnd/mastertemplate/";
-
-    // };
-?>
-
-
 <section class="content">
     <div class="container-fluid">
         <div class="block-header">

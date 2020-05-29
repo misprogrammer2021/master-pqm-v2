@@ -42,7 +42,7 @@ $jsselect = TRUE;
                         </div>
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <input type="text" id="created_date" name="created_date" class="datetimepicker form-control" value='<?php echo $row->created_date;?>'/>
+                                <input type="text" id="created_date" name="created_date" class="datetimepicker form-control" value='<?php echo $row->created_date;?>' disabled/>
                                 <label class="form-label">Created Date</label>
                             </div>
                         </div>
@@ -62,7 +62,7 @@ $jsselect = TRUE;
                         </div>
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <input type="text" id="modified_date" name="modified_date" class="datetimepicker form-control" value='<?php echo $row->modified_date;?>'/>
+                                <input type="text" id="modified_date" name="modified_date" class="datetimepicker form-control" value='<?php echo $row->modified_date;?>' disabled/>
                                 <label class="form-label">Modified Date</label>
                             </div>
                         </div>
@@ -142,10 +142,10 @@ $jsselect = TRUE;
                         <div class="col-md-4"> 
                             <label class="form-label">Status</label>
                         </div>
-                        <select id="is_deleted" name="is_deleted" class="form-control show-tick">
+                        <select id="status" name="status" class="form-control show-tick">
                             <option value="">--Please Select--</option>
-                            <option value="0" <?php if ($row->is_deleted == '0') echo 'selected';?>>Active</option>
-                            <option value="1" <?php if ($row->is_deleted == '1') echo 'selected';?>>Deactive</option>
+                            <option value="0" <?php if ($row->status == '0') echo 'selected';?>>Active</option>
+                            <option value="1" <?php if ($row->status == '1') echo 'selected';?>>Deactive</option>
                         </select>
                     </div>
                 </div>

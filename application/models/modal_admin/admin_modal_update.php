@@ -2,7 +2,7 @@
 
 Class Admin_modal_update extends CI_Model {
 
-    function update_user_records($id,$username,$password,$email,$fullname,$commodity,$dept_id,$title,$employee_no,$role_id,$created_date,$modified_date,$is_deleted)
+    function update_user_records($id,$username,$password,$email,$fullname,$commodity,$dept_id,$title,$employee_no,$role_id,$modified_date,$status)
 	{
 		$data = array(
 			'username' => $username,
@@ -13,9 +13,9 @@ Class Admin_modal_update extends CI_Model {
 			'dept_id' => $dept_id,
 			'title' => $title,
 			'employee_no' => $employee_no,
-			'created_date' => $created_date,
+			// 'created_date' => $created_date,
 			'modified_date' => $modified_date,
-			'is_deleted' => $is_deleted
+			'status' => $status
 		  );
 
 		  $this->db->where('id',$id);
@@ -35,25 +35,25 @@ Class Admin_modal_update extends CI_Model {
 			'data_entry_permission' => $data_entry_permission,
 			'approval_permission' => $approval_permission,
 			'acknowledger_permission' => $acknowledger_permission
-		  );
+		);
 		  
-		  $this->db->where('role_id',$role_id);
-		  $this->db->where('section_id',$section_id);
-		  $this->db->delete('role_permission');
-		  $this->db->insert('role_permission', $data);	  
+		$this->db->where('role_id',$role_id);
+		$this->db->where('section_id',$section_id);
+		$this->db->delete('role_permission');
+		$this->db->insert('role_permission', $data);	  
 	}
 	
 	function update_role($role_id,$data){
 	
-    $this->db->where('role_id',$role_id);
+		$this->db->where('role_id',$role_id);
 		$this->db->update('role', $data);
-		
+			
 		if ($this->db->affected_rows() > 0) {
 			return true;
 		}else{
 			return false;
 		}
-  }
+  	}
     
 	function update_section($id,$data){
 

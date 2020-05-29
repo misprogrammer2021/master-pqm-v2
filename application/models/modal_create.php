@@ -1,124 +1,27 @@
 <?php
-class Modal_create extends CI_Model
-{
-   
-    function saveMachineBreakdownRecords($qan_no,$issueby_user_id,$issueto_user,$issued_dept,$to_dept,$shift,$ooc,$oos,$datetime)
-    {
-		$a=date("Y-m-d H:i:s");
-		$b=date("y");
-		$this->db->select('qan_no');
-		$this->db->from('qan_machinebreakdown');
-		$this->db->order_by("id", "desc");
-		$this->db->limit(1);
-		$query = $this->db->get();
-		//$query = $this->db->get_compiled_select();
-		
-		if ($query->num_rows() == 0) {
-			$qan_no= $b.'00001';
-		} else {
-			$row = $query->row(); 
-			$last_qan_no = $row->qan_no;
-		
-			$qan_no_year = substr($last_qan_no, 0, 2);
-
-			if($qan_no_year == $b){
-				$qan_no = $last_qan_no+1;
-			}else{
-				$qan_no= $b.'00001';
-			}
-		}
-		$data = array(
-			'qan_no' => $qan_no,
-			'created_date' => $a,
-			'modified_date' => $a,
-			'is_deleted' => 0,
-			'status' => 'NEW',
-			'issueby_user_id' => $issueby_user_id,
-			'issueto_user' => $issueto_user,
-			'issued_dept' => $issued_dept,
-			'to_dept' => $to_dept,
-			'shift' => $shift,
-			'ooc' => $ooc,
-			'oos' => $oos,
-			'datetime' => $datetime
-		  );
-		  
-		$this->db->insert('qan_machinebreakdown', $data);
-		$machine_breakdown_id = $this->db->insert_id();
-        return $machine_breakdown_id;
-    }
-    
-    function saveDefectInfoRecords($machine_breakdown_id,$part_name,$machine_no,$process,$cav_no,$up_affected,$detectedby_user,$defect_description,$last_passed_sample,$purge_from,$estimate_qty)
-    {
-
-		$data = array(
-			'machine_breakdown_id' => $machine_breakdown_id,
-			'part_name' => $part_name,
-			'machine_no' => $machine_no,
-			'process' => $process,
-			'cav_no' => $cav_no,
-			'up_affected' => $up_affected,
-			'detectedby_user' => $detectedby_user,
-			'defect_description' => $defect_description,
-			'last_passed_sample' => $last_passed_sample,
-			'purge_from' => $purge_from,
-			'estimate_qty' => $estimate_qty
-		  );
-		  
-		$this->db->insert('qan_defect_info', $data);
-    }
-    
-    function saveQASampleRecords($data){
-
-		$this->db->insert('qa_sample_records', $data);
-    }
-    
-    function saveProductionRecords($data){
-
-		$this->db->insert('production_records', $data);
-	}
-
-
-    function saveMaterialReviewBoardRecords($machine_breakdown_id,$scrap,$rework,$uai,$scrap_no,$rework_order_no,$uai_no,$rework_dispo_input,$rework_dispo_output,$rework_dispo_rej_scrap,$reportby_user_id,$qa_reinsp_status_accept,$qa_reinsp_status_reject,$reject_reason){
-        
-        $data = array(
-			'machine_breakdown_id' => $machine_breakdown_id,
-			'scrap' => $scrap,
-			'rework' => $rework,
-			'uai' => $uai,
-			'scrap_no' => $scrap_no,
-			'rework_order_no' => $rework_order_no,
-			'uai_no' => $uai_no,
-			'rework_dispo_input' => $rework_dispo_input,
-			'rework_dispo_output' => $rework_dispo_output,
-			'rework_dispo_rej_scrap' => $rework_dispo_reject,
-			'reportby_user_id' => $reportby_user_id,
-			// 'qa_reinsp_verification_user_id' => $qa_reinsp_verification_user_id,
-			'qa_reinsp_status_accept' => $qa_reinsp_status_accept,
-			'qa_reinsp_status_reject' => $qa_reinsp_status_reject,
-			'reject_reason' => $reject_reason
-		);
-
-		$this->db->insert('qan_material_review_board', $data);
-		$mrb_id = $this->db->insert_id();
-		return $mrb_id;
-	}
+class Modal_create extends CI_Model{
 
     function get_next_qan_no($runtest=FALSE){
+
         $a=date("Y-m-d H:i:s");
 		$b=date("y");
 		
 		if($runtest==TRUE)$test = 'TEST';
 		else $test = '';
-		$LIKE = $b.$test.'%';
+		// $LIKE = $b.$test.'%';
+		$PRODLIKE = $b.'%';
+		$TESTLIKE = $b.'TEST%';
 		$this->db->select('qan_no');
 		$this->db->from('qan_machinebreakdown');
-		// $this->db->where('qan_no is NOT NULL', NULL, FALSE);
-		$this->db->where('qan_no like \''.$LIKE.'\'', NULL, FALSE);
+		if($runtest==TRUE){
+			$this->db->where('qan_no like \''.$TESTLIKE.'\'', NULL, FALSE);
+		}else{
+			$this->db->where('qan_no like \''.$PRODLIKE.'\'', NULL, FALSE);
+			$this->db->where('qan_no NOT Like \''.$TESTLIKE.'\'', NULL, FALSE);
+		}
 		$this->db->order_by("id", "desc");
 		$this->db->limit(1);
 		$query = $this->db->get();
-		// echo $query = $this->db->get_compiled_select();
 		
 		if ($query->num_rows() == 0) {
 			$seq_no= '00001';
@@ -135,7 +38,6 @@ class Modal_create extends CI_Model
 			}
 		}
 		$qan_no = $b.$test.$seq_no;
-		// exit;
         return $qan_no;
     }
 
@@ -193,27 +95,21 @@ class Modal_create extends CI_Model
 			if(isset($data->ooc)) $savetodb['ooc'] = $data->ooc;
 			if(isset($data->oos)) $savetodb['oos'] = $data->oos;
 			if(isset($data->visual)) $savetodb['visual'] = $data->visual;
-			//if(isset($data->datetime)) $savetodb['datetime'] = $data->datetime;
 
 			$data_table_qan_machinebreakdown = $savetodb;
-
 			$this->db->insert('qan_machinebreakdown', $data_table_qan_machinebreakdown);
 			$data->qan_id = $this->db->insert_id();
-		}
-		
+		}	
 
 		if($data->qan_id > 0){
 
 			$savetodb = array();
+			
 			if(isset($data->qan_id)) $savetodb['machine_breakdown_id'] = $data->qan_id;
-			// $savetodb['machine_breakdown_id'] = $data->qan_id;
 			if(isset($data->part_name)) $savetodb['part_name'] = $data->part_name;
 			if(isset($data->sector_id)) $savetodb['sector_id'] = $data->sector_id;
         	if(isset($data->machine_no_id)) $savetodb['machine_no_id'] = $data->machine_no_id;
-			// if(isset($data->machine_no)) $savetodb['machine_no'] = $data->machine_no;
 			if(isset($data->process)) $savetodb['process'] = $data->process;
-			// if(isset($data->cav_no)) $savetodb['cav_no'] = $data->cav_no; no longer use
-			// if(isset($data->up_affected)) $savetodb['up_affected'] = $data->up_affected; no longer use
 			if(isset($data->detectedby_user)) $savetodb['detectedby_user'] = $data->detectedby_user;
 			if(isset($data->defect_description_id)) $savetodb['defect_description_id'] = $data->defect_description_id;
 			if(isset($data->defect_description_id)) {
@@ -256,6 +152,7 @@ class Modal_create extends CI_Model
 					if($prodqty->prodquantity<1) continue;
 					
 					$data_table_production_records = array(
+
 						'prod_id' => $prodqty->prod_id,
 						'machine_breakdown_id' => $data->qan_id,
 						'quantity' => $prodqty->prodquantity
@@ -263,7 +160,6 @@ class Modal_create extends CI_Model
 					$this->db->insert('production_records', $data_table_production_records);    
 				}
 			}
-
 		}
 		
 		return $data;
@@ -286,7 +182,7 @@ class Modal_create extends CI_Model
 		// $data->reject_reason= 'test';
 
 		$savetodb = array();
-        // $data_table_qan_machinebreakdown = array
+
 		if(isset($data->qan_id)) $savetodb['machine_breakdown_id'] = $data->qan_id;
 		if(isset($data->scrap)) $savetodb['scrap'] = $data->scrap;
 		if(isset($data->rework)) $savetodb['rework'] = $data->rework;
@@ -304,12 +200,9 @@ class Modal_create extends CI_Model
 		if(isset($data->reject_reason)) $savetodb['reject_reason'] = $data->reject_reason;
 
 		$data_table_qan_material_review_board = $savetodb;
-
 		$this->db->insert('qan_material_review_board', $data_table_qan_material_review_board);
 		$data->mrb_id = $this->db->insert_id();
 
-		// print_r($data);
-		// exit;
 		if(is_array(@$data->qan_purge) AND (count($data->qan_purge) > 0)){
 			foreach($data->qan_purge as $qan_purge){
 				
@@ -323,20 +216,10 @@ class Modal_create extends CI_Model
 						'prod_pic_user_id' => $qan_purge->prod_pic_user_id,
 						'qa_buyoff_user_id' => $qan_purge->qa_buyoff_user_id
 					);
-					// print_r($data_table_qan_purge);
-					// exit;
 					$this->db->insert('qan_purge', $data_table_qan_purge);
 				}
 			}
 		}
-
-		// $data_table_qa_sample_mrb = array(
-		// 	'machine_breakdown_id' => $data->qan_id,
-		// 	'qa_sample_affected_qty' => $data->qa_sample_affected_qty,
-		// 	'qa_sample_good_qty' => $data->qa_sample_good_qty,
-		// 	'qa_sample_reject_qty' => $data->qa_sample_reject_qty
-		// );
-		// $this->db->insert('qa_sample_mrb', $data_table_qa_sample_mrb);
 
 		$this->modal_update->update_qasample_mrb($data->qan_id,$data->qa_sample_reject_qty);
 
@@ -356,7 +239,9 @@ class Modal_create extends CI_Model
 		
 		
 		foreach($data->new_inspection_machine_data AS $qan_validation_submission){
+
 			$savetodb = array();
+			
 			$savetodb['machine_breakdown_id'] = $data->qan_id;
 			if(isset($qan_validation_submission->root_cause_id)) $savetodb['root_cause_id'] = $qan_validation_submission->root_cause_id;
 			if(isset($qan_validation_submission->root_cause_id)) {
@@ -364,7 +249,6 @@ class Modal_create extends CI_Model
 				$rootcause = $rootcause_list->root_cause;
 				$savetodb['root_cause'] = $rootcause;
 			}
-			//if(isset($qan_validation_submission->root_cause)) $savetodb['root_cause'] = $qan_validation_submission->root_cause;
 
 			if(isset($qan_validation_submission->corrective_action_id)) $savetodb['corrective_action_id'] = $qan_validation_submission->corrective_action_id;
 			if(isset($qan_validation_submission->corrective_action_id)) {
@@ -372,11 +256,9 @@ class Modal_create extends CI_Model
 				$corrective = $corrective_list->corrective_action;
 				$savetodb['corrective_action'] = $corrective;
 			}
-			//if(isset($qan_validation_submission->corrective_action)) $savetodb['corrective_action'] = $qan_validation_submission->corrective_action;
 
 			if(isset($qan_validation_submission->rcfa_pic_user_id)) $savetodb['rcfa_pic_user_id'] = $qan_validation_submission->rcfa_pic_user_id;
 			if(isset($qan_validation_submission->rcfa_ack_user_id)) $savetodb['rcfa_ack_user_id'] = $qan_validation_submission->rcfa_ack_user_id;
-			// if(isset($qan_validation_submission->rcfa_appr_user_id)) $savetodb['rcfa_appr_user_id'] = $qan_validation_submission->rcfa_appr_user_id;
 			if(isset($qan_validation_submission->completion_user_id)) $savetodb['completion_user_id'] = $qan_validation_submission->completion_user_id;
 			if(isset($qan_validation_submission->completion_datetime)) $savetodb['completion_datetime'] = $qan_validation_submission->completion_datetime;
 			if(isset($qan_validation_submission->submission_no)) $savetodb['submission_no'] = $qan_validation_submission->submission_no;
@@ -385,7 +267,6 @@ class Modal_create extends CI_Model
 			$savetodb['completion_datetime'] = date("Y-m-d H:i:s");
 
 			$data_table_qan_validation_submission = $savetodb;
-			// print_r($savetodb);exit;	
 			if($savetodb['root_cause_id'] != '' AND $savetodb['corrective_action_id'] != ''){
 				$this->db->insert('qan_validation_submission', $data_table_qan_validation_submission);
 				$data->validation_submission_id = $this->db->insert_id();
@@ -393,8 +274,7 @@ class Modal_create extends CI_Model
 		}
 
 		if(is_array(@$data->inspection_result_data) AND (count($data->inspection_result_data) > 0)){
-			// print_r($data->inspection_result_data);
-			// exit;
+
 			$i = 0;
 			foreach($data->inspection_result_data as $inspection_data){
 				
@@ -409,8 +289,6 @@ class Modal_create extends CI_Model
 						'time_end' => $validation_result->time_end,
 						'result' => $validation_result->result
 					);
-					// print_r($data_table_qan_rootcause_item_inspection);
-					// exit;
 					$this->db->insert('qan_rootcause_item_inspection', $data_table_qan_rootcause_item_inspection);
 	
 				}

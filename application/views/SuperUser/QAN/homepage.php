@@ -170,44 +170,7 @@ $section = $this->session->userdata['permission'];
 
         <!-- QAN New Task -->
         <div class="row clearfix">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="card">
-                    <div class="header">
-                        <div class="row clearfix">
-                            <div class="col-xs-12 col-sm-6">
-                                <h2>New Task</h2>
-                            </div>
-                            <div class="col-xs-12 col-sm-6 align-right">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="body">
-                    
-                        <table id="qan_task_list" class="table table-bordered table-striped table-condensed table-hover dataTable">
-                            <thead>
-                                <tr>
-                                    <th width="2%">Seq</th>
-                                    <th>QAN NO</th>
-                                    <th>Status</th>
-                                    <!-- <th>Acknowledge</th> -->
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            
-                            <tfoot>
-                                <tr>
-                                    <th width="2%">Seq</th>
-                                    <th>QAN NO</th>
-                                    <th>Status</th>
-                                    <!-- <th>Acknowledge</th> -->
-                                    <th>Description</th>
-                                </tr>
-                            </tfoot>
-                        </table>
-
-                    </div>
-                </div>
-            </div>
+            
             <!-- END QAN New Task -->
 
             <!-- <div class="col-md-6">

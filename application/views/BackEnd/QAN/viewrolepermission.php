@@ -4,24 +4,11 @@ $jsselect = TRUE;
 
 ?>
 
-<style>
-
-/* .chosen-disabled{
-    opacity:.5!important;
-    cursor:default
-} */
-
-/* .chosen-disabled .chosen-choices .search-choice .search-choice-close{
-    cursor:default
-} */
-</style>
 <section class="content">
     <div class="container-fluid">
         <div class="block-header">
             <ol class="breadcrumb breadcrumb-col-teal">
                 <li class="active"><a href="<?=base_url('homepage')?>"><i class="material-icons">home</i> Home</a></li>
-                <!-- <li><a href="javascript:void(0);"><i class="material-icons">library_books</i> Library</a></li> -->
-                <!-- <li><a href="javascript:void(0);"><i class="material-icons">archive</i> Data</a></li> -->
                 <li><i class="material-icons">library_books</i>View User Permission</li>
             </ol>
         </div>
@@ -38,7 +25,6 @@ $jsselect = TRUE;
                 </h3>
             </div>
             <div class="body">
-
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs tab-nav-right" role="tablist">
                     <li role="presentation" class="active"><a href="#userpermission" data-toggle="tab">USER PERMISSION</a></li>
@@ -47,6 +33,7 @@ $jsselect = TRUE;
                     
                 </ul>
                 <br/>
+                
                 <?php 
 
                     if(isset($message_display))
@@ -61,7 +48,6 @@ $jsselect = TRUE;
                     <div role="tabpanel" class="tab-pane fade in active" id="userpermission">
                         <form method="post" class="form-horizontal" role="form" action="<?php echo base_url().'BackEnd/processing_role_permission';?>"> <!--'FrontEnd/AddRolePermission' old--> 
                             <div class="table-responsive">
-                            <!-- <a href="<?php  echo base_url(); ?>FrontEnd/ViewUserRole"><button type="button" class="btn btn-primary"><i class="material-icons">pageview</i><span class="icon-name">View User Role</span></button></a> -->
                                 <table class="table table-bordered table-striped table-hover js-basic-example dataTable" >
                                     <thead>
                                         <tr>
@@ -77,49 +63,48 @@ $jsselect = TRUE;
                                         </tr>
                                     </thead>
                                     <tbody>
+
                                     <?php
+
                                         $i=1;
-                                        // print_r($permission);
-                                        // exit;
-                                            foreach($permission as $row)
-                                            {
-                                    
-                                        echo '
-                                        <tr>
-                                            <td align="center">
-                                                <input type="checkbox" id="role'.$row->role_id.'_'.$row->id.'" name="role_id['.$row->role_id.']" class="filled-in checkbox-active">
-                                                <label for="role'.$row->role_id.'_'.$row->id.'"></label>
-                                            </td>
-                                            <td>'.$i.'</td> 
-                                            <td>'.$row->role_name.'</td>  
-                                            <td>'.$row->section_name.'</td>
-                                            <td align="center">
-                                                <input type="checkbox" id="see'.$row->role_id.'_'.$i.'" name="see['.$row->role_id.']['.$row->section_id.']" class="filled-in" '.(($row->see == 1)?"checked":"").' disabled>
-                                                <label for="see'.$row->role_id.'_'.$i.'"></label>
-                                            </td>
-                                            <td align="center">
-                                                <input type="checkbox" id="de'.$row->role_id.'_'.$i.'" name="de['.$row->role_id.']['.$row->section_id.']" class="filled-in" '.(($row->de == 1)?"checked":"").' disabled>
-                                                <label for="de'.$row->role_id.'_'.$i.'"></label>
-                                            </td>
-                                            <td align="center">
-                                                <input type="checkbox" id="ack'.$row->role_id.'_'.$i.'" name="ack['.$row->role_id.']['.$row->section_id.']" class="filled-in" '.(($row->ack == 1)?"checked":"").' disabled>
-                                                <label for="ack'.$row->role_id.'_'.$i.'"></label>
-                                            </td>
-                                            <td align="center">
-                                                <input type="checkbox" id="app'.$row->role_id.'_'.$i.'" name="app['.$row->role_id.']['.$row->section_id.']" class="filled-in" '.(($row->app == 1)?"checked":"").' disabled>
-                                                <label for="app'.$row->role_id.'_'.$i.'"></label>
-                                            </td>
-                                        </tr>
                                         
-                                        ';
+                                        foreach($permission as $row)
+                                        {
+                                
+                                            echo '
+                                            <tr>
+                                                <td align="center">
+                                                    <input type="checkbox" id="role'.$row->role_id.'_'.$row->id.'" name="role_id['.$row->role_id.']" class="filled-in checkbox-active">
+                                                    <label for="role'.$row->role_id.'_'.$row->id.'"></label>
+                                                </td>
+                                                <td>'.$i.'</td> 
+                                                <td>'.$row->role_name.'</td>  
+                                                <td>'.$row->section_name.'</td>
+                                                <td align="center">
+                                                    <input type="checkbox" id="see'.$row->role_id.'_'.$i.'" name="see['.$row->role_id.']['.$row->section_id.']" class="filled-in" '.(($row->see == 1)?"checked":"").' disabled>
+                                                    <label for="see'.$row->role_id.'_'.$i.'"></label>
+                                                </td>
+                                                <td align="center">
+                                                    <input type="checkbox" id="de'.$row->role_id.'_'.$i.'" name="de['.$row->role_id.']['.$row->section_id.']" class="filled-in" '.(($row->de == 1)?"checked":"").' disabled>
+                                                    <label for="de'.$row->role_id.'_'.$i.'"></label>
+                                                </td>
+                                                <td align="center">
+                                                    <input type="checkbox" id="ack'.$row->role_id.'_'.$i.'" name="ack['.$row->role_id.']['.$row->section_id.']" class="filled-in" '.(($row->ack == 1)?"checked":"").' disabled>
+                                                    <label for="ack'.$row->role_id.'_'.$i.'"></label>
+                                                </td>
+                                                <td align="center">
+                                                    <input type="checkbox" id="app'.$row->role_id.'_'.$i.'" name="app['.$row->role_id.']['.$row->section_id.']" class="filled-in" '.(($row->app == 1)?"checked":"").' disabled>
+                                                    <label for="app'.$row->role_id.'_'.$i.'"></label>
+                                                </td>
+                                            </tr>
+                                            
+                                            ';
                                         $i++;
-                                            }
-                                        ?>
-                                        
+                                        }
+                                    ?>
                                     </tbody>
                                 </table>
                                 <button id="form" type="submit" name="submit" value="SUBMIT" class="btn btn-success m-t-15 waves-effect pull-right"><i class="material-icons">save</i><span class="icon-name">Update</span></button>
-                                <!-- <button id="form" type="submit" name="submit" value="SUBMIT" class="btn btn-success m-t-15 waves-effect pull-right"><i class="material-icons">update</i><span class="icon-name">Update</span></button> -->
                             </div>
                         </form>
                     </div>
@@ -127,21 +112,19 @@ $jsselect = TRUE;
                         <form method="post" class="form-horizontal" role="form" action="<?php echo base_url().'BackEnd/processing_permission' ?>"> <!--'FrontEnd/AddPermision' old -->
                             <div class="table-responsive">
                             <button type="button" data-toggle="modal" data-target="#addNewRole" class="btn btn-success m-t-15 waves-effect"><i class="material-icons">add_circle</i><span class="icon-name">Add New Role</span></button>
-                            <!-- <a href="<?php echo base_url(); ?>FrontEnd/ViewSection"><button type="button" class="btn btn-primary"><i class="material-icons">pageview</i><span class="icon-name">View Section</span></button></a> -->
                                 <table class="table table-bordered table-striped table-hover js-basic-example dataTable" >
                                     <thead>
                                         <tr>
                                             <th style="width:10%"></th>
-                                            <!-- <th style="width:10%">No</th> -->
                                             <th style="width:10%">Role ID</th>
                                             <th style="width:50%">Role Name</th>
                                             <th style="width:50%">Selected Section</th>
-                                            
-                                            
                                         </tr>
                                     </thead>
                                     <tbody>
+
                                     <?php
+
                                         $i=1;
                                         foreach($roles_sections as $role_name => $role_section)
                                         {
@@ -166,15 +149,14 @@ $jsselect = TRUE;
                                                         $selected='selected';
                                                     echo '<option value="'.$section['id'].'" '.$selected.'>'.$section['section_name'].'</option>';
                                                 }
-                                                    // echo '<input type="hidden" class="form-control" data-role="tagsinput" value="'.implode(',',$role_section['section_name']).'">';
                                         echo ' </select> 
                                             </td>
                                         </tr>    
                                         
                                         ';
                                         $i++;
-                                        }
-                                        ?>
+                                        }   
+                                    ?>
                                     </tbody>
                                 </table>
                                 <button id="form" type="submit" name="submit" value="SUBMIT" class="btn btn-success m-t-15 waves-effect pull-right"><i class="material-icons">save</i><span class="icon-name">Update</span></button>
@@ -195,6 +177,7 @@ $jsselect = TRUE;
                                         </tr>
                                     </thead>
                                     <tbody>
+
                                     <?php
                                     
                                         $i=1;
@@ -220,7 +203,7 @@ $jsselect = TRUE;
                                         ';
                                         $i++;
                                         }
-                                        ?>
+                                    ?>
                                     </tbody>
                                 </table>
                                 
@@ -346,55 +329,53 @@ $jsselect = TRUE;
 <script src="<?=base_url('/assets/templates/plugins/momentjs/moment.js')?>"></script>
 <!-- Bootstrap Date Time Picker Js -->
 <script src="<?=base_url('/assets/templates/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js')?>"></script>
+
 <script>
-$(function() {
-    //Textare auto growth
-    //autosize($('textarea.auto-growth'));
 
-    //Datetimepicker plugin
-    $('.datetimepicker').bootstrapMaterialDatePicker({
-        // format: 'dddd DD MMMM YYYY - HH:mm',
-        format: 'YYYY-MM-DD HH:mm',
-        clearButton: true,
-        weekStart: 1
+    $(function() {
+
+        //Datetimepicker plugin
+        $('.datetimepicker').bootstrapMaterialDatePicker({
+            // format: 'dddd DD MMMM YYYY - HH:mm',
+            format: 'YYYY-MM-DD HH:mm',
+            clearButton: true,
+            weekStart: 1
+        });
+
+        $('.datepicker').bootstrapMaterialDatePicker({
+            format: 'dddd DD MMMM YYYY',
+            clearButton: true,
+            weekStart: 1,
+            time: false
+        });
+
+        $('.timepicker').bootstrapMaterialDatePicker({
+            format: 'HH:mm',
+            clearButton: true,
+            date: false
+        });
+        
     });
 
-    $('.datepicker').bootstrapMaterialDatePicker({
-        format: 'dddd DD MMMM YYYY',
-        clearButton: true,
-        weekStart: 1,
-        time: false
-    });
+    window.setTimeout(function() {
+        $(".alert").fadeTo(500, 0).slideUp(500, function(){
+            $(this).remove(); 
+        });
+    }, 4000);
 
-    $('.timepicker').bootstrapMaterialDatePicker({
-        format: 'HH:mm',
-        clearButton: true,
-        date: false
+    $(document).ready(function () {
+        $('input.checkbox-active').change(function () {
+            if($(this).is(":checked"))
+            {
+                $(this).parent().siblings().find("select,input").attr("disabled",false).trigger("chosen:updated");
+                $('.chosen_section').chosen({ width: '100%' });
+            }
+            else
+            {
+                $(this).parent().siblings().find("select,input").attr("disabled",true);
+            }
+        })
     });
-    
-});
-
-window.setTimeout(function() {
-    $(".alert").fadeTo(500, 0).slideUp(500, function(){
-        $(this).remove(); 
-    });
-}, 4000);
-
-$(document).ready(function () {
-    $('input.checkbox-active').change(function () {
-        if($(this).is(":checked"))
-        {
-            // alert($(this).parent().siblings().find("input").val());
-            $(this).parent().siblings().find("select,input").attr("disabled",false).trigger("chosen:updated");
-            $('.chosen_section').chosen({ width: '100%' });
-        }
-        else
-        {
-            // alert($(this).parent().siblings().find("input").val());
-            $(this).parent().siblings().find("select,input").attr("disabled",true);
-        }
-    })
-});
 
 </script>
 

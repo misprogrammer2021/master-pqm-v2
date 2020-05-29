@@ -5,7 +5,7 @@ Class SuperUser_modal_update extends CI_Model {
     function update_section1($data){
 
         $savetodb = array();
-        // $data_table_qan_machinebreakdown = array
+
         if(isset($data->modified_date)) $savetodb['modified_date'] = $data->modified_date;
         if(isset($data->issueto_user)) $savetodb['issueto_user'] = $data->issueto_user;
         if(isset($data->issued_dept)) $savetodb['issued_dept'] = $data->issued_dept;
@@ -18,8 +18,6 @@ Class SuperUser_modal_update extends CI_Model {
 
         $data_table_qan_machinebreakdown = $savetodb;
 
-        // print_r($savetodb);
-        // exit;
         if(count($data_table_qan_machinebreakdown) > 0){
             $this->db->where('id',$data->qan_id);
 		    $this->db->update('qan_machinebreakdown', $data_table_qan_machinebreakdown);
@@ -32,6 +30,7 @@ Class SuperUser_modal_update extends CI_Model {
         if(isset($data->detectedby_user)) $savetodb['detectedby_user'] = $data->detectedby_user;
         if(isset($data->defect_description_id)) $savetodb['defect_description_id'] = $data->defect_description_id;
         if(isset($data->defect_description_id)) {
+
             $defect_list = @$this->superuser_modal_select->get_defect_desc($data->defect_description_id)[0];
             $defect_desc = $defect_list->defect_description_name;
             $savetodb['defect_description_name'] = $defect_desc;
@@ -47,17 +46,17 @@ Class SuperUser_modal_update extends CI_Model {
         
         $data_table_qan_defect_info = $savetodb;
         if(count($data_table_qan_defect_info) > 0){
+
             $this->db->where('machine_breakdown_id',$data->qan_id);
 		    $this->db->update('qan_defect_info', $data_table_qan_defect_info);
         }
-
-                
 
         if(is_array(@$data->qasample_qty) AND (count($data->qasample_qty) > 0)){
             
             $this->db->where('machine_breakdown_id',$data->qan_id);
             $query = $this->db->get('qa_sample_records');
             $sampleid_array = array();
+
             if($query->num_rows() > 0 ){
                 
                 foreach($query->result_object() as $qasampleqty){
@@ -67,7 +66,9 @@ Class SuperUser_modal_update extends CI_Model {
                 }
             }
             foreach($data->qasample_qty as $i => $qasampleqty){
+
                 if($qasampleqty->samplequantity > 0){
+
                     if(array_key_exists($qasampleqty->qa_sample_id,$sampleid_array)){
                         $sampleid_array[$qasampleqty->qa_sample_id]->action = 'update';
                     }else{
@@ -79,6 +80,7 @@ Class SuperUser_modal_update extends CI_Model {
             }
 
             if(is_array($sampleid_array) AND (count($sampleid_array) > 0)){
+
                 foreach($sampleid_array as $qa_sample_id => $qasampleqty){
     
                     $data_table_qa_sample_records = array(
@@ -150,6 +152,7 @@ Class SuperUser_modal_update extends CI_Model {
         $data_table_qan_material_review_board = $savetodb;
 
         if(count($data_table_qan_material_review_board) > 0){
+
             $this->db->where('machine_breakdown_id',$data->qan_id);
 		    $this->db->update('qan_material_review_board', $data_table_qan_material_review_board);
         }
@@ -158,7 +161,6 @@ Class SuperUser_modal_update extends CI_Model {
         $this->db->select('id');
 		$this->db->from('qan_material_review_board'); 
         $this->db->where('machine_breakdown_id',$data->qan_id);
-        // $this->db->order_by("mrb_id", "desc");
         $query = $this->db->get(); 
         $result = $query->result_object();
         $data->mrb_id = $result[0]->id;
@@ -168,20 +170,25 @@ Class SuperUser_modal_update extends CI_Model {
             $this->db->where('mrb_id',$data->mrb_id);
             $query = $this->db->get('qan_purge');
             $loc_purgeid_array = array();
+
             if($query->num_rows() > 0 ){
                 
                 foreach($query->result_object() as $qan_purge){
+
                     $loc_purgeid_array[$qan_purge->purge_location_id] = new stdClass();
                     $loc_purgeid_array[$qan_purge->purge_location_id]->action = 'delete';
                 }
             }
-
-                        
+    
             foreach($data->qan_purge as $qan_purge){
+
                 if($qan_purge->affected_qty > 0){
+
                     if(array_key_exists($qan_purge->purge_location_id,$loc_purgeid_array)){
+
                         $loc_purgeid_array[$qan_purge->purge_location_id]->action = 'update';
                     }else{
+
                         $loc_purgeid_array[$qan_purge->purge_location_id] = new stdClass();
                         $loc_purgeid_array[$qan_purge->purge_location_id]->action = 'insert';
                     }
@@ -193,22 +200,21 @@ Class SuperUser_modal_update extends CI_Model {
                 }
             }
         }
-        //print_r($qan_purge);exit;
-        
+
         if(is_array($loc_purgeid_array) AND (count($loc_purgeid_array) > 0)){
 			foreach($loc_purgeid_array as $purge_location_id => $qan_purge){
 
                 if($qan_purge->action=='delete') {
+
                     $this->db->where('purge_location_id', $purge_location_id);
                     $this->db->where('mrb_id', $data->mrb_id);
                     $this->db->delete('qan_purge');
-                    // echo $query = $this->db->get_compiled_select();
-                    // exit;
                     $this->update_mrb_confirmation($data->qan_id,0);
                     continue;
                 }
 
                 $data_table_qan_purge = array(
+
 					'purge_location_id' => $purge_location_id,
 					'mrb_id' => $data->mrb_id,
 					'affected_qty' => $qan_purge->affected_qty,
@@ -230,17 +236,15 @@ Class SuperUser_modal_update extends CI_Model {
                     $this->update_mrb_confirmation($data->qan_id,0);
                 }
             }
-            
         }
-        
-
     }
 
     function update_section3($data){
         
-        // echo '<pre>';
         if(count($data->inspection_machine_data)>0){
+
             foreach($data->inspection_machine_data AS $qan_validation_submission){
+
                 $savetodb = array();
                 if(isset($qan_validation_submission->root_cause_id)) $savetodb['root_cause_id'] = $qan_validation_submission->root_cause_id;
                 if(isset($qan_validation_submission->root_cause_id)) {
@@ -248,7 +252,6 @@ Class SuperUser_modal_update extends CI_Model {
                     $rootcause = $rootcause_list->root_cause;
                     $savetodb['root_cause'] = $rootcause;
                 }
-                // if(isset($qan_validation_submission->root_cause)) $savetodb['root_cause'] = $qan_validation_submission->root_cause;
                 
                 if(isset($qan_validation_submission->corrective_action_id)) $savetodb['corrective_action_id'] = $qan_validation_submission->corrective_action_id;
                 if(isset($qan_validation_submission->corrective_action_id)) {
@@ -256,16 +259,12 @@ Class SuperUser_modal_update extends CI_Model {
                     $corrective = $corrective_list->corrective_action;
                     $savetodb['corrective_action'] = $corrective;
                 }
-                
-                // if(isset($qan_validation_submission->corrective_action)) $savetodb['corrective_action'] = $qan_validation_submission->corrective_action;
-                
+                                
                 if(isset($qan_validation_submission->rcfa_pic_user_id)) $savetodb['rcfa_pic_user_id'] = $qan_validation_submission->rcfa_pic_user_id;
                 if(isset($qan_validation_submission->rcfa_ack_user_id)) $savetodb['rcfa_ack_user_id'] = $qan_validation_submission->rcfa_ack_user_id;
-                // if(isset($qan_validation_submission->rcfa_appr_user_id)) $savetodb['rcfa_appr_user_id'] = $qan_validation_submission->rcfa_appr_user_id;
                 if(isset($qan_validation_submission->completion_user_id)) $savetodb['completion_user_id'] = $qan_validation_submission->completion_user_id;
                 if(isset($qan_validation_submission->completion_datetime)) $savetodb['completion_datetime'] = $qan_validation_submission->completion_datetime;
                 if(isset($qan_validation_submission->submission_no)) $savetodb['submission_no'] = $qan_validation_submission->submission_no;
-                //if(isset($qan_validation_submission->submission_id)) $savetodb['submission_id'] = $qan_validation_submission->submission_id;
 
                 //override datetime
                 //$savetodb['completion_datetime'] = date("Y-m-d H:i:s");
@@ -275,8 +274,6 @@ Class SuperUser_modal_update extends CI_Model {
                 $this->db->where('machine_breakdown_id', $data->qan_id);
                 $this->db->update('qan_validation_submission', $data_table_qan_validation_submission);
                 
-                // print_r($savetodb);
-
                 if(is_array(@$qan_validation_submission->inspection_data) AND (count($qan_validation_submission->inspection_data) > 0)){
                     foreach($qan_validation_submission->inspection_data as $inspection_data){
                         
@@ -294,21 +291,19 @@ Class SuperUser_modal_update extends CI_Model {
                     }
                 }
             }
-
-            // exit;
         }
     }
 
     function update_section4($data){
 
 		$savetodb = array();
-		// if(isset($data->qan_id)) $savetodb['id'] = $data->qan_id;
 		if(isset($data->approval_user_id)) $savetodb['approval_user_id'] = $data->approval_user_id;
 		if(isset($data->machine_status)) $savetodb['machine_status'] = $data->machine_status;
 		if(isset($data->machine_stop_reason)) $savetodb['machine_stop_reason'] = $data->machine_status==0?$data->machine_stop_reason:null;
         $data_table_qan_machinebreakdown = $savetodb;
 
         if(count($data_table_qan_machinebreakdown) > 0){
+
             $this->db->where('id',$data->qan_id);
 		    $this->db->update('qan_machinebreakdown', $data_table_qan_machinebreakdown);
         }
@@ -317,15 +312,14 @@ Class SuperUser_modal_update extends CI_Model {
     function update_section5($data){
 
 		$savetodb = array();
-		//if(isset($data->qan_id)) $savetodb['id'] = $data->qan_id;
 		if(isset($data->purge_status)) $savetodb['purge_status'] = $data->purge_status;
 		if(isset($data->notify_next_process)) $savetodb['notify_next_process'] = $data->notify_next_process;
         if(isset($data->fix_validation_result)) $savetodb['fix_validation_result'] = $data->fix_validation_result;
         if(isset($data->closedby_user_id)) $savetodb['closedby_user_id'] = $data->closedby_user_id;
-        // $savetodb['closed_datetime'] = date("Y-m-d H:i:s");
         $data_table_qan_machinebreakdown = $savetodb;
 
         if(count($data_table_qan_machinebreakdown) > 0){
+
             $this->db->where('id',$data->qan_id);
 		    $this->db->update('qan_machinebreakdown', $data_table_qan_machinebreakdown);
         }
@@ -339,9 +333,7 @@ Class SuperUser_modal_update extends CI_Model {
             if($from_code != 0) 
                 $this->db->where('status',$from_code);
             $this->db->update('qan_machinebreakdown', array('status'=>$status_code) );
-
         }
-
     }
 
     function update_mrb_confirmation($qan_id,$value=0){
@@ -350,7 +342,6 @@ Class SuperUser_modal_update extends CI_Model {
             $this->db->where('machine_breakdown_id',$qan_id);
             $this->db->update('qan_material_review_board', array('confirmation'=>$value) );
         }
-
     }
 
     function update_qasample_mrb($qan_id=0,$reject_qty=false){
@@ -369,7 +360,6 @@ Class SuperUser_modal_update extends CI_Model {
             }else{
                 $data['qa_sample_good_qty'] = $result['total_qty'] - $result['qa_sample_reject_qty'];
             }
-
             
             if($result['mrb_exist']===false){
                 $data['machine_breakdown_id'] = $qan_id;

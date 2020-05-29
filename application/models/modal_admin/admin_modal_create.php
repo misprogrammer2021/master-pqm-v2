@@ -105,8 +105,7 @@ Class Admin_modal_create extends CI_Model {
 		$this->db->where($condition);
 		$this->db->limit(1);
 		$query = $this->db->get();
-		// echo $query = $this->db->get_compiled_select();
-		// exit;
+
 		if ($query->num_rows() == 0) {
 
 			$data = array(
@@ -114,7 +113,6 @@ Class Admin_modal_create extends CI_Model {
 				'is_deleted' => $is_deleted_partname
 			  );
 		
-
 			// Query to insert data in database
 			$this->db->insert('model_name', $data);
 			
@@ -126,7 +124,6 @@ Class Admin_modal_create extends CI_Model {
 		}else{
 			return array('error','Duplicate');
 		}
-
 	}
 
 	function save_purge_location($purge_name,$order_no,$show_process,$is_active,$is_deleted_purge_name){
@@ -138,8 +135,7 @@ Class Admin_modal_create extends CI_Model {
 		$this->db->where($condition);
 		$this->db->limit(1);
 		$query = $this->db->get();
-		// echo $query = $this->db->get_compiled_select();
-		// exit;
+
 		if ($query->num_rows() == 0) {
 
 			$data = array(
@@ -150,7 +146,6 @@ Class Admin_modal_create extends CI_Model {
 				'is_deleted' => $is_deleted_purge_name
 			  );
 		
-
 			// Query to insert data in database
 			$this->db->insert('purge_location', $data);
 			
@@ -162,7 +157,6 @@ Class Admin_modal_create extends CI_Model {
 		}else{
 			return array('error','Duplicate');
 		}
-
 	}
 
 	function save_defect_description($defect_description,$defect_type,$is_active,$is_deleted_defect_description){
@@ -174,8 +168,7 @@ Class Admin_modal_create extends CI_Model {
 		$this->db->where($condition);
 		$this->db->limit(1);
 		$query = $this->db->get();
-		// echo $query = $this->db->get_compiled_select();
-		// exit;
+
 		if ($query->num_rows() == 0) {
 
 			$data = array(
@@ -185,7 +178,6 @@ Class Admin_modal_create extends CI_Model {
 				'is_deleted' => $is_deleted_defect_description
 			  );
 		
-
 			// Query to insert data in database
 			$this->db->insert('defectives_list', $data);
 			
@@ -197,7 +189,6 @@ Class Admin_modal_create extends CI_Model {
 		}else{
 			return array('error','Duplicate');
 		}
-
 	}
 
 	function save_root_cause($constant_no,$root_cause,$is_deleted_root_cause){
@@ -209,8 +200,7 @@ Class Admin_modal_create extends CI_Model {
 		$this->db->where($condition);
 		$this->db->limit(1);
 		$query = $this->db->get();
-		// echo $query = $this->db->get_compiled_select();
-		// exit;
+	
 		if ($query->num_rows() == 0) {
 
 			$data = array(
@@ -219,7 +209,6 @@ Class Admin_modal_create extends CI_Model {
 				'is_deleted' => $is_deleted_root_cause
 			  );
 		
-
 			// Query to insert data in database
 			$this->db->insert('root_cause_list', $data);
 			
@@ -231,7 +220,6 @@ Class Admin_modal_create extends CI_Model {
 		}else{
 			return array('error','Duplicate');
 		}
-
 	}
 
 	function save_machine_no($machine_name,$sector_id,$order_no,$is_deleted_machine_no){ //$constant_no
@@ -244,8 +232,7 @@ Class Admin_modal_create extends CI_Model {
 		$this->db->where($condition);
 		$this->db->limit(1);
 		$query = $this->db->get();
-		// echo $query = $this->db->get_compiled_select();
-		// exit;
+
 		if ($query->num_rows() == 0) {
 
 			$data = array(
@@ -255,7 +242,6 @@ Class Admin_modal_create extends CI_Model {
 				'is_deleted' => $is_deleted_machine_no
 			  );
 		
-
 			// Query to insert data in database
 			$this->db->insert('machine_no_list', $data);
 			
@@ -267,7 +253,6 @@ Class Admin_modal_create extends CI_Model {
 		}else{
 			return array('error','Duplicate');
 		}
-
 	}
 
 	function save_sector($sector_name,$is_active,$is_deleted_sector){ //$constant_no
@@ -280,8 +265,7 @@ Class Admin_modal_create extends CI_Model {
 		$this->db->where($condition);
 		$this->db->limit(1);
 		$query = $this->db->get();
-		// echo $query = $this->db->get_compiled_select();
-		// exit;
+
 		if ($query->num_rows() == 0) {
 
 			$data = array(
@@ -290,7 +274,6 @@ Class Admin_modal_create extends CI_Model {
 				'is_deleted' => $is_deleted_sector
 			  );
 		
-
 			// Query to insert data in database
 			$this->db->insert('sector_list', $data);
 			
@@ -302,6 +285,5 @@ Class Admin_modal_create extends CI_Model {
 		}else{
 			return array('error','Duplicate');
 		}
-
 	}
 }

@@ -9,8 +9,6 @@ $jsselect = TRUE;
         <div class="block-header">
             <ol class="breadcrumb breadcrumb-col-teal">
                 <li class="active"><a href="<?=base_url('homepage')?>"><i class="material-icons">home</i> Home</a></li>
-                <!-- <li><a href="javascript:void(0);"><i class="material-icons">library_books</i> Library</a></li> -->
-                <!-- <li><a href="javascript:void(0);"><i class="material-icons">archive</i> Data</a></li> -->
                 <li><i class="material-icons">settings</i>Setting</li>
             </ol>
         </div>
@@ -38,6 +36,7 @@ $jsselect = TRUE;
                     <li role="presentation"><a href="#sector" data-toggle="tab">SECTOR LIST</a></li>
                     
                 </ul><br/>
+
                 <?php 
 
                     if(isset($message_display))
@@ -63,35 +62,36 @@ $jsselect = TRUE;
                                         </tr>
                                     </thead>
                                     <tbody>
+
                                     <?php
                                     
                                         $i=1;
                                         foreach($part_name as $tab1)
                                         {
                                         
-                                        echo '
-                                        
-                                        <tr>
-                                            <td align="center">
-                                                <input type="checkbox" id="part_name'.$tab1->id.'" name="part_name_id['.$tab1->id.']" class="filled-in checkbox-active">
-                                                <label for="part_name'.$tab1->id.'"></label>
-                                            </td>
-                                            <td>'.$i.'</td> 
-                                            <td>
-                                                <input type="text" name="part_name['.$tab1->id.']" value="'.$tab1->part_name.'" class="form-control part_name_id" disabled>
-                                            </td>
-                                            <td>
-                                                <input type="radio" id="yes_tab1'.$tab1->id.'_'.$i.'" name="is_deleted_partname['.$tab1->id.']" value="0" class="with-gap" '.(($tab1->is_deleted == 0)?"checked":"").' disabled>
-                                                <label for="yes_tab1'.$tab1->id.'_'.$i.'">YES</label>
-                                                <input type="radio" id="no_tab1'.$tab1->id.'_'.$i.'" name="is_deleted_partname['.$tab1->id.']" value="1" class="with-gap" '.(($tab1->is_deleted == 1)?"checked":"").' disabled>
-                                                <label for="no_tab1'.$tab1->id.'_'.$i.'">NO</label>
-                                            </td>
-                                        </tr>    
-                                        
-                                        ';
+                                            echo '
+                                            
+                                            <tr>
+                                                <td align="center">
+                                                    <input type="checkbox" id="part_name'.$tab1->id.'" name="part_name_id['.$tab1->id.']" class="filled-in checkbox-active">
+                                                    <label for="part_name'.$tab1->id.'"></label>
+                                                </td>
+                                                <td>'.$i.'</td> 
+                                                <td>
+                                                    <input type="text" name="part_name['.$tab1->id.']" value="'.$tab1->part_name.'" class="form-control part_name_id" disabled>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" id="yes_tab1'.$tab1->id.'_'.$i.'" name="is_deleted_partname['.$tab1->id.']" value="0" class="with-gap" '.(($tab1->is_deleted == 0)?"checked":"").' disabled>
+                                                    <label for="yes_tab1'.$tab1->id.'_'.$i.'">YES</label>
+                                                    <input type="radio" id="no_tab1'.$tab1->id.'_'.$i.'" name="is_deleted_partname['.$tab1->id.']" value="1" class="with-gap" '.(($tab1->is_deleted == 1)?"checked":"").' disabled>
+                                                    <label for="no_tab1'.$tab1->id.'_'.$i.'">NO</label>
+                                                </td>
+                                            </tr>    
+                                            
+                                            ';
                                         $i++;
                                         }
-                                        ?>
+                                    ?>
                                     </tbody>
                                     <tfoot>
                                         <tr>
@@ -104,7 +104,6 @@ $jsselect = TRUE;
                                 </table>
                                 
                                 <button id="form" type="submit" name="update" value="SUBMIT" class="btn btn-success m-t-15 waves-effect pull-right"><i class="material-icons">save</i><span class="icon-name">Update</span></button>
-                                <!-- <input type="hidden" name="update" value="update_part_name"> -->
                             </div>
                         </form>
                     </div>
@@ -131,44 +130,44 @@ $jsselect = TRUE;
                                         foreach($purge_name as $tab2)
                                         {
                                         
-                                        echo '
-                                        
-                                        <tr>
-                                            <td align="center">
-                                                <input type="checkbox" id="purge_name'.$tab2->id.'" name="purge_name_id['.$tab2->id.']" class="filled-in checkbox-active">
-                                                <label for="purge_name'.$tab2->id.'"></label>
-                                            </td>
-                                            <td>'.$i.'</td> 
-                                            <td>
-                                                <input type="text" name="purge_name['.$tab2->id.']" value="'.$tab2->purge_name.'" class="form-control purge_name_id" disabled>
-                                            </td>
-                                            <td>
-                                                <input type="text" name="order_no['.$tab2->id.']" value="'.$tab2->order_no.'" class="form-control purge_name_id" disabled>
-                                            </td> 
-                                            <td>
-                                                <input type="radio" id="yes_show'.$tab2->id.'_'.$i.'" name="show_process['.$tab2->id.']" value="0" class="with-gap" '.(($tab2->show_process == 0)?"checked":"").' disabled>
-                                                <label for="yes_show'.$tab2->id.'_'.$i.'">YES</label>
-                                                <input type="radio" id="no_show'.$tab2->id.'_'.$i.'" name="show_process['.$tab2->id.']" value="1" class="with-gap" '.(($tab2->show_process == 1)?"checked":"").' disabled>
-                                                <label for="no_show'.$tab2->id.'_'.$i.'">NO</label>
-                                            </td>
-                                            <td>
-                                                <input type="radio" id="yes_active2'.$tab2->id.'_'.$i.'" name="is_active['.$tab2->id.']" value="0" class="with-gap" '.(($tab2->is_active == 0)?"checked":"").' disabled>
-                                                <label for="yes_active2'.$tab2->id.'_'.$i.'">YES</label>
-                                                <input type="radio" id="no_active2'.$tab2->id.'_'.$i.'" name="is_active['.$tab2->id.']" value="1" class="with-gap" '.(($tab2->is_active == 1)?"checked":"").' disabled>
-                                                <label for="no_active2'.$tab2->id.'_'.$i.'">NO</label>
-                                            </td>
-                                            <td>
-                                                <input type="radio" id="yes_tab2'.$tab2->id.'_'.$i.'" name="is_deleted_purge_name['.$tab2->id.']" value="1" class="with-gap" '.(($tab2->is_deleted == 1)?"checked":"").' disabled>
-                                                <label for="yes_tab2'.$tab2->id.'_'.$i.'">YES</label>
-                                                <input type="radio" id="no_tab2'.$tab2->id.'_'.$i.'" name="is_deleted_purge_name['.$tab2->id.']" value="0" class="with-gap" '.(($tab2->is_deleted == 0)?"checked":"").' disabled>
-                                                <label for="no_tab2'.$tab2->id.'_'.$i.'">NO</label>
-                                            </td>
-                                        </tr>    
-                                        
-                                        ';
+                                            echo '
+                                            
+                                            <tr>
+                                                <td align="center">
+                                                    <input type="checkbox" id="purge_name'.$tab2->id.'" name="purge_name_id['.$tab2->id.']" class="filled-in checkbox-active">
+                                                    <label for="purge_name'.$tab2->id.'"></label>
+                                                </td>
+                                                <td>'.$i.'</td> 
+                                                <td>
+                                                    <input type="text" name="purge_name['.$tab2->id.']" value="'.$tab2->purge_name.'" class="form-control purge_name_id" disabled>
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="order_no['.$tab2->id.']" value="'.$tab2->order_no.'" class="form-control purge_name_id" disabled>
+                                                </td> 
+                                                <td>
+                                                    <input type="radio" id="yes_show'.$tab2->id.'_'.$i.'" name="show_process['.$tab2->id.']" value="0" class="with-gap" '.(($tab2->show_process == 0)?"checked":"").' disabled>
+                                                    <label for="yes_show'.$tab2->id.'_'.$i.'">YES</label>
+                                                    <input type="radio" id="no_show'.$tab2->id.'_'.$i.'" name="show_process['.$tab2->id.']" value="1" class="with-gap" '.(($tab2->show_process == 1)?"checked":"").' disabled>
+                                                    <label for="no_show'.$tab2->id.'_'.$i.'">NO</label>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" id="yes_active2'.$tab2->id.'_'.$i.'" name="is_active['.$tab2->id.']" value="0" class="with-gap" '.(($tab2->is_active == 0)?"checked":"").' disabled>
+                                                    <label for="yes_active2'.$tab2->id.'_'.$i.'">YES</label>
+                                                    <input type="radio" id="no_active2'.$tab2->id.'_'.$i.'" name="is_active['.$tab2->id.']" value="1" class="with-gap" '.(($tab2->is_active == 1)?"checked":"").' disabled>
+                                                    <label for="no_active2'.$tab2->id.'_'.$i.'">NO</label>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" id="yes_tab2'.$tab2->id.'_'.$i.'" name="is_deleted_purge_name['.$tab2->id.']" value="1" class="with-gap" '.(($tab2->is_deleted == 1)?"checked":"").' disabled>
+                                                    <label for="yes_tab2'.$tab2->id.'_'.$i.'">YES</label>
+                                                    <input type="radio" id="no_tab2'.$tab2->id.'_'.$i.'" name="is_deleted_purge_name['.$tab2->id.']" value="0" class="with-gap" '.(($tab2->is_deleted == 0)?"checked":"").' disabled>
+                                                    <label for="no_tab2'.$tab2->id.'_'.$i.'">NO</label>
+                                                </td>
+                                            </tr>    
+                                            
+                                            ';
                                         $i++;
                                         }
-                                        ?>
+                                    ?>
                                     </tbody>
                                     <tfoot>
                                         <tr>
@@ -184,7 +183,6 @@ $jsselect = TRUE;
                                 </table>
                                 
                                 <button id="form" type="submit" name="update" value="SUBMIT" class="btn btn-success m-t-15 waves-effect pull-right"><i class="material-icons">save</i><span class="icon-name">Update</span></button>
-                                <!-- <input type="hidden" name="update" value="update_part_name"> -->
                             </div>
                         </form>
                     </div>
@@ -205,54 +203,54 @@ $jsselect = TRUE;
                                         </tr>
                                     </thead>
                                     <tbody>
+
                                     <?php
                                       
                                         $i=1;
-
                                         foreach($defect_description as $tab3)
                                         {
                                         
-                                        echo '
-                                        
-                                        <tr>
-                                            <td align="center">
-                                                <input type="checkbox" id="defect_description_id'.$tab3->id.'" name="defect_description_id['.$tab3->id.']" class="filled-in checkbox-active">
-                                                <label for="defect_description_id'.$tab3->id.'"></label>
-                                            </td>
-                                            <td>'.$i.'</td> 
-                                            <td>
-                                                <input type="text" name="defect_description['.$tab3->id.']" value="'.$tab3->defect_description_name.'" class="form-control defect_description_id" disabled>
-                                            </td>
+                                            echo '
+                                            
+                                            <tr>
+                                                <td align="center">
+                                                    <input type="checkbox" id="defect_description_id'.$tab3->id.'" name="defect_description_id['.$tab3->id.']" class="filled-in checkbox-active">
+                                                    <label for="defect_description_id'.$tab3->id.'"></label>
+                                                </td>
+                                                <td>'.$i.'</td> 
+                                                <td>
+                                                    <input type="text" name="defect_description['.$tab3->id.']" value="'.$tab3->defect_description_name.'" class="form-control defect_description_id" disabled>
+                                                </td>
 
-                                            <td> 
-                                            <div class="selectdefect">
-                                                <select id="defect_type['.$tab3->id.']" name="defect_type['.$tab3->id.']" class="form-control show-tick defect_description_id">
-                                                <option value="">--Please Select--</option>
-                                                ';
-                                                $selected = '';
-                                                foreach($defect_type as $index => $defect_obj){
-                                                    
-                                                    $selected = $defect_obj->defect_type ==  $tab3->defect_type?'selected':'';
-                                                    echo '<option value="'.$defect_obj->defect_type.'" '.$selected.'>'.$defect_obj->defect_type.'</option>';
-                                                }
-                                        echo'    </select>
-                                            </div>
-                                            </td>
-                                            <td>
-                                                <input type="radio" id="yes_active3'.$tab3->id.'_'.$i.'" name="is_active['.$tab3->id.']" value="0" class="with-gap" '.(($tab3->is_active == 0)?"checked":"").' disabled>
-                                                <label for="yes_active3'.$tab3->id.'_'.$i.'">YES</label>
-                                                <input type="radio" id="no_active3'.$tab3->id.'_'.$i.'" name="is_active['.$tab3->id.']" value="1" class="with-gap" '.(($tab3->is_active == 1)?"checked":"").' disabled>
-                                                <label for="no_active3'.$tab3->id.'_'.$i.'">NO</label>
-                                            </td> 
-                                            <td>
-                                                <input type="radio" id="yes_tab3'.$tab3->id.'_'.$i.'" name="is_deleted_defect_description['.$tab3->id.']" value="1" class="with-gap" '.(($tab3->is_deleted == 1)?"checked":"").' disabled>
-                                                <label for="yes_tab3'.$tab3->id.'_'.$i.'">YES</label>
-                                                <input type="radio" id="no_tab3'.$tab3->id.'_'.$i.'" name="is_deleted_defect_description['.$tab3->id.']" value="0" class="with-gap" '.(($tab3->is_deleted == 0)?"checked":"").' disabled>
-                                                <label for="no_tab3'.$tab3->id.'_'.$i.'">NO</label>
-                                            </td>
-                                        </tr>    
-                                        
-                                        ';
+                                                <td> 
+                                                <div class="selectdefect">
+                                                    <select id="defect_type['.$tab3->id.']" name="defect_type['.$tab3->id.']" class="form-control show-tick defect_description_id">
+                                                    <option value="">--Please Select--</option>
+                                                    ';
+                                                    $selected = '';
+                                                    foreach($defect_type as $index => $defect_obj){
+                                                        
+                                                        $selected = $defect_obj->defect_type ==  $tab3->defect_type?'selected':'';
+                                                        echo '<option value="'.$defect_obj->defect_type.'" '.$selected.'>'.$defect_obj->defect_type.'</option>';
+                                                    }
+                                            echo'    </select>
+                                                </div>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" id="yes_active3'.$tab3->id.'_'.$i.'" name="is_active['.$tab3->id.']" value="0" class="with-gap" '.(($tab3->is_active == 0)?"checked":"").' disabled>
+                                                    <label for="yes_active3'.$tab3->id.'_'.$i.'">YES</label>
+                                                    <input type="radio" id="no_active3'.$tab3->id.'_'.$i.'" name="is_active['.$tab3->id.']" value="1" class="with-gap" '.(($tab3->is_active == 1)?"checked":"").' disabled>
+                                                    <label for="no_active3'.$tab3->id.'_'.$i.'">NO</label>
+                                                </td> 
+                                                <td>
+                                                    <input type="radio" id="yes_tab3'.$tab3->id.'_'.$i.'" name="is_deleted_defect_description['.$tab3->id.']" value="1" class="with-gap" '.(($tab3->is_deleted == 1)?"checked":"").' disabled>
+                                                    <label for="yes_tab3'.$tab3->id.'_'.$i.'">YES</label>
+                                                    <input type="radio" id="no_tab3'.$tab3->id.'_'.$i.'" name="is_deleted_defect_description['.$tab3->id.']" value="0" class="with-gap" '.(($tab3->is_deleted == 0)?"checked":"").' disabled>
+                                                    <label for="no_tab3'.$tab3->id.'_'.$i.'">NO</label>
+                                                </td>
+                                            </tr>    
+                                            
+                                            ';
                                         $i++;
                                         }
                                     ?>
@@ -270,7 +268,6 @@ $jsselect = TRUE;
                                 </table>
                                 
                                 <button id="form" type="submit" name="update" value="SUBMIT" class="btn btn-success m-t-15 waves-effect pull-right"><i class="material-icons">save</i><span class="icon-name">Update</span></button>
-                                <!-- <input type="hidden" name="update" value="update_corrective_action"> -->
                             </div>
                         </form>
                     </div>
@@ -290,38 +287,39 @@ $jsselect = TRUE;
                                         </tr>
                                     </thead>
                                     <tbody>
+
                                     <?php
                                     
                                         $i=1;
                                         foreach($root_cause as $tab4)
                                         {
                                         
-                                        echo '
-                                        
-                                        <tr>
-                                            <td align="center">
-                                                <input type="checkbox" id="root_cause'.$tab4->id.'" name="root_cause_id['.$tab4->id.']" class="filled-in checkbox-active">
-                                                <label for="root_cause'.$tab4->id.'"></label>
-                                            </td>
-                                            <td>'.$i.'</td> 
-                                            <td>
-                                                <input type="text" name="constant_no['.$tab4->id.']" value="'.$tab4->constant_no.'" class="form-control root_cause_id" disabled>
-                                            </td>
-                                            <td>
-                                                <input type="text" name="root_cause['.$tab4->id.']" value="'.$tab4->root_cause.'" class="form-control root_cause_id" disabled>
-                                            </td>
-                                            <td>
-                                                <input type="radio" id="yes_tab4'.$tab4->id.'_'.$i.'" name="is_deleted_root_cause['.$tab4->id.']" value="0" class="with-gap" '.(($tab4->is_deleted == 0)?"checked":"").' disabled>
-                                                <label for="yes_tab4'.$tab4->id.'_'.$i.'">YES</label>
-                                                <input type="radio" id="no_tab4'.$tab4->id.'_'.$i.'" name="is_deleted_root_cause['.$tab4->id.']" value="1" class="with-gap" '.(($tab4->is_deleted == 1)?"checked":"").' disabled>
-                                                <label for="no_tab4'.$tab4->id.'_'.$i.'">NO</label>
-                                            </td>
-                                        </tr>    
-                                        
-                                        ';
+                                            echo '
+                                            
+                                            <tr>
+                                                <td align="center">
+                                                    <input type="checkbox" id="root_cause'.$tab4->id.'" name="root_cause_id['.$tab4->id.']" class="filled-in checkbox-active">
+                                                    <label for="root_cause'.$tab4->id.'"></label>
+                                                </td>
+                                                <td>'.$i.'</td> 
+                                                <td>
+                                                    <input type="text" name="constant_no['.$tab4->id.']" value="'.$tab4->constant_no.'" class="form-control root_cause_id" disabled>
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="root_cause['.$tab4->id.']" value="'.$tab4->root_cause.'" class="form-control root_cause_id" disabled>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" id="yes_tab4'.$tab4->id.'_'.$i.'" name="is_deleted_root_cause['.$tab4->id.']" value="0" class="with-gap" '.(($tab4->is_deleted == 0)?"checked":"").' disabled>
+                                                    <label for="yes_tab4'.$tab4->id.'_'.$i.'">YES</label>
+                                                    <input type="radio" id="no_tab4'.$tab4->id.'_'.$i.'" name="is_deleted_root_cause['.$tab4->id.']" value="1" class="with-gap" '.(($tab4->is_deleted == 1)?"checked":"").' disabled>
+                                                    <label for="no_tab4'.$tab4->id.'_'.$i.'">NO</label>
+                                                </td>
+                                            </tr>    
+                                            
+                                            ';
                                         $i++;
                                         }
-                                        ?>
+                                    ?>
                                     </tbody>
                                     <tfoot>
                                         <tr>
@@ -335,7 +333,6 @@ $jsselect = TRUE;
                                 </table>
                                 
                                 <button id="form" type="submit" name="update" value="SUBMIT" class="btn btn-success m-t-15 waves-effect pull-right"><i class="material-icons">save</i><span class="icon-name">Update</span></button>
-                                <!-- <input type="hidden" name="update" value="update_corrective_action"> -->
                             </div>
                         </form>
                     </div>
@@ -355,38 +352,39 @@ $jsselect = TRUE;
                                         </tr>
                                     </thead>
                                     <tbody>
+
                                     <?php
                                     
                                         $i=1;
                                         foreach($corrective_action as $tab5)
                                         {
                                         
-                                        echo '
-                                        
-                                        <tr>
-                                            <td align="center">
-                                                <input type="checkbox" id="corrective_action'.$tab5->id.'" name="corrective_action_id['.$tab5->id.']" class="filled-in checkbox-active">
-                                                <label for="corrective_action'.$tab5->id.'"></label>
-                                            </td>
-                                            <td>'.$i.'</td> 
-                                            <td>
-                                                <input type="text" name="constant_no['.$tab5->id.']" value="'.$tab5->constant_no.'" class="form-control corrective_action_id" disabled>
-                                            </td>
-                                            <td>
-                                                <input type="text" name="corrective_action['.$tab5->id.']" value="'.$tab5->corrective_action.'" class="form-control corrective_action_id" style="width:100%" disabled>
-                                            </td>
-                                            <td>
-                                                <input type="radio" id="yes_tab5'.$tab5->id.'_'.$i.'" name="is_deleted_corrective_action['.$tab5->id.']" value="0" class="with-gap" '.(($tab5->is_deleted == 0)?"checked":"").' disabled>
-                                                <label for="yes_tab5'.$tab5->id.'_'.$i.'">YES</label>
-                                                <input type="radio" id="no_tab5'.$tab5->id.'_'.$i.'" name="is_deleted_corrective_action['.$tab5->id.']" value="1" class="with-gap" '.(($tab5->is_deleted == 1)?"checked":"").' disabled>
-                                                <label for="no_tab5'.$tab5->id.'_'.$i.'">NO</label>
-                                            </td>
-                                        </tr>    
-                                        
-                                        ';
+                                            echo '
+                                            
+                                            <tr>
+                                                <td align="center">
+                                                    <input type="checkbox" id="corrective_action'.$tab5->id.'" name="corrective_action_id['.$tab5->id.']" class="filled-in checkbox-active">
+                                                    <label for="corrective_action'.$tab5->id.'"></label>
+                                                </td>
+                                                <td>'.$i.'</td> 
+                                                <td>
+                                                    <input type="text" name="constant_no['.$tab5->id.']" value="'.$tab5->constant_no.'" class="form-control corrective_action_id" disabled>
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="corrective_action['.$tab5->id.']" value="'.$tab5->corrective_action.'" class="form-control corrective_action_id" style="width:100%" disabled>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" id="yes_tab5'.$tab5->id.'_'.$i.'" name="is_deleted_corrective_action['.$tab5->id.']" value="0" class="with-gap" '.(($tab5->is_deleted == 0)?"checked":"").' disabled>
+                                                    <label for="yes_tab5'.$tab5->id.'_'.$i.'">YES</label>
+                                                    <input type="radio" id="no_tab5'.$tab5->id.'_'.$i.'" name="is_deleted_corrective_action['.$tab5->id.']" value="1" class="with-gap" '.(($tab5->is_deleted == 1)?"checked":"").' disabled>
+                                                    <label for="no_tab5'.$tab5->id.'_'.$i.'">NO</label>
+                                                </td>
+                                            </tr>    
+                                            
+                                            ';
                                         $i++;
                                         }
-                                        ?>
+                                    ?>
                                     </tbody>
                                     <tfoot>
                                         <tr>
@@ -400,7 +398,6 @@ $jsselect = TRUE;
                                 </table>
                                 
                                 <button id="form" type="submit" name="update" value="SUBMIT" class="btn btn-success m-t-15 waves-effect pull-right"><i class="material-icons">save</i><span class="icon-name">Update</span></button>
-                                <!-- <input type="hidden" name="update" value="update_corrective_action"> -->
                             </div>
                         </form>
                     </div>
@@ -420,6 +417,7 @@ $jsselect = TRUE;
                                         </tr>
                                     </thead>
                                     <tbody>
+
                                     <?php
                                       
                                         $i=1;
@@ -429,43 +427,43 @@ $jsselect = TRUE;
                                         foreach($machine_no as $tab6)
                                         {
                                             
-                                        echo '
-                                        
-                                        <tr>
-                                            <td align="center">
-                                                <input type="checkbox" id="machine_no_id'.$tab6->id.'" name="machine_no_id['.$tab6->id.']" class="filled-in checkbox-active">
-                                                <label for="machine_no_id'.$tab6->id.'"></label>
-                                            </td>
-                                            <td>'.$tab6->id.'</td> 
-                                            <td>
-                                                <input type="text" name="machine_name['.$tab6->id.']" value="'.$tab6->machine_name.'" class="form-control machine_no_id" disabled>
-                                            </td>
+                                            echo '
+                                            
+                                            <tr>
+                                                <td align="center">
+                                                    <input type="checkbox" id="machine_no_id'.$tab6->id.'" name="machine_no_id['.$tab6->id.']" class="filled-in checkbox-active">
+                                                    <label for="machine_no_id'.$tab6->id.'"></label>
+                                                </td>
+                                                <td>'.$tab6->id.'</td> 
+                                                <td>
+                                                    <input type="text" name="machine_name['.$tab6->id.']" value="'.$tab6->machine_name.'" class="form-control machine_no_id" disabled>
+                                                </td>
 
-                                            <td> 
-                                            <div class="selectsector">
-                                                <select id="sector_id['.$tab6->id.']" name="sector_id['.$tab6->id.']" class="form-control show-tick machine_no_id">
-                                                <option value="">--Please Select--</option>
-                                                ';
-                                                $selected = '';
-                                                foreach($sector_list as $sector_id => $sector_name){
-                                                    $selected = $tab6->sector_id ==  $sector_id?'selected':'';
-                                                    echo '<option value="'.$sector_id.'" '.$selected.'>'.$sector_name.'</option>';
-                                                }
-                                        echo'    </select>
-                                            </div>
-                                            </td>
-                                            <td>
-                                                <input type="text" name="order_no['.$tab6->id.']" value="'.$tab6->order_no.'" class="form-control machine_no_id" disabled>
-                                            </td> 
-                                            <td>
-                                                <input type="radio" id="yes_tab6'.$tab6->id.'_'.$i.'" name="is_deleted_machine_no['.$tab6->id.']" value="1" class="with-gap" '.(($tab6->is_deleted == 1)?"checked":"").' disabled>
-                                                <label for="yes_tab6'.$tab6->id.'_'.$i.'">YES</label>
-                                                <input type="radio" id="no_tab6'.$tab6->id.'_'.$i.'" name="is_deleted_machine_no['.$tab6->id.']" value="0" class="with-gap" '.(($tab6->is_deleted == 0)?"checked":"").' disabled>
-                                                <label for="no_tab6'.$tab6->id.'_'.$i.'">NO</label>
-                                            </td>
-                                        </tr>    
-                                        
-                                        ';
+                                                <td> 
+                                                <div class="selectsector">
+                                                    <select id="sector_id['.$tab6->id.']" name="sector_id['.$tab6->id.']" class="form-control show-tick machine_no_id">
+                                                    <option value="">--Please Select--</option>
+                                                    ';
+                                                    $selected = '';
+                                                    foreach($sector_list as $sector_id => $sector_name){
+                                                        $selected = $tab6->sector_id ==  $sector_id?'selected':'';
+                                                        echo '<option value="'.$sector_id.'" '.$selected.'>'.$sector_name.'</option>';
+                                                    }
+                                            echo'    </select>
+                                                </div>
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="order_no['.$tab6->id.']" value="'.$tab6->order_no.'" class="form-control machine_no_id" disabled>
+                                                </td> 
+                                                <td>
+                                                    <input type="radio" id="yes_tab6'.$tab6->id.'_'.$i.'" name="is_deleted_machine_no['.$tab6->id.']" value="1" class="with-gap" '.(($tab6->is_deleted == 1)?"checked":"").' disabled>
+                                                    <label for="yes_tab6'.$tab6->id.'_'.$i.'">YES</label>
+                                                    <input type="radio" id="no_tab6'.$tab6->id.'_'.$i.'" name="is_deleted_machine_no['.$tab6->id.']" value="0" class="with-gap" '.(($tab6->is_deleted == 0)?"checked":"").' disabled>
+                                                    <label for="no_tab6'.$tab6->id.'_'.$i.'">NO</label>
+                                                </td>
+                                            </tr>    
+                                            
+                                            ';
                                         $i++;
                                         }
                                     ?>
@@ -482,7 +480,7 @@ $jsselect = TRUE;
                                     </tfoot>
                                 </table>
         
-                            <button id="form" type="submit" name="update" value="SUBMIT" class="btn btn-success m-t-15 waves-effect pull-right"><i class="material-icons">save</i><span class="icon-name">Update</span></button>
+                                <button id="form" type="submit" name="update" value="SUBMIT" class="btn btn-success m-t-15 waves-effect pull-right"><i class="material-icons">save</i><span class="icon-name">Update</span></button>
                             </div>
                         </form>
                     </div>
@@ -501,39 +499,39 @@ $jsselect = TRUE;
                                         </tr>
                                     </thead>
                                     <tbody>
+
                                     <?php
                                       
                                         $i=1;
-                                        
                                         foreach($sector as $tab7)
                                         {
                                             
-                                        echo '
-                                        
-                                        <tr>
-                                            <td align="center">
-                                                <input type="checkbox" id="sector_id'.$tab7->id.'" name="sector_id['.$tab7->id.']" class="filled-in checkbox-active">
-                                                <label for="sector_id'.$tab7->id.'"></label>
-                                            </td>
-                                            <td>'.$i.'</td> 
-                                            <td>
-                                                <input type="text" name="sector_name['.$tab7->id.']" value="'.$tab7->sector_name.'" class="form-control sector_id" disabled>
-                                            </td>
-                                            <td>
-                                                <input type="radio" id="yes_active7'.$tab7->id.'_'.$i.'" name="is_active['.$tab7->id.']" value="0" class="with-gap" '.(($tab7->is_deleted == 0)?"checked":"").' disabled>
-                                                <label for="yes_active7'.$tab7->id.'_'.$i.'">YES</label>
-                                                <input type="radio" id="no_active7'.$tab7->id.'_'.$i.'" name="is_active['.$tab7->id.']" value="1" class="with-gap" '.(($tab7->is_deleted == 1)?"checked":"").' disabled>
-                                                <label for="no_active7'.$tab7->id.'_'.$i.'">NO</label>
-                                            </td> 
-                                            <td>
-                                                <input type="radio" id="yes_tab7'.$tab7->id.'_'.$i.'" name="is_deleted_defect_description['.$tab7->id.']" value="1" class="with-gap" '.(($tab7->is_deleted == 1)?"checked":"").' disabled>
-                                                <label for="yes_tab7'.$tab7->id.'_'.$i.'">YES</label>
-                                                <input type="radio" id="no_tab7'.$tab7->id.'_'.$i.'" name="is_deleted_defect_description['.$tab7->id.']" value="0" class="with-gap" '.(($tab7->is_deleted == 0)?"checked":"").' disabled>
-                                                <label for="no_tab7'.$tab7->id.'_'.$i.'">NO</label>
-                                            </td>
-                                        </tr>    
-                                        
-                                        ';
+                                            echo '
+                                            
+                                            <tr>
+                                                <td align="center">
+                                                    <input type="checkbox" id="sector_id'.$tab7->id.'" name="sector_id['.$tab7->id.']" class="filled-in checkbox-active">
+                                                    <label for="sector_id'.$tab7->id.'"></label>
+                                                </td>
+                                                <td>'.$i.'</td> 
+                                                <td>
+                                                    <input type="text" name="sector_name['.$tab7->id.']" value="'.$tab7->sector_name.'" class="form-control sector_id" disabled>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" id="yes_active7'.$tab7->id.'_'.$i.'" name="is_active['.$tab7->id.']" value="0" class="with-gap" '.(($tab7->is_deleted == 0)?"checked":"").' disabled>
+                                                    <label for="yes_active7'.$tab7->id.'_'.$i.'">YES</label>
+                                                    <input type="radio" id="no_active7'.$tab7->id.'_'.$i.'" name="is_active['.$tab7->id.']" value="1" class="with-gap" '.(($tab7->is_deleted == 1)?"checked":"").' disabled>
+                                                    <label for="no_active7'.$tab7->id.'_'.$i.'">NO</label>
+                                                </td> 
+                                                <td>
+                                                    <input type="radio" id="yes_tab7'.$tab7->id.'_'.$i.'" name="is_deleted_defect_description['.$tab7->id.']" value="1" class="with-gap" '.(($tab7->is_deleted == 1)?"checked":"").' disabled>
+                                                    <label for="yes_tab7'.$tab7->id.'_'.$i.'">YES</label>
+                                                    <input type="radio" id="no_tab7'.$tab7->id.'_'.$i.'" name="is_deleted_defect_description['.$tab7->id.']" value="0" class="with-gap" '.(($tab7->is_deleted == 0)?"checked":"").' disabled>
+                                                    <label for="no_tab7'.$tab7->id.'_'.$i.'">NO</label>
+                                                </td>
+                                            </tr>    
+                                            
+                                            ';
                                         $i++;
                                         }
                                     ?>
@@ -549,7 +547,7 @@ $jsselect = TRUE;
                                     </tfoot>
                                 </table>
         
-                            <button id="form" type="submit" name="update" value="SUBMIT" class="btn btn-success m-t-15 waves-effect pull-right"><i class="material-icons">save</i><span class="icon-name">Update</span></button>
+                                <button id="form" type="submit" name="update" value="SUBMIT" class="btn btn-success m-t-15 waves-effect pull-right"><i class="material-icons">save</i><span class="icon-name">Update</span></button>
                             </div>
                         </form>
                     </div>
@@ -608,7 +606,6 @@ $jsselect = TRUE;
                         <button id="form" type="submit" name="submit" value="SUBMIT" class="btn btn-primary">
                             Save changes
                         </button>
-                        <!-- <input type="hidden" name="submit" value="insert_part_name"> -->
                     </div>
                 </form>
             </div>
@@ -693,7 +690,6 @@ $jsselect = TRUE;
                         <button id="form" type="submit" name="submit" value="SUBMIT" class="btn btn-primary">
                             Save changes
                         </button>
-                        <!-- <input type="hidden" name="submit" value="insert_part_name"> -->
                     </div>
                 </form>
             </div>
@@ -770,7 +766,6 @@ $jsselect = TRUE;
                         <button id="form" type="submit" name="submit" value="SUBMIT" class="btn btn-primary">
                             Save changes
                         </button>
-                        <!-- <input type="hidden" name="submit" value="insert_corrective_action"> -->
                     </div>
                 </form>
             </div>
@@ -833,7 +828,6 @@ $jsselect = TRUE;
                         <button id="form" type="submit" name="submit" value="SUBMIT" class="btn btn-primary">
                             Save changes
                         </button>
-                        <!-- <input type="hidden" name="submit" value="insert_corrective_action"> -->
                     </div>
                 </form>
             </div>
@@ -896,7 +890,6 @@ $jsselect = TRUE;
                         <button id="form" type="submit" name="submit" value="SUBMIT" class="btn btn-primary">
                             Save changes
                         </button>
-                        <!-- <input type="hidden" name="submit" value="insert_corrective_action"> -->
                     </div>
                 </form>
             </div>
@@ -965,7 +958,6 @@ $jsselect = TRUE;
                         <button id="form" type="submit" name="submit" value="SUBMIT" class="btn btn-primary">
                             Save changes
                         </button>
-                        <!-- <input type="hidden" name="submit" value="insert_corrective_action"> -->
                     </div>
                 </form>
             </div>
@@ -1032,7 +1024,6 @@ $jsselect = TRUE;
                         <button id="form" type="submit" name="submit" value="SUBMIT" class="btn btn-primary">
                             Save changes
                         </button>
-                        <!-- <input type="hidden" name="submit" value="insert_corrective_action"> -->
                     </div>
                 </form>
             </div>
@@ -1041,86 +1032,73 @@ $jsselect = TRUE;
 </div>
 <!-- End Modal for ADD/UPDATE MACHINE NO -->
 
-
 <!-- Jquery Core Js -->
 <script src="<?=base_url('assets/templates/plugins/jquery/jquery.min.js')?>"></script>
 <script src="<?=base_url('/assets/templates/plugins/momentjs/moment.js')?>"></script>
 <!-- Bootstrap Date Time Picker Js -->
 <script src="<?=base_url('/assets/templates/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js')?>"></script>
+
 <script>
-$(function() {
-    //Textare auto growth
-    //autosize($('textarea.auto-growth'));
 
-    //Datetimepicker plugin
-    $('.datetimepicker').bootstrapMaterialDatePicker({
-        // format: 'dddd DD MMMM YYYY - HH:mm',
-        format: 'YYYY-MM-DD HH:mm',
-        clearButton: true,
-        weekStart: 1
-    });
-
-    $('.datepicker').bootstrapMaterialDatePicker({
-        format: 'dddd DD MMMM YYYY',
-        clearButton: true,
-        weekStart: 1,
-        time: false
-    });
-
-    $('.timepicker').bootstrapMaterialDatePicker({
-        format: 'HH:mm',
-        clearButton: true,
-        date: false
-    });
-
-    // $('.dataTable').DataTable( {
-    //     paging: true,
-    //     "order": [],
-    //     "columnDefs": [ {
-    //     "targets"  : 'no-sort',
-    //     "orderable": false
-    //     }]
-    // } );
+    $(function() {
     
-    window.setTimeout(function() {
-    $(".alert").fadeTo(500, 0).slideUp(500, function(){
-        $(this).remove(); 
+        //Datetimepicker plugin
+        $('.datetimepicker').bootstrapMaterialDatePicker({
+            // format: 'dddd DD MMMM YYYY - HH:mm',
+            format: 'YYYY-MM-DD HH:mm',
+            clearButton: true,
+            weekStart: 1
+        });
+
+        $('.datepicker').bootstrapMaterialDatePicker({
+            format: 'dddd DD MMMM YYYY',
+            clearButton: true,
+            weekStart: 1,
+            time: false
+        });
+
+        $('.timepicker').bootstrapMaterialDatePicker({
+            format: 'HH:mm',
+            clearButton: true,
+            date: false
+        });
+
+        window.setTimeout(function() {
+            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                $(this).remove(); 
+            });
+        }, 4000);
+
     });
-}, 4000);
 
-});
+    $(document).ready(function () {
+        $('input.checkbox-active').change(function () {
 
-$(document).ready(function () {
-    $('input.checkbox-active').change(function () {
+            if($(this).is(":checked"))
+            {
+                $(this).parent().siblings().find("input").attr("disabled",false);
+                $(this).parents('td').siblings().find("div.selectsector").prop('disabled', false);
+            }
+            else{
+                $(this).parent().siblings().find("input").attr("disabled",true);
+                $(this).parents('td').siblings().find("div.selectsector").prop('disabled', true);
+            }
+        })
 
-        if($(this).is(":checked"))
-        {
-            // alert($(this).parent().siblings().find("input").val());
-            $(this).parent().siblings().find("input").attr("disabled",false);
-            $(this).parents('td').siblings().find("div.selectsector").prop('disabled', false);
-        }
-        else
-        {
-            // alert($(this).parent().siblings().find("input").val());
-            $(this).parent().siblings().find("input").attr("disabled",true);
-            $(this).parents('td').siblings().find("div.selectsector").prop('disabled', true);
-        }
-    })
-
-    $('#mc_no,#corr_act,#sectors').DataTable({
-        "columnDefs": [ {
-            // "orderable": false,
-            // "className": 'checkbox-active',
-            "targets": [0,1],
-            "searchable": false
-        } ]
-        // "select": {
-        //     style:    'os',
-        //     selector: 'td:first-child'
-        // },
-        // "order": [[ 1, 'asc' ]]
+        $('#mc_no,#corr_act,#sectors').DataTable({
+            "columnDefs": [ {
+                // "orderable": false,
+                // "className": 'checkbox-active',
+                "targets": [0,1],
+                "searchable": false
+            } ]
+            // "select": {
+            //     style:    'os',
+            //     selector: 'td:first-child'
+            // },
+            // "order": [[ 1, 'asc' ]]
+        });
     });
-});
 
 </script>
 

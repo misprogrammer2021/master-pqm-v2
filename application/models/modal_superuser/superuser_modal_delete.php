@@ -16,13 +16,10 @@ class SuperUser_modal_delete extends CI_Model
             }
 
             return $this->db->delete('qan_rootcause_item_inspection');
-            // echo $query = $this->db->get_compiled_select('qan_rootcause_item_inspection');
-            // exit;
         }
         else{
             return false;
         }
-        
     }
 }
 ?>

@@ -66,7 +66,6 @@ class BackEnd extends MY_FrontEnd {
         //Check submit button 
         if($this->input->post('submit')) {
            
-
 		    //get form's data and store in local varable
             $username=$this->input->post('username');
             $password=$this->input->post('password');
@@ -77,19 +76,15 @@ class BackEnd extends MY_FrontEnd {
             $title=$this->input->post('title');
             $employee_no=$this->input->post('employee_no');        
             $role_id=$this->input->post('role_id');         
-            $created_date=$this->input->post('created_date'); 
-            $modified_date=$this->input->post('modified_date');
-            $is_deleted=$this->input->post('is_deleted');
+            $created_date=date("Y-m-d H:i:s"); 
+            $modified_date=date("Y-m-d H:i:s");
 
-            
-          
-        //call saverecords method of Login_Database and pass variables as parameter
-        $user_id = $this->login_database->save_user_registration($username,$password,$email,$fullname,$commodity,$dept_id,$title,$employee_no,$created_date,$modified_date,$is_deleted);	
-        $this->login_database->save_user_role($user_id,$role_id);
+            //call saverecords method of Login_Database and pass variables as parameter
+            $user_id = $this->login_database->save_user_registration($username,$password,$email,$fullname,$commodity,$dept_id,$title,$employee_no,$created_date,$modified_date);	
+            $this->login_database->save_user_role($user_id,$role_id);
 
-        echo "Records Saved Successfully";
-        redirect('/view_user_info');
-        
+            echo "Records Saved Successfully";
+            redirect('/view_user_info');
         }
         
         $result['roles']=$this->admin_modal_select->get_role_dropdown();
@@ -105,8 +100,7 @@ class BackEnd extends MY_FrontEnd {
         $this->data['title'] = "JCY Product Quality System";
         $this->data['pageName'] = "QUALITY ACTION NOTICE (QAN) & MACHINE BREAKDOWN FORM";
         $this->data['description'] = "Overview";
-
-        // Start controller code here
+        $this->data['jsselect'] = TRUE;
 
         // Load View
         $this->header($this->data);
@@ -137,26 +131,25 @@ class BackEnd extends MY_FrontEnd {
         $result['department']=$this->admin_modal_select->get_department();
         $this->load->view('BackEnd/QAN/viewuserrecords',$result);	
         
-            if($this->input->post('update'))
-            {
-                $username=$this->input->post('username');
-                $password=$this->input->post('password');
-                $email=$this->input->post('email');
-                $fullname=$this->input->post('fullname');
-                $commodity=$this->input->post('commodity');
-                $dept_id=$this->input->post('dept_id');
-                $title=$this->input->post('title');
-                $employee_no=$this->input->post('employee_no');
-                $role_id=$this->input->post('role_id');
-                $created_date=date("Y-m-d H:i:s");
-                $created_date=$this->input->post('created_date');
-                $modified_date=$this->input->post('modified_date');
-                $is_deleted=$this->input->post('is_deleted');
-                $this->admin_modal_update->update_user_records($id,$username,$password,$email,$fullname,$commodity,$dept_id,$title,$employee_no,$role_id,$created_date,$modified_date,$is_deleted);
-                redirect("BackEnd/view_user_info");
-            }
-        
-            $this->footer($this->data);
+        if($this->input->post('update'))
+        {
+            $username=$this->input->post('username');
+            $password=$this->input->post('password');
+            $email=$this->input->post('email');
+            $fullname=$this->input->post('fullname');
+            $commodity=$this->input->post('commodity');
+            $dept_id=$this->input->post('dept_id');
+            $title=$this->input->post('title');
+            $employee_no=$this->input->post('employee_no');
+            $role_id=$this->input->post('role_id');
+            // $created_date=$this->input->post('created_date');
+            $modified_date=date("Y-m-d H:i:s");
+            $status=$this->input->post('status');
+            
+            $this->admin_modal_update->update_user_records($id,$username,$password,$email,$fullname,$commodity,$dept_id,$title,$employee_no,$role_id,$modified_date,$status);
+            redirect("BackEnd/view_user_info");
+        }
+        $this->footer($this->data);
     }
 
     public function view_role_permission(){
@@ -167,15 +160,12 @@ class BackEnd extends MY_FrontEnd {
         $this->data['description'] = "Overview";
         $this->data['jsselect'] = TRUE;
 
-        // Start controller code here
-
         // Load View
         $this->header($this->data);
         $this->topbar($this->data);
         $this->leftsidebar($this->data);
         $this->rightsidebar($this->data);
 
-         
         $result['sections']=$this->admin_modal_select->get_section();
         $result['section1']=$this->admin_modal_select->get_section1();
         $result['permission']=$this->admin_modal_select->get_user_role_permision();
@@ -207,7 +197,6 @@ class BackEnd extends MY_FrontEnd {
 
         //Check submit button 
         if($this->input->post('submit')) {
-
 
             $data = array();
             $view_permission = @$this->input->post('see');
@@ -446,8 +435,6 @@ class BackEnd extends MY_FrontEnd {
         $this->data['pageName'] = "QUALITY ACTION NOTICE (QAN) & MACHINE BREAKDOWN FORM";
         $this->data['description'] = "Overview";
         $this->data['jsselect'] = TRUE;
-
-        // Start controller code here
 
         // Load View
         $this->header($this->data);
