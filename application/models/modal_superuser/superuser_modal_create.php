@@ -8,7 +8,6 @@ class SuperUser_modal_create extends CI_Model
 		
 		if($runtest==TRUE)$test = 'TEST';
 		else $test = '';
-		// $LIKE = $b.$test.'%';
 		$PRODLIKE = $b.'%';
 		$TESTLIKE = $b.'TEST%';
 		$this->db->select('qan_no');
