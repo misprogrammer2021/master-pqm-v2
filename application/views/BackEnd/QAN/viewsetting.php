@@ -34,6 +34,7 @@ $jsselect = TRUE;
                     <li role="presentation"><a href="#correctiveaction" data-toggle="tab">CORRECTIVE ACTION LIST</a></li>
                     <li role="presentation"><a href="#machine_no" data-toggle="tab">MACHINE NO LIST</a></li>
                     <li role="presentation"><a href="#sector" data-toggle="tab">SECTOR LIST</a></li>
+                    <li role="presentation"><a href="#rule" data-toggle="tab">RULE LIST</a></li>
                     
                 </ul><br/>
 
@@ -518,15 +519,15 @@ $jsselect = TRUE;
                                                     <input type="text" name="sector_name['.$tab7->id.']" value="'.$tab7->sector_name.'" class="form-control sector_id" disabled>
                                                 </td>
                                                 <td>
-                                                    <input type="radio" id="yes_active7'.$tab7->id.'_'.$i.'" name="is_active['.$tab7->id.']" value="0" class="with-gap" '.(($tab7->is_deleted == 0)?"checked":"").' disabled>
+                                                    <input type="radio" id="yes_active7'.$tab7->id.'_'.$i.'" name="is_active['.$tab7->id.']" value="0" class="with-gap" '.(($tab7->is_active == 0)?"checked":"").' disabled>
                                                     <label for="yes_active7'.$tab7->id.'_'.$i.'">YES</label>
-                                                    <input type="radio" id="no_active7'.$tab7->id.'_'.$i.'" name="is_active['.$tab7->id.']" value="1" class="with-gap" '.(($tab7->is_deleted == 1)?"checked":"").' disabled>
+                                                    <input type="radio" id="no_active7'.$tab7->id.'_'.$i.'" name="is_active['.$tab7->id.']" value="1" class="with-gap" '.(($tab7->is_active == 1)?"checked":"").' disabled>
                                                     <label for="no_active7'.$tab7->id.'_'.$i.'">NO</label>
                                                 </td> 
                                                 <td>
-                                                    <input type="radio" id="yes_tab7'.$tab7->id.'_'.$i.'" name="is_deleted_defect_description['.$tab7->id.']" value="1" class="with-gap" '.(($tab7->is_deleted == 1)?"checked":"").' disabled>
+                                                    <input type="radio" id="yes_tab7'.$tab7->id.'_'.$i.'" name="is_deleted_sector['.$tab7->id.']" value="1" class="with-gap" '.(($tab7->is_deleted == 1)?"checked":"").' disabled>
                                                     <label for="yes_tab7'.$tab7->id.'_'.$i.'">YES</label>
-                                                    <input type="radio" id="no_tab7'.$tab7->id.'_'.$i.'" name="is_deleted_defect_description['.$tab7->id.']" value="0" class="with-gap" '.(($tab7->is_deleted == 0)?"checked":"").' disabled>
+                                                    <input type="radio" id="no_tab7'.$tab7->id.'_'.$i.'" name="is_deleted_sector['.$tab7->id.']" value="0" class="with-gap" '.(($tab7->is_deleted == 0)?"checked":"").' disabled>
                                                     <label for="no_tab7'.$tab7->id.'_'.$i.'">NO</label>
                                                 </td>
                                             </tr>    
@@ -543,6 +544,83 @@ $jsselect = TRUE;
                                             <th style="width:10%">Sector Name</th>
                                             <th style="width:10%">Active</th>
                                             <th style="width:10%">Obsolete</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+        
+                                <button id="form" type="submit" name="update" value="SUBMIT" class="btn btn-success m-t-15 waves-effect pull-right"><i class="material-icons">save</i><span class="icon-name">Update</span></button>
+                            </div>
+                        </form>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="rule">
+                        <form method="post" class="form-horizontal" role="form" action="<?php echo base_url().'BackEnd/processing_rule';?>">
+                            <div class="table-responsive">
+                            <button type="button" data-toggle="modal" data-target="#addNewRule" class="btn btn-success m-t-15 waves-effect"><span class="icon-name">Add New Rule</span>&nbsp;&nbsp;&nbsp;<i class="material-icons">add_circle</i></button><br/><br/>
+                                <table id="rules" class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th class="no-sort" style="width:10%"></th>
+                                            <th style="width:10%">No</th>
+                                            <th style="width:10%">Rule Name</th>
+                                            <th style="width:10%">Active</th>
+                                            <th style="width:10%">Obsolete</th> 
+                                            <th style="width:10%">Created At</th>
+                                            <th style="width:10%">Updated At</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    <?php
+                                      
+                                        $i=1;
+                                        foreach($rule as $tab8)
+                                        {
+                                            
+                                            echo '
+                                            
+                                            <tr>
+                                                <td align="center">
+                                                    <input type="checkbox" id="rule_id'.$tab8->id.'" name="rule_id['.$tab8->id.']" class="filled-in checkbox-active">
+                                                    <label for="rule_id'.$tab8->id.'"></label>
+                                                </td>
+                                                <td>'.$i.'</td> 
+                                                <td>
+                                                    <input type="text" name="rule_name['.$tab8->id.']" value="'.$tab8->rule_name.'" class="form-control rule_id" disabled>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" id="yes_active8'.$tab8->id.'_'.$i.'" name="is_active['.$tab8->id.']" value="1" class="with-gap" '.(($tab8->is_active == 1)?"checked":"").' disabled>
+                                                    <label for="yes_active8'.$tab8->id.'_'.$i.'">YES</label>
+                                                    <input type="radio" id="no_active8'.$tab8->id.'_'.$i.'" name="is_active['.$tab8->id.']" value="0" class="with-gap" '.(($tab8->is_active == 0)?"checked":"").' disabled>
+                                                    <label for="no_active8'.$tab8->id.'_'.$i.'">NO</label>
+                                                </td> 
+                                                <td>
+                                                    <input type="radio" id="yes_delete8'.$tab8->id.'_'.$i.'" name="is_delete['.$tab8->id.']" value="1" class="with-gap" '.(($tab8->is_delete == 1)?"checked":"").' disabled>
+                                                    <label for="yes_delete8'.$tab8->id.'_'.$i.'">YES</label>
+                                                    <input type="radio" id="no_delete8'.$tab8->id.'_'.$i.'" name="is_delete['.$tab8->id.']" value="0" class="with-gap" '.(($tab8->is_delete == 0)?"checked":"").' disabled>
+                                                    <label for="no_delete8'.$tab8->id.'_'.$i.'">NO</label>
+                                                </td>
+                                                <td>
+                                                    <input type="text" id="createdat'.$tab8->id.'_'.$i.'" name="created_at" value="'.date("Y-m-d H:i:s",strtotime($tab8->created_at)).'" class="form-control"  readonly>
+                                                </td>
+                                                <td>
+                                                    <input type="text" id="updatedat'.$tab8->id.'_'.$i.'" name="updated_at" value="'.date("Y-m-d H:i:s",strtotime($tab8->updated_at)).'" class="form-control"  readonly>
+                                                </td>
+                                            </tr>    
+                                            
+                                            ';
+                                        $i++;
+                                        }
+                                    ?>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th class="no-sort" style="width:10%"></th>
+                                            <th style="width:10%">No</th>
+                                            <th style="width:10%">Rule Name</th>
+                                            <th style="width:10%">Active</th>
+                                            <th style="width:10%">Obsolete</th>
+                                            <th style="width:10%">Created At</th>
+                                            <th style="width:10%">Updated At</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -1030,7 +1108,62 @@ $jsselect = TRUE;
         </div>
     </div>
 </div>
-<!-- End Modal for ADD/UPDATE MACHINE NO -->
+<!-- End Modal for ADD/UPDATE SECTOR -->
+
+<!-- Start Modal for ADD/UPDATE RULE -->                           
+<div class="modal fade" id="addNewRule" tabindex="-1" role="dialog" aria-labelledby="addNewRule" aria-hidden="true">    
+    <div class="modal-dialog mw-100 w-75" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="addNewRule">
+                    Rule Details
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" class="form-horizontal" role="form" action="<?php echo base_url().'BackEnd/processing_rule' ?>">
+                    <div class="row">
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <label for="rule_name">Rule Name</label> 
+                                <input type="text" name="rule_name" value="" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                
+                            </div>
+                            <div class="col-md-6">
+                                <label for="active">Active</label><br/>
+                                <input type="radio" id="yes_active8" name="is_active" class="with-gap" value="1">       
+                                <label for="yes_active8">YES</label>
+                                <input type="radio" id="no_active8" name="is_active" class="with-gap" value="0">        
+                                <label for="no_active8">NO</label>
+                            </div>
+                            <div class="col-md-6">
+                            <label for="active">Obsolete</label><br/>
+                                <input type="radio" id="yes_delete8" name="is_delete" class="with-gap" value="1">       
+                                <label for="yes_delete8">YES</label>
+                                <input type="radio" id="no_delete8" name="is_delete" class="with-gap" value="0">        
+                                <label for="no_delete8">NO</label>
+                            </div>
+                        </div>
+                    </div><br/>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            Close
+                        </button>
+                        <button id="form" type="submit" name="submit" value="SUBMIT" class="btn btn-primary">
+                            Save changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal for ADD/UPDATE SECTOR -->
 
 <!-- Jquery Core Js -->
 <script src="<?=base_url('assets/templates/plugins/jquery/jquery.min.js')?>"></script>

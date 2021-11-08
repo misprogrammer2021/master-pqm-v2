@@ -139,8 +139,15 @@ class FrontEnd extends MY_FrontEnd {
         foreach($result as $i=>$row){
             $result[$i]->ack =  $this->modal_master->get_sec1_ack_list($row->id);
             $result[$i]->submission = $this->modal_master->get_submission_result($row->id);
-            $result[$i]->aff_rej = $this->modal_master->get_aff_rej_qty($row->id);
-            $result[$i]->defect = $this->modal_master->get_defect_info($row->id,'defect_description_name');
+            $result[$i]->total_submission = $this->modal_master->get_last_machine_status($row->id);
+            $result[$i]->machine_status = $this->modal_master->get_last_machine_status($row->id);
+            $result[$i]->result_insepection = $this->modal_master->get_last_result_inspection($row->id);
+            // $result[$i]->aff_rej = $this->modal_master->get_aff_rej_qty($row->id);
+            $result[$i]->defect1 = $this->modal_master->get_defect_info($row->id,'defect_description_name_1');
+            $result[$i]->defect2 = $this->modal_master->get_defect_info($row->id,'defect_description_name_2');
+            $result[$i]->defect3 = $this->modal_master->get_defect_info($row->id,'defect_description_name_3');
+            $result[$i]->defect4 = $this->modal_master->get_defect_info($row->id,'defect_description_name_4');
+            $result[$i]->defect5 = $this->modal_master->get_defect_info($row->id,'defect_description_name_5');
             
         }
         $data = array(
@@ -148,6 +155,27 @@ class FrontEnd extends MY_FrontEnd {
         );
         echo json_encode($data);
     }
+
+    /*public function total_open_ticket(){
+
+        $result = $this->modal_master->get_total_open_ticket();
+
+        $data = array(
+            'data' =>$result
+        );
+        echo json_encode($data);
+
+        $this->data['title'] = "JCY Product Quality System";
+        $this->data['pageName'] = "QUALITY ACTION NOTICE (QAN) & MACHINE BREAKDOWN FORM";
+        $this->data['description'] = "Overview";
+
+        $this->header($this->data);
+        $this->topbar($this->data);
+        $this->leftsidebar($this->data);
+        $this->rightsidebar($this->data);
+        $this->load->view('FrontEnd/QAN/homepage',$this->data);
+        $this->footer();
+    }*/
 
     public function ajax_get_task(){
         
@@ -174,8 +202,17 @@ class FrontEnd extends MY_FrontEnd {
         foreach($result as $i=>$row){
             $result[$i]->ack =  $this->modal_master->get_sec1_ack_list($row->id);
             $result[$i]->submission = $this->modal_master->get_submission_result($row->id);
-            $result[$i]->aff_rej = $this->modal_master->get_aff_rej_qty($row->id);
-            $result[$i]->defect = $this->modal_master->get_defect_info($row->id,'defect_description_name');
+            $result[$i]->total_submission = $this->modal_master->get_last_machine_status($row->id);
+            $result[$i]->machine_status = $this->modal_master->get_last_machine_status($row->id);
+            $result[$i]->result_insepection = $this->modal_master->get_last_result_inspection($row->id);
+            // $result[$i]->aff_rej = $this->modal_master->get_aff_rej_qty($row->id);
+            // $result[$i]->defect = $this->modal_master->get_defect_info($row->id,'defect_description_name_1');
+            // $result[$i]->defect = $this->modal_master->get_defect_info($row->id,'defect_description_name_2');
+            $result[$i]->defect1 = $this->modal_master->get_defect_info($row->id,'defect_description_name_1');
+            $result[$i]->defect2 = $this->modal_master->get_defect_info($row->id,'defect_description_name_2');
+            $result[$i]->defect3 = $this->modal_master->get_defect_info($row->id,'defect_description_name_3');
+            $result[$i]->defect4 = $this->modal_master->get_defect_info($row->id,'defect_description_name_4');
+            $result[$i]->defect5 = $this->modal_master->get_defect_info($row->id,'defect_description_name_5');
             
         }
         $data = array(
@@ -224,6 +261,12 @@ class FrontEnd extends MY_FrontEnd {
             $this->modal_master->Section3();
 
             $view['data'] = $this->modal_master->get_data();
+            // echo '<pre>';
+            // print_r($view);
+            
+            // echo '</pre>';
+            // exit;
+
             $view['data']->submit_button = new stdClass();
 
             if(@$this->session->userdata['permission']['S1']['de'] OR @$this->session->userdata['permission']['S1']['ack'] OR @$this->session->userdata['permission']['S1']['app'])
@@ -238,11 +281,11 @@ class FrontEnd extends MY_FrontEnd {
                     array_push($view['data']->submit_button->s1,$button_obj);
                 }
                 
-                if((@$this->session->userdata['permission']['S1']['ack']) and ($view['data']->status == '1' or $view['data']->status == '3'))
+                if((@$this->session->userdata['permission']['S1']['ack']) and ($view['data']->status == '1' or $view['data']->status == '3')) 
                 {
                     $user_id = $this->session->userdata['logged_in']['id'];
 
-                    if(!(@$view['data']->ack_eng_user==$user_id or @$view['data']->ack_prod_user==$user_id or @$view['data']->ack_qa_user==$user_id ))
+                    if(!(@$view['data']->ack_qa_user==$user_id )) //if(!(@$view['data']->ack_eng_user==$user_id or @$view['data']->ack_prod_user==$user_id or @$view['data']->ack_qa_user==$user_id )) 
                     {
                         $button_obj = new stdClass();
                         $button_obj->name = 'ACKNOWLEDGE';
@@ -262,7 +305,8 @@ class FrontEnd extends MY_FrontEnd {
                     $show_finalize = false;
                 }
 
-                if(@$view['data']->confirmation >= 11 OR (@$this->session->userdata['permission']['S2.1']['de'] and @$view['data']->confirmation == 1) OR (@$this->session->userdata['permission']['S2.4']['de'] and @$view['data']->confirmation == 10) ){
+                //@$view['data']->confirmation >= 11
+                if(@$view['data']->confirmation >= 13 OR (@$this->session->userdata['permission']['S2.1']['de'] and @$view['data']->confirmation == 1) OR (@$this->session->userdata['permission']['S2.4']['de'] and @$view['data']->confirmation == 10) OR (@$this->session->userdata['permission']['S2.6']['de'] and @$view['data']->confirmation == 2)){ //OR (@$this->session->userdata['permission']['S2.5']['de'] and @$view['data']->confirmation == 1)
                     $show_create_update = false;
                     $show_finalize = false;
                 }
@@ -273,9 +317,14 @@ class FrontEnd extends MY_FrontEnd {
                     $btn_sec2 = '';
                     $val_sec2 = 'update_section2';
 
-                    if((@$this->session->userdata['permission']['S2']['de'] OR @$this->session->userdata['permission']['S2.1']['de'] OR @$this->session->userdata['permission']['S2.2']['de'] OR @$this->session->userdata['permission']['S2.3']['de'] OR @$this->session->userdata['permission']['S2.4']['de'])) //NEW ADDED and ($view['data']->status == '6')
+                    if( (@$this->session->userdata['permission']['S2']['de'] OR @$this->session->userdata['permission']['S2.1']['de'] OR @$this->session->userdata['permission']['S2.2']['de'] OR @$this->session->userdata['permission']['S2.3']['de'] OR @$this->session->userdata['permission']['S2.4']['de'] OR @$this->session->userdata['permission']['S2.6']['de']) ) //NEW ADDED and ($view['data']->status == '6') //OR @$this->session->userdata['permission']['S2.5']['de']
                     {
                         $view['data']->submit_button->s2 = array();
+
+                        // echo '<pre>';
+                        // print_r(@$view['data']);
+                        // echo '</pre>';
+                        // exit;
 
                         if( (@$this->session->userdata['permission']['S2.2']['de'] OR @$this->session->userdata['permission']['S2.3']['de']) AND (@$view['data']->mrb_id > 0))
                         {
@@ -283,7 +332,8 @@ class FrontEnd extends MY_FrontEnd {
                             $val_sec2 = 'update_section2';
                         }
 
-                        if(@$this->session->userdata['permission']['S2.1']['de']){
+                        if(@$this->session->userdata['permission']['S2.1']['de'])//OR @$this->session->userdata['permission']['S2.5']['de']
+                        {
                             if(@$view['data']->mrb_id > 0){
                                 $btn_sec2 = 'UPDATE';
                                 $val_sec2 = 'update_section2';
@@ -292,6 +342,12 @@ class FrontEnd extends MY_FrontEnd {
                                 $val_sec2 = 'create_section2';
                             } 
                         }
+
+                        if(@$this->session->userdata['permission']['S2.6']['de'] AND @$view['data']->mrb_id > 0)
+                        {
+                            $btn_sec2 = 'UPDATE';
+                            $val_sec2 = 'update_section2';
+                        }
                             
                         if($btn_sec2 !== ''){
                             $button_obj->name = $btn_sec2;
@@ -299,7 +355,6 @@ class FrontEnd extends MY_FrontEnd {
                             $button_obj->action = base_url().'FrontEnd/mastertemplate/';
                             array_push($view['data']->submit_button->s2,$button_obj);
                         }
-                        
                     }
                 }
 
@@ -324,21 +379,51 @@ class FrontEnd extends MY_FrontEnd {
                     $val = 'update_section3';
 
                     $last_inspection_data = @$view['data']->inspection_machine_data;
+                    // echo '<pre>';
+                    // print_r($last_inspection_data);
+                    // echo '</pre>';
+                    // exit;
                     
                     if(count( @$view['data']->inspection_machine_data))
                     $last_inspection_data = array_values(array_slice(@$view['data']->inspection_machine_data, -1))[0];
 
+                    // echo '<pre>';
+                    // print_r($last_inspection_data);
+                    // echo '</pre>';
+                    // exit;
+                
                     if(@$this->session->userdata['permission']['S3.2']['de'] AND (is_array(@$last_inspection_data->inspection_data) AND count(@$last_inspection_data->inspection_data) == 0))
                     {
                         $btn = 'UPDATE';
                     }
-                    
-                    if(@$this->session->userdata['permission']['S3.1']['de'])
+
+                    if(@$this->session->userdata['permission']['S3.5']['de'] AND (is_array(@$last_inspection_data->inspection_data) AND count(@$last_inspection_data->inspection_data) > 0) AND (@$last_inspection_data->machine_status) == '')
                     {
-                        if(is_array(@$last_inspection_data->inspection_data) AND count(@$last_inspection_data->inspection_data) == 0)
+                        $btn = 'APPROVE';
+                    }
+                    
+                    if(@$this->session->userdata['permission']['S3.1']['de']) //and @$last_inspection_data->machine_status != ''
+                    {
+
+                        // if((is_array(@$last_inspection_data->inspection_data) AND count(@$last_inspection_data->inspection_data) == 0) AND @$view['data']->machine_status == '')
+                        //     $btn = 'UPDATE';
+                        // else
+                        //     $btn = 'CREATE';
+                        //     $val = 'create_section3';
+
+                        if(@$last_inspection_data->root_cause_submission_id < 1){
+                            $btn = 'CREATE';
+                            $val = 'create_section3';
+                        }elseif(is_array(@$last_inspection_data->inspection_data) AND count(@$last_inspection_data->inspection_data) == 0){
                             $btn = 'UPDATE';
-                        else $btn = 'CREATE';
-                             $val = 'create_section3';
+                        }elseif((is_array(@$last_inspection_data->inspection_data) AND count(@$last_inspection_data->inspection_data) > 0) AND (@$last_inspection_data->root_cause_submission_id > 0) AND (@$last_inspection_data->submission_no > 0) AND (@$last_inspection_data->machine_status != '')){
+                                $btn = 'CREATE';
+                                $val = 'create_section3';
+                        }else{
+                            if((is_array(@$last_inspection_data->inspection_data) AND count(@$last_inspection_data->inspection_data) > 0) AND (@$last_inspection_data->root_cause_submission_id < 0) AND (@$last_inspection_data->submission_no > 0) AND (@$last_inspection_data->submission_no > 0)){
+                                $btn = '';
+                            }
+                        }
                     }
                     
                     if($btn !== ''){
@@ -410,12 +495,20 @@ class FrontEnd extends MY_FrontEnd {
         if(@$view['data']->ack_qa_user<1 and @$this->session->userdata['permission']['S1.7']['ack']){
             $view['data']->ack_qa_user = $this->session->userdata['logged_in']['id'];
         }
-        if(@$view['data']->prod_pic_user_id<1 and @$this->session->userdata['permission']['S2.1']['de']){
+        // if(@$view['data']->prod_pic_user_id<1 and @$this->session->userdata['permission']['S2.1']['de']){ 
+        if(@$view['data']->prod_pic_user_id<1 and @$this->session->userdata['permission']['S2.1']['de']){ 
             $view['data']->prod_pic_user_id = $this->session->userdata['logged_in']['id'];
+            // $view['data']->sublotprod_pic_user_id = $this->session->userdata['logged_in']['id'];
         }
         if(@$view['data']->reportby_user_id<1 and @$this->session->userdata['permission']['S2.4']['de']){
             $view['data']->reportby_user_id = $this->session->userdata['logged_in']['id'];
         }
+        if(@$view['data']->qa_pic_user_id<1 and @$this->session->userdata['permission']['S2.6']['de']){
+            $view['data']->qa_pic_user_id = $this->session->userdata['logged_in']['id'];
+        }
+        // if(@$view['data']->sublotprod_pic_user_id<1 and @$this->session->userdata['permission']['S2.5']['de']){
+        //     $view['data']->sublotprod_pic_user_id = $this->session->userdata['logged_in']['id'];
+        // }
 
         //section 3 user id assigning and placement
         /*
@@ -442,20 +535,45 @@ class FrontEnd extends MY_FrontEnd {
                 if(@$view['data']->inspection_machine_data[$i]->completion_user_id<1 and @$this->session->userdata['permission']['S3.1']['de']){
                     $view['data']->inspection_machine_data[$i]->completion_user_id = $this->session->userdata['logged_in']['id'];
                 }
+                if(@$view['data']->inspection_machine_data[$i]->approval_user_id<1 and @$this->session->userdata['permission']['S3.5']['de']){
+                    $view['data']->inspection_machine_data[$i]->approval_user_id = $this->session->userdata['logged_in']['id'];
+                }
             }
 
         }
 
         $last_submit_result = $this->modal_master->get_submission_validation_result($qan_id);
-   
-        if($i < 0 OR (@$this->session->userdata['permission']['S3.1']['de'] and $i<$last_submit_result['total_submission'] and $last_submit_result['result']!='PASS'))
+
+        $last_machine_status = $this->modal_master->get_last_machine_status($qan_id);
+
+        // $test = $this->modal_master->get_last_result_inspection($qan_id);
+        // print_r($test);
+        // exit;
+
+        // print_r($last_machine_status);
+        // exit;
+
+        //if($i < 0 OR (@$this->session->userdata['permission']['S3.1']['de'] and $i<$last_machine_status['total_submission'] and ($last_machine_status['machine_status']!='RUN') OR ($last_machine_status['machine_status']=='NA')))
+        /**
+         * New blank submission visibility rules:
+         * 1. Engineering can see first if permission == 'S3.1']['de'
+         * 2. Engineering can fill up if last_maschine_stat == STOP
+         */
+        // print_r($last_machine_status['total_submission']);
+        // print_r($last_machine_status['machine_status']);
+        // exit;
+        if( $last_machine_status['total_submission'] < 1 or (@$this->session->userdata['permission']['S3.1']['de'] and $last_machine_status['machine_status']=='STOP') )
         {
 
             $i = $i+1;
 
-            if($last_submit_result['result']=='FAILED'){
+            /*if((@$this->session->userdata['permission']['S3.2']['de'] OR @$this->session->userdata['permission']['S3.5']['de']) AND $last_machine_status['machine_status']=='STOP'){ //if($last_submit_result['result']=='FAILED'){
                 $i = $last_submit_result['total_submission'];
-            }
+            }*/
+
+            /*if($last_machine_status['machine_status']=='STOP' OR $last_machine_status['machine_status']=='NA'){
+                $i = $last_machine_status['total_submission'];
+            }*/
 
             $view['data']->inspection_machine_data[$i] = new stdClass();
             $view['data']->inspection_machine_data[$i]->submission_id = '';
@@ -465,6 +583,7 @@ class FrontEnd extends MY_FrontEnd {
             $view['data']->inspection_machine_data[$i]->rcfa_ack_user_id = @$this->session->userdata['permission']['S3.3']['ack']?$this->session->userdata['logged_in']['id']:'';
             $view['data']->inspection_machine_data[$i]->rcfa_appr_user_id = @$this->session->userdata['permission']['S3.4']['app']?$this->session->userdata['logged_in']['id']:'';
             $view['data']->inspection_machine_data[$i]->completion_user_id = @$this->session->userdata['permission']['S3.1']['de']?$this->session->userdata['logged_in']['id']:'';
+            $view['data']->inspection_machine_data[$i]->approval_user_id = @$this->session->userdata['permission']['S3.5']['de']?$this->session->userdata['logged_in']['id']:'';
         }
 
         if(@$view['data']->approval_user_id<1 and @$this->session->userdata['permission']['S4']['de']){
@@ -499,8 +618,8 @@ class FrontEnd extends MY_FrontEnd {
 
             $ack_data = $this->modal_master->get_sec1_ack_list($data->qan_id);
 
-            if($ack_data->ack_eng_user > 0 and $ack_data->ack_prod_user > 0 and $ack_data->ack_qa_user > 0)
-                $this->modal_update->update_status($data->qan_id,'4','3');
+            if($ack_data->ack_qa_user > 0) //if($ack_data->ack_eng_user > 0 and $ack_data->ack_prod_user > 0 and $ack_data->ack_qa_user > 0)
+                $this->modal_update->update_status($data->qan_id,'4'); //$this->modal_update->update_status($data->qan_id,'4','3');
             else
                 $this->modal_update->update_status($data->qan_id,'3');
 
@@ -520,15 +639,24 @@ class FrontEnd extends MY_FrontEnd {
             if(isset($_POST['to_dept'])) $data->to_dept= $this->input->post('to_dept');
             if(isset($_POST['datetime'])) $data->datetime= $this->input->post('datetime');
             if(isset($_POST['shift'])) $data->shift = $this->input->post('shift');
-            if(isset($_POST['ooc'])) $data->ooc= $this->input->post('ooc');
-            if(isset($_POST['oos'])) $data->oos= $this->input->post('oos');
-            if(isset($_POST['visual'])) $data->visual= $this->input->post('visual');
+            if(isset($_POST['rule_name'])) $data->rule_name = $this->input->post('rule_name');
+            // if(isset($_POST['ooc'])) $data->ooc= $this->input->post('ooc');
+            // if(isset($_POST['oos'])) $data->oos= $this->input->post('oos');
+            // if(isset($_POST['visual'])) $data->visual= $this->input->post('visual');
             if(isset($_POST['part_name'])) $data->part_name = $this->input->post('part_name'); 
             if(isset($_POST['machine_no_id'])) $data->machine_no_id = $this->input->post('machine_no_id');
             if(isset($_POST['process'])) $data->process= $this->input->post('process');
             if(isset($_POST['detectedby_user'])) $data->detectedby_user = $this->input->post('detectedby_user');
-            if(isset($_POST['defect_description_name'])) $data->defect_description_id = $this->input->post('defect_description_name');
-            if(isset($_POST['defect_description_others'])) $data->defect_description_others = $this->input->post('defect_description_others');
+            if(isset($_POST['defect_description_name_1'])) $data->defect_description_id_1 = $this->input->post('defect_description_name_1');
+            if(isset($_POST['defect_description_name_2'])) $data->defect_description_id_2 = $this->input->post('defect_description_name_2');
+            if(isset($_POST['defect_description_name_3'])) $data->defect_description_id_3 = $this->input->post('defect_description_name_3');
+            if(isset($_POST['defect_description_name_4'])) $data->defect_description_id_4 = $this->input->post('defect_description_name_4');
+            if(isset($_POST['defect_description_name_5'])) $data->defect_description_id_5 = $this->input->post('defect_description_name_5');
+            if(isset($_POST['defect_description_others_1'])) $data->defect_description_others_1 = $this->input->post('defect_description_others_1');
+            if(isset($_POST['defect_description_others_2'])) $data->defect_description_others_2 = $this->input->post('defect_description_others_2');
+            if(isset($_POST['defect_description_others_3'])) $data->defect_description_others_3 = $this->input->post('defect_description_others_3');
+            if(isset($_POST['defect_description_others_4'])) $data->defect_description_others_4 = $this->input->post('defect_description_others_4');
+            if(isset($_POST['defect_description_others_5'])) $data->defect_description_others_5 = $this->input->post('defect_description_others_5');
             if(isset($_POST['last_passed_sample'])) $data->last_passed_sample = $this->input->post('last_passed_sample');
             if(isset($_POST['purge_from'])) $data->purge_from = $this->input->post('purge_from');
             if(isset($_POST['estimate_qty'])) $data->estimate_qty = $this->input->post('estimate_qty');
@@ -546,6 +674,7 @@ class FrontEnd extends MY_FrontEnd {
                     $i++;
                 }	
             }
+
             $prod_qty_array = $this->input->post('input_qty_prod');
             
             if(is_array($prod_qty_array) AND (count($prod_qty_array) > 0)){
@@ -618,9 +747,11 @@ class FrontEnd extends MY_FrontEnd {
             if(isset($_POST['reject_qty']) )$data->reject_qty = $this->input->post('reject_qty'); 
 
             if(isset($_POST['loc_purge']) ) {
+
                 $loc_purge_array = $this->input->post('loc_purge');
 
                 if(is_array($loc_purge_array ) and count($loc_purge_array )>0){
+
                     $i = 0;
                     foreach($loc_purge_array as $purge_location_id => $null){
 
@@ -641,6 +772,81 @@ class FrontEnd extends MY_FrontEnd {
                     }
                 }
             }
+   
+            if(isset($_POST['washing'])) $data->washing = $this->input->post('washing');
+            if(isset($_POST['brushing'])) $data->brushing = $this->input->post('brushing');
+            if(isset($_POST['vmi'])) $data->vmi = $this->input->post('vmi');
+            // if(isset($_POST['sublotprod_pic_user_id'])) $data->prod_pic_user_id = $this->input->post('sublotprod_pic_user_id');
+            
+            if(isset($_POST['sublot_no']) )$data->sublot_no = $this->input->post('sublot_no');
+            // echo '<pre>';
+            // print_r($this->input->post('sublot_no'));
+            // echo '</pre>';
+            // exit;
+            if(isset($_POST['qty_sublot_no']) )$data->qty_sublot_no = $this->input->post('qty_sublot_no');
+            if(isset($_POST['sorting_good_qty']) )$data->sorting_good_qty = $this->input->post('sorting_good_qty');
+            if(isset($_POST['sorting_reject_qty']) )$data->sorting_reject_qty = $this->input->post('sorting_reject_qty'); 
+
+            if(isset($_POST['sublot_no']) OR ($_POST['qty_sublot_no']) OR ($_POST['sorting_reject_qty'])) {
+
+                $sublot_no_array = $this->input->post('sublot_no'); 
+
+                if(is_array($sublot_no_array) and count($sublot_no_array) > 0){
+
+                    $i = 0;
+                    foreach($sublot_no_array as $lot => $sublot){
+                       
+                        $qtysublotno = $data->qty_sublot_no[$lot];
+                        $sortgoodqty = @$data->sorting_good_qty[$lot];
+                        $sortrejqty = $data->sorting_reject_qty[$lot];
+                        
+                        $sortgoodqty = (int)$qtysublotno - (int)$sortrejqty;//overwriten user's POST by doing logic calcs
+
+                        $data->qan_on_hold_sublot[$i] = new stdClass();
+                        $data->qan_on_hold_sublot[$i]->sublot_no = $sublot;
+                        $data->qan_on_hold_sublot[$i]->qty_sublot_no = $qtysublotno;
+                        $data->qan_on_hold_sublot[$i]->sorting_good_qty = $sortgoodqty;
+                        $data->qan_on_hold_sublot[$i]->sorting_reject_qty = $sortrejqty;
+                        $data->qan_on_hold_sublot[$i]->prod_pic_user_id = $data->prod_pic_user_id;
+                        $i++;
+                    }
+                    // echo '<pre>';
+                    // print_r($data->qan_on_hold_sublot);
+                    // echo '</pre>';
+                    // exit;
+                }
+            }
+   
+            if(isset($_POST['qty_buyoff']) )$data->qty_buyoff = $this->input->post('qty_buyoff');
+            if(isset($_POST['bosorting_good_qty']) )$data->sorting_good_qty = $this->input->post('bosorting_good_qty');
+            if(isset($_POST['sorting_ooc_qty']) )$data->sorting_ooc_qty = $this->input->post('sorting_ooc_qty');
+            if(isset($_POST['sorting_oos_qty']) )$data->sorting_oos_qty = $this->input->post('sorting_oos_qty'); 
+            if(isset($_POST['qa_pic_user_id'])) $data->qa_pic_user_id = $this->input->post('qa_pic_user_id');
+            
+            if(isset($_POST['qty_buyoff']) OR ($_POST['bosorting_good_qty']) OR ($_POST['sorting_ooc_qty']) OR ($_POST['sorting_oos_qty'])) {
+
+                $buyoff_array = $this->input->post('qty_buyoff'); 
+
+                if(is_array($buyoff_array) and count($buyoff_array) > 0){
+
+                    $i = 0;
+                    foreach($buyoff_array as $buy => $buyoff){
+                       
+                        $qtybuyoff = $data->qty_buyoff[$buy];
+                        $bosortgoodqty = $data->sorting_good_qty[$buy];
+                        $oocqty = $data->sorting_ooc_qty[$buy];
+                        $oosqty = $data->sorting_oos_qty[$buy];
+                        
+                        $data->qan_qa_buy_off[$i] = new stdClass();
+                        $data->qan_qa_buy_off[$i]->qty_buyoff = $buyoff;
+                        $data->qan_qa_buy_off[$i]->sorting_good_qty = $bosortgoodqty;
+                        $data->qan_qa_buy_off[$i]->sorting_ooc_qty = $oocqty;
+                        $data->qan_qa_buy_off[$i]->sorting_oos_qty = $oosqty;
+                        $data->qan_qa_buy_off[$i]->qa_pic_user_id = $data->qa_pic_user_id;
+                        $i++;
+                    }
+                }
+            }
 
             if($this->input->post('submit') == 'update_section2' OR $this->input->post('submit') == 'final_section2')
             {
@@ -649,13 +855,16 @@ class FrontEnd extends MY_FrontEnd {
                     //allow MRB to fund 10 marks, other only 1
                     if(@$this->session->userdata['permission']['S2.4']['de']){
                         $confirm_weight = 10;
-                    }else if(@$this->session->userdata['permission']['S2.1']['de']){
+                    //QA   
+                    }elseif(@$this->session->userdata['permission']['S2.6']['de']){
+                        $confirm_weight = 2;
+                    //PROD 
+                    }elseif(@$this->session->userdata['permission']['S2.1']['de']){ //OR @$this->session->userdata['permission']['S2.5']['de']
                         $confirm_weight = 1;
-                    }
-                    else{
+                    }else{
                         $confirm_weight = 0;
                     }
-
+                    
                     if($data->confirmation > 0) $data->confirmation += $confirm_weight;
                     else $data->confirmation = $confirm_weight;
                 }
@@ -664,7 +873,7 @@ class FrontEnd extends MY_FrontEnd {
                 $this->modal_update->update_qasample_mrb($data->qan_id,$data->qa_sample_reject_qty);
                 
 
-                if($data->confirmation > 10) $this->modal_update->update_status($data->qan_id,'7','6');
+                if($data->confirmation > 12) $this->modal_update->update_status($data->qan_id,'6','5'); //'7','6'
                 $this->session->set_userdata('success_message', 'Record Updated Successfully');
             }else{
             
@@ -687,7 +896,8 @@ class FrontEnd extends MY_FrontEnd {
             if(isset($_POST['machine_breakdown_id'])) $data->qan_id = $this->input->post('machine_breakdown_id');
             if(isset($_POST['root_cause'])) $data->root_cause_id = $this->input->post('root_cause');
             if(isset($_POST['corrective_action'])) $data->corrective_action_id = $this->input->post('corrective_action');
-            if(isset($_POST['rcfa_pic_user_id'])) $data->rcfa_pic_user_id = $this->input->post('rcfa_pic_user_id');
+            if(isset($_POST['others_corrective_action'])) $data->others_corrective_action = $this->input->post('others_corrective_action');
+            // if(isset($_POST['rcfa_pic_user_id'])) $data->rcfa_pic_user_id = $this->input->post('rcfa_pic_user_id');
             if(isset($_POST['rcfa_ack_user_id'])) $data->rcfa_ack_user_id = $this->input->post('rcfa_ack_user_id');
             if(isset($_POST['completion_user_id'])) $data->completion_user_id = $this->input->post('completion_user_id');
             if(isset($_POST['completion_datetime'])) $data->completion_datetime = $this->input->post('completion_datetime');
@@ -699,8 +909,12 @@ class FrontEnd extends MY_FrontEnd {
             if(isset($_POST['_qa_insp_machine'])) $data->_inspection_machine_id = $this->input->post('_qa_insp_machine');//hidden prev checkbox
             if(isset($_POST['inspect_by'])) $data->inspectby_user_id = $this->input->post('inspect_by');
             if(isset($_POST['time_start'])) $data->time_start = $this->input->post('time_start');
-            if(isset($_POST['time_end'])) $data->time_end = $this->input->post('time_end');
+            // if(isset($_POST['time_end'])) $data->time_end = $this->input->post('time_end');
             if(isset($_POST['rc_result'])) $data->result = $this->input->post('rc_result');
+            if(isset($_POST['remarks'])) $data->remarks = $this->input->post('remarks');
+            if(isset($_POST['approval_user_id'])) $data->approval_user_id = $this->input->post('approval_user_id');
+            if(isset($_POST['machine_status'])) $data->machine_status = $this->input->post('machine_status');
+            if(isset($_POST['machine_stop_reason'])) $data->machine_stop_reason = $this->input->post('machine_stop_reason');
 
             $data->inspection_machine_data = array();
             $data->new_inspection_machine_data = array();
@@ -709,14 +923,16 @@ class FrontEnd extends MY_FrontEnd {
             //lets check only previous submission has been given result then we allow to save next new
             $last_submit_result = $this->modal_master->get_submission_validation_result($data->qan_id);
             
-            if(isset($data->rcfa_pic_user_id) and count($data->rcfa_pic_user_id)>0){
+            $last_machine_status = $this->modal_master->get_last_machine_status($data->qan_id);
 
-                foreach($data->rcfa_pic_user_id as $i => $null){
+            if(isset($data->rcfa_ack_user_id) and count($data->rcfa_ack_user_id)>0){ //if(isset($data->rcfa_pic_user_id) and count($data->rcfa_pic_user_id)>0){
 
-                    if($i==0 OR (count($data->rcfa_pic_user_id)-1)>$i){
+                foreach($data->rcfa_ack_user_id as $i => $null){ //foreach($data->rcfa_pic_user_id as $i => $null){
+
+                    if($i==0 OR (count($data->rcfa_ack_user_id)-1)>$i){ //if($i==0 OR (count($data->rcfa_pic_user_id)-1)>$i){
                         continue; //skip tab 0
                     } 
-                    if($data->submission_no[$i] > ($last_submit_result['total_submission']+1) and $last_submit_result['result']=='PASS'){
+                    if($data->submission_no[$i] > ($last_machine_status['total_submission']+1) and $last_machine_status['machine_status']=='RUN'){ //if($data->submission_no[$i] > ($last_submit_result['total_submission']+1) and $last_submit_result['result']=='PASS'){
                         continue; //skip if user send more than one submission or result that got pass result
                     }
                     
@@ -726,10 +942,15 @@ class FrontEnd extends MY_FrontEnd {
                         $data->inspection_machine_data[$i]->submission_id = $data->submission_id[$i];
                         $data->inspection_machine_data[$i]->root_cause_id = @$data->root_cause_id[$i];
                         $data->inspection_machine_data[$i]->corrective_action_id = @$data->corrective_action_id[$i];
+                        $data->inspection_machine_data[$i]->others_corrective_action = @$data->others_corrective_action[$i];
                         $data->inspection_machine_data[$i]->submission_no = $data->submission_no[$i];
-                        $data->inspection_machine_data[$i]->rcfa_pic_user_id = $data->rcfa_pic_user_id[$i];
+                        // $data->inspection_machine_data[$i]->rcfa_pic_user_id = $data->rcfa_pic_user_id[$i];
                         $data->inspection_machine_data[$i]->rcfa_ack_user_id = $data->rcfa_ack_user_id[$i];
                         $data->inspection_machine_data[$i]->completion_user_id = $data->completion_user_id[$i];
+                        $data->inspection_machine_data[$i]->remarks = $data->remarks[$i];
+                        $data->inspection_machine_data[$i]->approval_user_id = $data->approval_user_id[$i];
+                        $data->inspection_machine_data[$i]->machine_status = $data->machine_status[$i];
+                        $data->inspection_machine_data[$i]->machine_stop_reason = $data->machine_stop_reason[$i];
 
                     }
                     else{
@@ -737,11 +958,15 @@ class FrontEnd extends MY_FrontEnd {
                         $data->new_inspection_machine_data[$i] = new stdClass();
                         $data->new_inspection_machine_data[$i]->root_cause_id = $data->root_cause_id[$i];
                         $data->new_inspection_machine_data[$i]->corrective_action_id = $data->corrective_action_id[$i];
+                        $data->new_inspection_machine_data[$i]->others_corrective_action = $data->others_corrective_action[$i];
                         $data->new_inspection_machine_data[$i]->submission_no = $data->submission_no[$i];
-                        $data->new_inspection_machine_data[$i]->rcfa_pic_user_id = $data->rcfa_pic_user_id[$i];
+                        // $data->new_inspection_machine_data[$i]->rcfa_pic_user_id = $data->rcfa_pic_user_id[$i];
                         $data->new_inspection_machine_data[$i]->rcfa_ack_user_id = $data->rcfa_ack_user_id[$i];
                         $data->new_inspection_machine_data[$i]->completion_user_id = $data->completion_user_id[$i];
-
+                        $data->new_inspection_machine_data[$i]->remarks = $data->remarks[$i];
+                        $data->new_inspection_machine_data[$i]->approval_user_id = $data->approval_user_id[$i];
+                        $data->new_inspection_machine_data[$i]->machine_status = $data->machine_status[$i];
+                        $data->new_inspection_machine_data[$i]->machine_stop_reason = $data->machine_stop_reason[$i];
                     }
                 }
             }
@@ -759,7 +984,7 @@ class FrontEnd extends MY_FrontEnd {
                         $data->inspection_result_data[$tab_no][$j]->inspection_machine_id = $machine_id;
                         $data->inspection_result_data[$tab_no][$j]->inspectby_user_id = $data->inspectby_user_id[$tab_no][$machine_id];
                         $data->inspection_result_data[$tab_no][$j]->time_start = $data->time_start[$tab_no][$machine_id];
-                        $data->inspection_result_data[$tab_no][$j]->time_end = $data->time_end[$tab_no][$machine_id];
+                        // $data->inspection_result_data[$tab_no][$j]->time_end = $data->time_end[$tab_no][$machine_id];
                         $data->inspection_result_data[$tab_no][$j]->result = $data->result[$tab_no][$machine_id];
                         $j++;
                     }
@@ -795,8 +1020,10 @@ class FrontEnd extends MY_FrontEnd {
                 $success_msg = 'Record Updated Successfully';
 
                 $last_submit_result = $this->modal_master->get_submission_validation_result($data->qan_id);
+
+                $last_machine_status = $this->modal_master->get_last_machine_status($data->qan_id);
             
-                if($last_submit_result['result']=='PASS'){
+                if($last_machine_status['machine_status']=='RUN'){ //if($last_submit_result['result']=='PASS' OR $last_submit_result['result']=='FAILED'){
                     $this->modal_update->update_status($data->qan_id,'5','4');
                 }
             }
@@ -807,7 +1034,7 @@ class FrontEnd extends MY_FrontEnd {
         } //end of submit section3
 
         //Check submit button of section 4
-        if($this->input->post('submit') == 'update_section4') {
+        /*if($this->input->post('submit') == 'update_section4') {
 
             $data = new stdClass();
             if(isset($_POST['machine_breakdown_id'])) $data->qan_id = $this->input->post('machine_breakdown_id');
@@ -823,7 +1050,7 @@ class FrontEnd extends MY_FrontEnd {
 
             $this->session->set_userdata('last_created_machine_id', $data->qan_id);
             redirect("FrontEnd/successmaster");
-        } //end of submit section4
+        }*/ //end of submit section4
 
         //Check submit button of section 5
         if($this->input->post('submit') == 'update_section5') {
@@ -834,9 +1061,13 @@ class FrontEnd extends MY_FrontEnd {
             if(isset($_POST['notify_next_process'])) $data->notify_next_process = $this->input->post('notify_next_process');
             if(isset($_POST['validation_result'])) $data->fix_validation_result = $this->input->post('validation_result');
             if(isset($_POST['closedby_user_id'])) $data->closedby_user_id = $this->input->post('closedby_user_id');
+            if(isset($_POST['closed_datetime'])) $data->closed_datetime = $this->input->post('closed_datetime');
+
+            // $this->modal_update->update_section5($data);
+            // $this->modal_update->update_status($data->qan_id,'99','7');
 
             $this->modal_update->update_section5($data);
-            $this->modal_update->update_status($data->qan_id,'99','7');
+            $this->modal_update->update_status($data->qan_id,'99','6');
             $this->session->set_userdata('last_created_machine_id', $data->qan_id);
             redirect("FrontEnd/successmaster");
         } //end of submit section5

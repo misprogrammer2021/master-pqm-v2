@@ -450,6 +450,7 @@ class BackEnd extends MY_FrontEnd {
         $result['machine_no']=$this->admin_modal_select->get_machine_no();
         $result['defect_type']=$this->admin_modal_select->get_defect_type();
         $result['sector']=$this->admin_modal_select->get_sector();
+        $result['rule']=$this->admin_modal_select->get_rule();
         $this->load->view('BackEnd/QAN/viewsetting',$result);
         $this->footer($this->data);
     }
@@ -508,6 +509,7 @@ class BackEnd extends MY_FrontEnd {
         $result['machine_no']=$this->admin_modal_select->get_machine_no();
         $result['defect_type']=$this->admin_modal_select->get_defect_type();
         $result['sector']=$this->admin_modal_select->get_sector();
+        $result['rule']=$this->admin_modal_select->get_rule();
         $this->load->view('BackEnd/QAN/viewsetting',$result);
         $this->footer($this->data);
     }
@@ -575,6 +577,7 @@ class BackEnd extends MY_FrontEnd {
         $result['machine_no']=$this->admin_modal_select->get_machine_no();
         $result['defect_type']=$this->admin_modal_select->get_defect_type();
         $result['sector']=$this->admin_modal_select->get_sector();
+        $result['rule']=$this->admin_modal_select->get_rule();
         $this->load->view('BackEnd/QAN/viewsetting',$result);
         $this->footer($this->data);
     }
@@ -639,6 +642,7 @@ class BackEnd extends MY_FrontEnd {
         $result['machine_no']=$this->admin_modal_select->get_machine_no();
         $result['defect_type']=$this->admin_modal_select->get_defect_type();
         $result['sector']=$this->admin_modal_select->get_sector();
+        $result['rule']=$this->admin_modal_select->get_rule();
         $this->load->view('BackEnd/QAN/viewsetting',$result);
         $this->footer($this->data);
     }
@@ -700,6 +704,7 @@ class BackEnd extends MY_FrontEnd {
         $result['machine_no']=$this->admin_modal_select->get_machine_no();
         $result['defect_type']=$this->admin_modal_select->get_defect_type();
         $result['sector']=$this->admin_modal_select->get_sector();
+        $result['rule']=$this->admin_modal_select->get_rule();
         $this->load->view('BackEnd/QAN/viewsetting',$result);
         $this->footer($this->data);
     }
@@ -761,6 +766,7 @@ class BackEnd extends MY_FrontEnd {
         $result['machine_no']=$this->admin_modal_select->get_machine_no();
         $result['defect_type']=$this->admin_modal_select->get_defect_type();
         $result['sector']=$this->admin_modal_select->get_sector();
+        $result['rule']=$this->admin_modal_select->get_rule();
         $this->load->view('BackEnd/QAN/viewsetting',$result);
         $this->footer($this->data);
     }
@@ -825,6 +831,7 @@ class BackEnd extends MY_FrontEnd {
         $result['machine_no']=$this->admin_modal_select->get_machine_no();
         $result['defect_type']=$this->admin_modal_select->get_defect_type();
         $result['sector']=$this->admin_modal_select->get_sector();
+        $result['rule']=$this->admin_modal_select->get_rule();
         $this->load->view('BackEnd/QAN/viewsetting',$result);
         $this->footer($this->data);
     }
@@ -886,6 +893,75 @@ class BackEnd extends MY_FrontEnd {
         $result['machine_no']=$this->admin_modal_select->get_machine_no();
         $result['defect_type']=$this->admin_modal_select->get_defect_type();
         $result['sector']=$this->admin_modal_select->get_sector();
+        $result['rule']=$this->admin_modal_select->get_rule();
+        $this->load->view('BackEnd/QAN/viewsetting',$result);
+        $this->footer($this->data);
+    }
+
+    public function processing_rule() {
+
+        // Active Header, must include in every public function
+        $this->data['title'] = "JCY Product Quality System";
+        $this->data['pageName'] = "QUALITY ACTION NOTICE (QAN) & MACHINE BREAKDOWN FORM";
+        $this->data['description'] = "Overview";
+        $this->data['jsselect'] = TRUE;
+
+        // Load View
+        $this->header($this->data);
+        $this->topbar($this->data);
+        $this->leftsidebar($this->data);
+        $this->rightsidebar($this->data);
+
+        //Check submit button 
+        if($this->input->post('submit')) {
+            
+            $rule_name=$this->input->post('rule_name');
+            $is_active=$this->input->post('is_active');
+            $is_delete=$this->input->post('is_delete');
+        
+            $result['message_display'] = $this->admin_modal_create->save_rule($rule_name,$is_active,$is_delete); //$constant_no	
+
+        }else {
+
+            if($this->input->post('update')) {
+               
+                $dateformat = date('Y-m-d H:i:s');
+                $rule_id=$this->input->post('rule_id');
+                $rule_name=$this->input->post('rule_name');
+                $is_active=$this->input->post('is_active');
+                $is_delete=$this->input->post('is_delete');
+                $updated_at=$this->input->post('updated_at');
+
+                foreach($rule_id as $id => $on ){
+                   
+                    $data_update = array(
+                        
+                        'rule_name' => $rule_name[$id],
+                        'is_active' => $is_active[$id],
+                        'is_delete' => $is_delete[$id],
+                        'updated_at' => $dateformat.strtotime($updated_at[$id])
+                        
+                    );
+                    if($this->admin_modal_update->update_rule($id,$data_update))
+                    {
+                        $result['msg'] = 'Success!!';
+                    }
+                    else{
+                        $result['msg'] = 'Not Success!!';
+                    }
+                }
+            }
+        }
+
+        $result['part_name']=$this->admin_modal_select->get_partname();
+        $result['purge_name']=$this->admin_modal_select->get_purge();
+        $result['defect_description']=$this->admin_modal_select->get_defect_description();
+        $result['root_cause']=$this->admin_modal_select->get_root_cause();;
+        $result['corrective_action']=$this->admin_modal_select->get_corrective_action();
+        $result['machine_no']=$this->admin_modal_select->get_machine_no();
+        $result['defect_type']=$this->admin_modal_select->get_defect_type();
+        $result['sector']=$this->admin_modal_select->get_sector();
+        $result['rule']=$this->admin_modal_select->get_rule();
         $this->load->view('BackEnd/QAN/viewsetting',$result);
         $this->footer($this->data);
     }

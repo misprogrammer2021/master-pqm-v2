@@ -92,9 +92,10 @@ class Modal_create extends CI_Model{
 			if(isset($data->issued_dept)) $savetodb['issued_dept'] = $data->issued_dept;
 			if(isset($data->to_dept)) $savetodb['to_dept'] = $data->to_dept;
 			if(isset($data->shift)) $savetodb['shift'] = $data->shift;
-			if(isset($data->ooc)) $savetodb['ooc'] = $data->ooc;
-			if(isset($data->oos)) $savetodb['oos'] = $data->oos;
-			if(isset($data->visual)) $savetodb['visual'] = $data->visual;
+			if(isset($data->rule_name)) $savetodb['rule_name'] = $data->rule_name;
+			// if(isset($data->ooc)) $savetodb['ooc'] = $data->ooc;
+			// if(isset($data->oos)) $savetodb['oos'] = $data->oos;
+			// if(isset($data->visual)) $savetodb['visual'] = $data->visual;
 
 			$data_table_qan_machinebreakdown = $savetodb;
 			$this->db->insert('qan_machinebreakdown', $data_table_qan_machinebreakdown);
@@ -111,18 +112,52 @@ class Modal_create extends CI_Model{
         	if(isset($data->machine_no_id)) $savetodb['machine_no_id'] = $data->machine_no_id;
 			if(isset($data->process)) $savetodb['process'] = $data->process;
 			if(isset($data->detectedby_user)) $savetodb['detectedby_user'] = $data->detectedby_user;
-			if(isset($data->defect_description_id)) $savetodb['defect_description_id'] = $data->defect_description_id;
-			if(isset($data->defect_description_id)) {
-				$defect_list = @$this->modal_master->get_defect_desc($data->defect_description_id)[0];
-				$defect_desc = $defect_list->defect_description_name;
-				$savetodb['defect_description_name'] = $defect_desc;
+	
+			if(isset($data->defect_description_id_1)) $savetodb['defect_description_id_1'] = $data->defect_description_id_1;
+			if(isset($data->defect_description_id_1)) {
+				$defect_list1 = @$this->modal_master->get_defect_desc1($data->defect_description_id_1); //get_defect_desc  //get_defects
+				$defect_desc1 = $defect_list1->defect_description_name;
+				$savetodb['defect_description_name_1'] = $defect_desc1;
 			}
-			if(isset($data->defect_description_others)) $savetodb['defect_description_others'] = $data->defect_description_others;
+			
+			if(isset($data->defect_description_id_2)) $savetodb['defect_description_id_2'] = $data->defect_description_id_2;
+			if(isset($data->defect_description_id_2)) {
+				$defect_list2 = @$this->modal_master->get_defect_desc1($data->defect_description_id_2);
+				$defect_desc2 = $defect_list2->defect_description_name;
+				$savetodb['defect_description_name_2'] = $defect_desc2;
+			}
+			
+			if(isset($data->defect_description_id_3)) $savetodb['defect_description_id_3'] = $data->defect_description_id_3;
+			if(isset($data->defect_description_id_3)) {
+				$defect_list3 = @$this->modal_master->get_defect_desc1($data->defect_description_id_3);
+				$defect_desc3 = $defect_list3->defect_description_name;
+				$savetodb['defect_description_name_3'] = $defect_desc3;
+			}
+
+			if(isset($data->defect_description_id_4)) $savetodb['defect_description_id_4'] = $data->defect_description_id_4;
+			if(isset($data->defect_description_id_4)) {
+				$defect_list4 = @$this->modal_master->get_defect_desc1($data->defect_description_id_4);
+				$defect_desc4 = $defect_list4->defect_description_name;
+				$savetodb['defect_description_name_4'] = $defect_desc4;
+			}
+
+			if(isset($data->defect_description_id_5)) $savetodb['defect_description_id_5'] = $data->defect_description_id_5;
+			if(isset($data->defect_description_id_5)) {
+				$defect_list5 = @$this->modal_master->get_defect_desc1($data->defect_description_id_5);
+				$defect_desc5 = $defect_list5->defect_description_name;
+				$savetodb['defect_description_name_5'] = $defect_desc5;
+			}
+
+			if(isset($data->defect_description_others_1)) $savetodb['defect_description_others_1'] = $data->defect_description_others_1;
+			if(isset($data->defect_description_others_2)) $savetodb['defect_description_others_2'] = $data->defect_description_others_2;
+			if(isset($data->defect_description_others_3)) $savetodb['defect_description_others_3'] = $data->defect_description_others_3;
+			if(isset($data->defect_description_others_4)) $savetodb['defect_description_others_4'] = $data->defect_description_others_4;
+			if(isset($data->defect_description_others_5)) $savetodb['defect_description_others_5'] = $data->defect_description_others_5;
 			if(isset($data->last_passed_sample)) $savetodb['last_passed_sample'] = $data->last_passed_sample;
 			if(isset($data->purge_from)) $savetodb['purge_from'] = $data->purge_from;
 			if(isset($data->estimate_qty)) $savetodb['estimate_qty'] = $data->estimate_qty;
 			if(isset($data->ack_eng_user)) $savetodb['ack_eng_user'] = $data->ack_eng_user;
-			if(isset($data->ack_eng_user)) $savetodb['ack_eng_user'] = $data->ack_eng_user;
+			if(isset($data->ack_prod_user)) $savetodb['ack_prod_user'] = $data->ack_prod_user;
 			if(isset($data->ack_qa_user)) $savetodb['ack_qa_user'] = $data->ack_qa_user;
 
 			$data_table_qan_defect_info = $savetodb;
@@ -198,16 +233,22 @@ class Modal_create extends CI_Model{
 		if(isset($data->qa_reinsp_status_accept)) $savetodb['qa_reinsp_status_accept'] = $data->qa_reinsp_status_accept;
 		if(isset($data->qa_reinsp_status_reject)) $savetodb['qa_reinsp_status_reject'] = $data->qa_reinsp_status_reject;
 		if(isset($data->reject_reason)) $savetodb['reject_reason'] = $data->reject_reason;
+		if(isset($data->washing)) $savetodb['washing'] = $data->washing;
+		if(isset($data->brushing)) $savetodb['brushing'] = $data->brushing;
+		if(isset($data->vmi)) $savetodb['vmi'] = $data->vmi;
 
 		$data_table_qan_material_review_board = $savetodb;
 		$this->db->insert('qan_material_review_board', $data_table_qan_material_review_board);
 		$data->mrb_id = $this->db->insert_id();
 
 		if(is_array(@$data->qan_purge) AND (count($data->qan_purge) > 0)){
+
 			foreach($data->qan_purge as $qan_purge){
 				
 				if($qan_purge->affected_qty > 0){
+
 					$data_table_qan_purge = array(
+
 						'purge_location_id' => $qan_purge->purge_location_id,
 						'mrb_id' => $data->mrb_id,
 						'affected_qty' => $qan_purge->affected_qty,
@@ -223,6 +264,56 @@ class Modal_create extends CI_Model{
 
 		$this->modal_update->update_qasample_mrb($data->qan_id,$data->qa_sample_reject_qty);
 
+		if(is_array(@$data->qan_on_hold_sublot) AND (count($data->qan_on_hold_sublot) > 0)){
+			// echo '<pre>';
+			// print_r(@$data->qan_on_hold_sublot);
+			// echo '</pre>';
+			// exit;
+			
+			foreach($data->qan_on_hold_sublot as $qan_on_hold_sublot){
+				
+				if($qan_on_hold_sublot->sublot_no > 0 OR $qan_on_hold_sublot->qty_sublot_no > 0 OR $qan_on_hold_sublot->sorting_reject_qty > 0){
+
+					$data_table_qan_on_hold_sublot = array(
+
+						'mrb_id' => $data->mrb_id,
+						// 'washing' => $qan_on_hold_sublot->washing,
+						// 'brushing' => $qan_on_hold_sublot->brushing,
+						// 'vmi' => $qan_on_hold_sublot->vmi,
+						'sublot_no' => $qan_on_hold_sublot->sublot_no,
+						'qty_sublot_no' => $qan_on_hold_sublot->qty_sublot_no,
+						'sorting_good_qty' => $qan_on_hold_sublot->sorting_good_qty,
+						'sorting_reject_qty' => $qan_on_hold_sublot->sorting_reject_qty,
+						'prod_pic_user_id' => $qan_on_hold_sublot->prod_pic_user_id
+					);
+					// echo '<pre>';
+					// print_r($data_table_qan_on_hold_sublot);
+					// echo '</pre>';
+					// exit;
+					$this->db->insert('qan_on_hold_sublot', $data_table_qan_on_hold_sublot);
+				}
+			}
+		}
+
+		if(is_array(@$data->qan_qa_buy_off) AND (count($data->qan_qa_buy_off) > 0)){
+
+			foreach($data->qan_qa_buy_off as $buyoff){
+				
+				if($buyoff->qty_buyoff > 0 OR $buyoff->sorting_good_qty > 0 OR $buyoff->sorting_ooc_qty > 0 OR $buyoff->sorting_oos_qty > 0){
+
+					$data_table_qan_qa_buy_off = array(
+
+						'mrb_id' => $buyoff->mrb_id,
+						'qty_buyoff' => $buyoff->qty_buyoff,
+						'sorting_good_qty' => $buyoff->sorting_good_qty,
+						'sorting_ooc_qty' => $buyoff->sorting_ooc_qty,
+						'sorting_oos_qty' => $buyoff->sorting_oos_qty,
+						'qa_pic_user_id' => $buyoff->qa_pic_user_id
+					);
+					$this->db->insert('qan_qa_buy_off', $data_table_qan_qa_buy_off);
+				}
+			}
+		}
 		return $data;
 	}
 
@@ -257,15 +348,16 @@ class Modal_create extends CI_Model{
 				$savetodb['corrective_action'] = $corrective;
 			}
 
-			if(isset($qan_validation_submission->rcfa_pic_user_id)) $savetodb['rcfa_pic_user_id'] = $qan_validation_submission->rcfa_pic_user_id;
+			if(isset($qan_validation_submission->others_corrective_action)) $savetodb['others_corrective_action'] = $qan_validation_submission->others_corrective_action;
+			// if(isset($qan_validation_submission->rcfa_pic_user_id)) $savetodb['rcfa_pic_user_id'] = $qan_validation_submission->rcfa_pic_user_id;
 			if(isset($qan_validation_submission->rcfa_ack_user_id)) $savetodb['rcfa_ack_user_id'] = $qan_validation_submission->rcfa_ack_user_id;
 			if(isset($qan_validation_submission->completion_user_id)) $savetodb['completion_user_id'] = $qan_validation_submission->completion_user_id;
 			if(isset($qan_validation_submission->completion_datetime)) $savetodb['completion_datetime'] = $qan_validation_submission->completion_datetime;
 			if(isset($qan_validation_submission->submission_no)) $savetodb['submission_no'] = $qan_validation_submission->submission_no;
+			if(isset($qan_validation_submission->remarks)) $savetodb['remarks'] = $qan_validation_submission->remarks;
 
 			//override datetime
 			$savetodb['completion_datetime'] = date("Y-m-d H:i:s");
-
 			$data_table_qan_validation_submission = $savetodb;
 			if($savetodb['root_cause_id'] != '' AND $savetodb['corrective_action_id'] != ''){
 				$this->db->insert('qan_validation_submission', $data_table_qan_validation_submission);
@@ -279,6 +371,8 @@ class Modal_create extends CI_Model{
 			foreach($data->inspection_result_data as $inspection_data){
 				
 				foreach($inspection_data as $validation_result){
+
+					$validation_result->time_start = date("Y-m-d H:i:s");
 				
 					$data_table_qan_rootcause_item_inspection = array(
 						'machine_breakdown_id' => $data->qan_id,
@@ -286,7 +380,7 @@ class Modal_create extends CI_Model{
 						'inspection_machine_id' => $validation_result->inspection_machine_id,
 						'inspectby_user_id' => $validation_result->inspectby_user_id,
 						'time_start' => $validation_result->time_start,
-						'time_end' => $validation_result->time_end,
+						// 'time_end' => $validation_result->time_end,
 						'result' => $validation_result->result
 					);
 					$this->db->insert('qan_rootcause_item_inspection', $data_table_qan_rootcause_item_inspection);

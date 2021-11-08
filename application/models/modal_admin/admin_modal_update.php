@@ -151,4 +151,16 @@ Class Admin_modal_update extends CI_Model {
 		}
 	}
 
+	function update_rule($id,$data){
+
+		$this->db->where('id',$id);
+		$this->db->update('rule_list', $data);
+		
+		if ($this->db->affected_rows() > 0) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 }

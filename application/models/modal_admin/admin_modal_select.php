@@ -189,4 +189,10 @@ Class Admin_modal_select extends CI_Model {
 		return $query->result();
 	}
 
+	function get_rule(){
+		
+		$query = $this->db->query('SELECT * FROM rule_list ORDER BY id ASC');
+		return $query->result();
+	}
+
 }

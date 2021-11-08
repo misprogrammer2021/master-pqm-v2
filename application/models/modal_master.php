@@ -15,9 +15,11 @@ class Modal_master extends CI_Model{
 
     function load_qan($qan_id){
 
+        @$this->get_rule();
+
         $this->qan_id = $qan_id;
         $this->db->select('m.id,m.qan_no,m.status,m.issueby_user_id,m.issueto_user,
-        m.issued_dept,m.to_dept,m.shift,m.ooc,m.oos,m.visual,substring(convert(varchar,m.datetime,20),1,19) as datetime,m.approval_user_id,
+        m.issued_dept,m.to_dept,m.shift,m.rule_name,m.ooc,m.oos,m.visual,substring(convert(varchar,m.datetime,20),1,19) as datetime,m.approval_user_id,
         m.machine_status,m.machine_stop_reason,m.purge_status,m.notify_next_process,
         m.fix_validation_result,m.closedby_user_id,substring(convert(varchar,m.closed_datetime,20),1,19) as closed_datetime,
         s.status_name');
@@ -232,14 +234,20 @@ class Modal_master extends CI_Model{
         $this->get_parts();
         $this->get_purge_location();
         $this->get_QA_inspector_users();
-        $this->get_defect_desc();
+        $this->get_defect_desc1();
+        $this->get_defect_desc2();
+        $this->get_defect_desc3();
+        $this->get_defect_desc4();
+        $this->get_defect_desc5();
         $this->get_sector();
         $this->get_machine_no();
         $this->get_detected_by();
+        // $this->get_defects();
 
-        $this->db->select('id as defect_id,part_name,machine_no_id,machine_no,process,cav_no,
-        up_affected,detectedby_user,defect_description_id,defect_description_name,defect_description_others,substring(convert(varchar,last_passed_sample,20),1,19) as last_passed_sample,
-        substring(convert(varchar,purge_from,20),1,19) as purge_from,estimate_qty,ack_eng_user,ack_prod_user,ack_qa_user');
+        $this->db->select('id as defect_id,part_name,machine_no_id,machine_no,process,cav_no,up_affected,detectedby_user,defect_description_id_1,defect_description_id_2,defect_description_id_3,
+        defect_description_id_4,defect_description_id_5,defect_description_name_1,defect_description_name_2,defect_description_name_3,defect_description_name_4,defect_description_name_5,
+        defect_description_others_1,defect_description_others_2,defect_description_others_3,defect_description_others_4,defect_description_others_5,
+        substring(convert(varchar,last_passed_sample,20),1,19) as last_passed_sample,substring(convert(varchar,purge_from,20),1,19) as purge_from,estimate_qty,ack_eng_user,ack_prod_user,ack_qa_user'); 
 		$this->db->from('qan_defect_info'); 
         $this->db->where('machine_breakdown_id',$this->qan_id);
         $query = $this->db->get(); 
@@ -279,16 +287,20 @@ class Modal_master extends CI_Model{
         $this->get_parts();
         $this->get_purge_location();
         $this->get_QA_inspector_users();
-        $this->get_defect_desc();
+        $this->get_defect_desc1();
+        $this->get_defect_desc2();
+        $this->get_defect_desc3();
+        $this->get_defect_desc4();
+        $this->get_defect_desc5();
         $this->get_process();
         $this->get_sector();
         $this->get_machine_no();
         $this->get_detected_by();
+        // $this->get_defects();
         
-        $this->db->select('id as mrb_id,scrap,rework,uai,scrap_no,rework_order_no,
-        uai_no,rework_dispo_input,rework_dispo_output,rework_dispo_rej_scrap,
-        reportby_user_id,qa_reinsp_verification_user_id,qa_reinsp_status_accept,
-        qa_reinsp_status_reject,reject_reason,confirmation');
+        $this->db->select('id as mrb_id,scrap,rework,uai,scrap_no,rework_order_no,uai_no,rework_dispo_input,rework_dispo_output,rework_dispo_rej_scrap,
+        reportby_user_id,qa_reinsp_verification_user_id,qa_reinsp_status_accept,qa_reinsp_status_reject,reject_reason,confirmation,
+        washing,brushing,vmi');
 		$this->db->from('qan_material_review_board'); 
         $this->db->where('machine_breakdown_id',$this->qan_id);
         $this->db->order_by("mrb_id", "desc");
@@ -316,12 +328,38 @@ class Modal_master extends CI_Model{
             $query = $this->db->get(); 
             $data = $query->result_object();
             $this->data->purge_location = $data;
+
+            $this->db->select('sublot_no,qty_sublot_no,sorting_good_qty,sorting_reject_qty,prod_pic_user_id');
+            $this->db->from('qan_on_hold_sublot');
+            $this->db->where('mrb_id',$this->data->mrb_id);
+            $query = $this->db->get(); 
+            $data = $query->result_object();
+            $this->data->onhold_sublot = $data; 
+
+            $this->db->select('qty_buyoff,sorting_good_qty,sorting_ooc_qty,sorting_oos_qty,qa_pic_user_id');
+            $this->db->from('qan_qa_buy_off');
+            $this->db->where('mrb_id',$this->data->mrb_id);
+            $query = $this->db->get(); 
+            $data = $query->result_object();
+            $this->data->buy_off = $data;
+
         }
+        
+        // $this->db->select('qa_sample_id, quantity AS samplequantity');
+        // $this->db->from('qa_sample_records');
+        // $this->db->where('machine_breakdown_id',$this->qan_id);
+        // $query = $this->db->get();
+        // $data = $query->result_object();
+        // $this->data->qasample_qty =  $data;
 
         if(count($data) > 0){
+
             $data = $data[0];
             $this->data = (object) array_merge((array) $data,(array) $this->data); 
-            $this->data->user->{$data->prod_pic_user_id} = '';
+            $this->data->user->{@$data->prod_pic_user_id} = '';
+            // $this->data->user->{@$data->sublotprod_pic_user_id} = '';
+            $this->data->user->{@$data->qa_pic_user_id} = '';
+
         }
 
         foreach($this->data->user As $id => $null){
@@ -333,6 +371,7 @@ class Modal_master extends CI_Model{
         $this->data->qa_sample_reject_qty = $data['qa_sample_reject_qty'];
         $this->data->qa_sample_affected_qty = $data['qa_sample_affected_qty'];
         $this->data->qa_sample_good_qty = $data['qa_sample_good_qty'];
+
     }
 
     function get_qasample_location(){
@@ -421,6 +460,22 @@ class Modal_master extends CI_Model{
         }
     }
 
+    function get_rule(){
+
+        if(@$this->data->list_rule){
+            return;
+        }
+        $this->db->select('*');
+        $this->db->from('rule_list');
+        $this->db->where('is_active = 1');
+        $query = $this->db->get();   
+        $data = $query->result_object();
+        $this->data->list_rule = new stdClass();
+        foreach($data as $rule){
+            $this->data->list_rule->{$rule->id} = $rule->rule_name;
+        }
+    }
+
     function get_machine_no(){
 
 		$this->db->select('s.sector_name, m.*');
@@ -438,7 +493,87 @@ class Modal_master extends CI_Model{
 		}
 	}
 
-    function get_defect_desc($id=0,$defect_type=0){
+    // function get_defect_desc($id=0,$defect_type=0){
+
+    //     if(@$this->data->list_defect AND $id == 0){
+    //         return $this->data->list_defect;
+    //     }
+
+    //     $this->db->select('*');
+    //     $this->db->from('defectives_list');
+    //     if($defect_type != ''){
+    //         $defect_type = explode(',',$defect_type);
+    //         if(@count($defect_type) > 0) $this->db->where_in('defect_type',$defect_type);
+    //     }
+        
+    //     if($id > 0){
+    //         $this->db->where('id = '.$id);
+    //     }
+    //     $this->db->where('is_active = 0');
+    //     $query = $this->db->get();
+    //     $result = $query->result_object();
+ 
+    //     if(@$this->data){
+    //         $this->data->list_defect = new stdClass();
+    //         foreach($result as $defect){
+    //             $this->data->list_defect->{$defect->id} = $defect->defect_description_name;
+    //         }
+    //     }
+    //     return $result;
+    // }
+
+    // function get_sec1_ack_list($qan_id=0){
+        
+    //     $this->db->select('ack_eng_user,ack_prod_user,ack_qa_user'); 
+    //     $this->db->from('qan_defect_info'); 
+    //     if($qan_id > 0){
+    //         $this->db->where('machine_breakdown_id',$qan_id);
+    //     }
+    //     $query = $this->db->get(); 
+    //     if(isset($query->result_object()[0])){
+    //         return $query->result_object()[0];
+    //     }else{
+    //         $ack = new stdClass();
+    //         $ack->ack_eng_user = ''; 
+    //         $ack->ack_prod_user = ''; 
+    //         $ack->ack_qa_user = ''; 
+    //         return $ack;
+    //     }
+    // }
+
+    function get_defect_desc1($id=0,$defect_type=0){
+
+        if(@$this->data->list_defect AND $id == 0){
+            return $this->data->list_defect;
+        }
+
+        $this->db->select('*');
+        $this->db->from('defectives_list');
+        if($defect_type != ''){
+            $defect_type = explode(',',$defect_type);
+            if(@count($defect_type) > 0) $this->db->where_in('defect_type',$defect_type);
+        }
+        
+        if($id > 0){
+            $this->db->where('id = '.$id);
+        }
+        $this->db->where('is_active = 0');
+        $query = $this->db->get();
+        if(isset($query->result_object()[0])){
+            return $query->result_object()[0];
+        }else{
+            if(@$this->data){
+                $this->data->list_defect = new stdClass();
+                foreach($result as $defect){
+                    $this->data->list_defect->{$defect->id} = $defect->defect_description_name;
+                }
+            }
+            return $result;
+        }
+ 
+    }
+
+    function get_defect_desc2($id=0,$defect_type=0){
 
         if(@$this->data->list_defect AND $id == 0){
             return $this->data->list_defect;
@@ -466,6 +601,162 @@ class Modal_master extends CI_Model{
         }
         return $result;
     }
+
+    function get_defect_desc3($id=0,$defect_type=0){
+
+        if(@$this->data->list_defect AND $id == 0){
+            return $this->data->list_defect;
+        }
+
+        $this->db->select('*');
+        $this->db->from('defectives_list');
+        if($defect_type != ''){
+            $defect_type = explode(',',$defect_type);
+            if(@count($defect_type) > 0) $this->db->where_in('defect_type',$defect_type);
+        }
+        
+        if($id > 0){
+            $this->db->where('id = '.$id);
+        }
+        $this->db->where('is_active = 0');
+        $query = $this->db->get();
+        $result = $query->result_object();
+ 
+        if(@$this->data){
+            $this->data->list_defect = new stdClass();
+            foreach($result as $defect){
+                $this->data->list_defect->{$defect->id} = $defect->defect_description_name;
+            }
+        }
+        return $result;
+    }
+
+    function get_defect_desc4($id=0,$defect_type=0){
+
+        if(@$this->data->list_defect AND $id == 0){
+            return $this->data->list_defect;
+        }
+
+        $this->db->select('*');
+        $this->db->from('defectives_list');
+        if($defect_type != ''){
+            $defect_type = explode(',',$defect_type);
+            if(@count($defect_type) > 0) $this->db->where_in('defect_type',$defect_type);
+        }
+        
+        if($id > 0){
+            $this->db->where('id = '.$id);
+        }
+        $this->db->where('is_active = 0');
+        $query = $this->db->get();
+        $result = $query->result_object();
+ 
+        if(@$this->data){
+            $this->data->list_defect = new stdClass();
+            foreach($result as $defect){
+                $this->data->list_defect->{$defect->id} = $defect->defect_description_name;
+            }
+        }
+        return $result;
+    }
+
+    function get_defect_desc5($id=0,$defect_type=0){
+
+        if(@$this->data->list_defect AND $id == 0){
+            return $this->data->list_defect;
+        }
+
+        $this->db->select('*');
+        $this->db->from('defectives_list');
+        if($defect_type != ''){
+            $defect_type = explode(',',$defect_type);
+            if(@count($defect_type) > 0) $this->db->where_in('defect_type',$defect_type);
+        }
+        
+        if($id > 0){
+            $this->db->where('id = '.$id);
+        }
+        $this->db->where('is_active = 0');
+        $query = $this->db->get();
+        $result = $query->result_object();
+ 
+        if(@$this->data){
+            $this->data->list_defect = new stdClass();
+            foreach($result as $defect){
+                $this->data->list_defect->{$defect->id} = $defect->defect_description_name;
+            }
+        }
+        return $result;
+    }
+
+    // function get_defects(){
+
+    //     if(@$this->data->list_defects){
+    //         return;
+    //     }
+    //     $this->db->select('*');
+    //     $this->db->from('defectives_list');
+    //     $this->db->where('is_active = 0');
+    //     $query = $this->db->get();
+    //     $data = $query->result_object();
+
+    //     $this->data->list_defects = new stdClass();
+    //     foreach($data as $defects){
+    //         $this->data->list_defects->{$defects->id} = $defects->defect_description_name;
+    //     }
+    // }
+
+    // function get_defects($id=0){
+
+    //     if($id == 0){
+    //         if(@$this->data->list_defects){
+    //             return;
+    //         }
+    //         $this->db->select('*');
+    //         $this->db->from('defectives_list');
+    //         $this->db->where('is_active = 0');
+    //         $query = $this->db->get();
+    //         $data = $query->result_object();
+    //         $this->data->list_defects = new stdClass();
+    //         foreach($data as $defects){
+    //             $this->data->list_defects->{$defects->id} = $defects->defect_description_name;
+    //         }
+    //     }else{
+    //         $this->db->select('*');
+    //         $this->db->from('defectives_list');
+    //         $this->db->where('is_active = 0');
+    //         $query = $this->db->get();
+    //         $data = $query->result_object();
+    //         return $data[0];
+    //     }
+    // }
+
+    // function get_defects($id=0){
+
+    //     if(@$this->data->list_defects AND $id == 0){
+    //         return $this->data->list_defects;
+    //     }
+
+    //     $this->db->select('*');
+    //     $this->db->from('defectives_list');
+
+    //     if($id > 0){
+    //         $this->db->where('id = '.$id);
+    //     }
+    //     $this->db->where('is_active = 0');
+    //     $query = $this->db->get();
+    //     $result = $query->result_object();
+ 
+    //     if(@$this->data){
+    //         $this->data->list_defects = new stdClass();
+    //         foreach($result as $defect){
+    //             $this->data->list_defects->{$defect->id} = $defect->defect_description_name;
+    //         }
+    //     }
+        
+    //     return $result;
+    // }
+    
 
     function get_detected_by(){
 
@@ -515,12 +806,18 @@ class Modal_master extends CI_Model{
         $this->get_purge_location();
         $this->get_QA_inspector_users();
         $this->get_inspection_machine();
-        $this->get_defect_desc();
+        $this->get_defect_desc1();
+        $this->get_defect_desc2();
+        $this->get_defect_desc3();
+        $this->get_defect_desc4();
+        $this->get_defect_desc5();
         $this->get_rootcause();
         $this->get_corrective_action();
         $this->get_process();
         $this->get_sector();
+        @$this->get_rule();
         $this->get_machine_no();
+        // $this->get_defects();
     }
 
     function Section3(){
@@ -535,7 +832,8 @@ class Modal_master extends CI_Model{
         $this->get_corrective_action();
     
         $this->db->select('id AS submission_id, machine_breakdown_id,root_cause_id,root_cause,corrective_action_id,corrective_action,rcfa_pic_user_id,rcfa_ack_user_id,rcfa_appr_user_id,
-		id AS root_cause_submission_id,completion_user_id,substring(convert(varchar,completion_datetime,20),1,19) as completion_datetime,submission_no');
+        id AS root_cause_submission_id,completion_user_id,substring(convert(varchar,completion_datetime,20),1,19) as completion_datetime,submission_no,others_corrective_action,remarks, 
+        approval_user_id,machine_status,machine_stop_reason');
 		$this->db->from('qan_validation_submission');
 		$this->db->where('machine_breakdown_id',$this->qan_id);
 		$query = $this->db->get(); 
@@ -550,6 +848,7 @@ class Modal_master extends CI_Model{
             @$this->data->user->{$submission_data->rcfa_ack_user_id} = '';
             @$this->data->user->{$submission_data->rcfa_appr_user_id} = '';
             @$this->data->user->{$submission_data->completion_user_id} = '';
+            @$this->data->user->{$submission_data->approval_user_id} = '';
 
             $this->db->select('*, substring(convert(varchar,time_start,20),1,5) as time_start2 , 
             substring(convert(varchar,time_end,20),1,5) as time_end2');
@@ -645,14 +944,26 @@ class Modal_master extends CI_Model{
         return $query->result_object()[0]->status;
     }
 
+    // function get_machine_status($qan_id){
+
+    //     $this->db->select('machine_status'); 
+    //     $this->db->from('qan_validation_submission'); 
+    //     $this->db->where('id',$qan_id);
+    //     $this->db->where('machine_status = 0');
+    //     $query = $this->db->get(); 
+    //     return $query->result_object();
+    // }
+
+
     function get_sec1_ack_list($qan_id=0){
         
-        $this->db->select('ack_eng_user,ack_prod_user,ack_qa_user'); 
+        $this->db->select('ack_eng_user,ack_prod_user,ack_qa_user');
         $this->db->from('qan_defect_info'); 
         if($qan_id > 0){
             $this->db->where('machine_breakdown_id',$qan_id);
         }
         $query = $this->db->get(); 
+
         if(isset($query->result_object()[0])){
             return $query->result_object()[0];
         }else{
@@ -680,6 +991,7 @@ class Modal_master extends CI_Model{
         $this->db->order_by("r.root_cause_submission_id","DESC");
     
         $query = $this->db->get();
+        
         if($query->num_rows()>0)
             return $query->result_object();
     }
@@ -730,6 +1042,109 @@ class Modal_master extends CI_Model{
                         return $return;
                     }
                 }
+            }
+        }
+
+        return $return;
+    }
+
+    function get_last_machine_status($qan_id=0){
+
+        $machine_status = "";
+        $total = 0;
+
+        $return = array();
+        $return['machine_status'] = $machine_status;
+        $return['total_submission'] = $total;
+        $return['total_inspection'] = $total;
+        $return['result_raw'] = '';
+
+        if($qan_id>0){
+            $this->db->select('id, submission_no, machine_status'); 
+            $this->db->from('qan_validation_submission'); 
+            $this->db->where('machine_breakdown_id',$qan_id);
+            $this->db->order_by("id","DESC");
+            $this->db->order_by("submission_no","DESC");
+            $this->db->limit(1);
+
+            $query = $this->db->get();
+            // echo '<pre>'; print_r($this->db->last_query());exit;
+            // print_r($query);
+            // exit;
+            $query_result = $query->result_object();
+            // print_r($query_result);
+            // exit;
+            
+            $return['total_submission'] = 0;
+            $return['machine_status'] = 'NA';
+
+            //$submission_info = $this->get_submission_result($qan_id);
+
+            // if($submission_info) $return['total_submission'] = count($submission_info);
+            // else $return['total_submission'] = 0;
+
+
+            if(count($query_result)>0){
+
+                $return['total_submission'] = $query_result[0]->submission_no;
+   
+                $return['machine_status'] = $query_result[0]->machine_status == '0'?'STOP':($query_result[0]->machine_status == '1'? 'RUN':'NA');
+
+                // echo '<pre>';
+                // print_r($return);
+                // echo '</pre>';
+                // exit;
+                
+            }
+        }
+
+        return $return;
+    }
+
+    function get_last_result_inspection($qan_id=0){
+
+        $result = "NA";
+        $total = 0;
+
+        $return = array();
+        $return['result'] = $result;
+        $return['total_submission'] = $total;
+        $return['total_inspection'] = $total;
+        $return['result_raw'] = '';
+
+        if($qan_id>0){
+            $this->db->select('min(result) as result'); 
+            $this->db->from('qan_rootcause_item_inspection'); 
+            $this->db->where('machine_breakdown_id',$qan_id);
+            $this->db->order_by("result","DESC");
+            // $this->db->limit(1);
+
+            $query = $this->db->get();
+            // echo '<pre>'; print_r($this->db->last_query());exit;
+            // print_r($query);
+            // exit;
+            $query_result = $query->result_object();
+            // print_r($query_result);
+            // exit;
+            
+            $return['total_submission'] = 0;
+            $return['result'] = 'NA';
+
+            //$submission_info = $this->get_submission_result($qan_id);
+
+            // if($submission_info) $return['total_submission'] = count($submission_info);
+            // else $return['total_submission'] = 0;
+
+
+            if(count($query_result)>0){
+   
+                // $return['result'] = $query_result[0]->result == 1?'PASS':'FAILED';
+                $return['result'] = $query_result[0]->result === 0?'FAILED':($query_result[0]->result === 1? 'PASS':'NA');
+                // echo '<pre>';
+                // print_r($return);
+                // echo '</pre>';
+                // exit;
+                
             }
         }
 
@@ -870,22 +1285,47 @@ class Modal_master extends CI_Model{
         return $query->result_object();        
     }
 
-    function get_defect_info($qan_id=0,$select='*'){
+    // function get_defect_info($qan_id=0,$select='*'){
 
-        if($qan_id > 0){
-            $this->db->select($select);
-            $this->db->from('qan_defect_info di'); 
-            $this->db->where('machine_breakdown_id',$qan_id);
-            $query = $this->db->get();
+    //     if($qan_id > 0){
+    //         $this->db->select($select);
+    //         $this->db->from('qan_defect_info di'); 
+    //         $this->db->where('machine_breakdown_id',$qan_id);
+    //         $query = $this->db->get();
 
-            if($query->num_rows()>0){
+    //         if($query->num_rows()>0){
             
-                return $query->result_object()[0];
-            }else{
-                $y = new stdClass();
-                $y->defect_description_name = ''; 
-                return $y;
-            }
+    //             return $query->result_object()[0];
+    //         }else{
+    //             $y = new stdClass();
+    //             $y->defect_description_name_1 = ''; 
+    //             $y->defect_description_name_2 = ''; 
+    //             $y->defect_description_name_3 = '';
+    //             $y->defect_description_name_4 = '';
+    //             $y->defect_description_name_5 = '';
+    //             return $y;
+    //         }
+    //     }
+    // }
+
+    function get_defect_info($qan_id=0){
+        
+        $this->db->select('defect_description_name_1,defect_description_name_2,defect_description_name_3,defect_description_name_4,defect_description_name_5'); 
+        $this->db->from('qan_defect_info'); 
+        if($qan_id > 0){
+            $this->db->where('machine_breakdown_id',$qan_id);
+        }
+        $query = $this->db->get(); 
+        if(isset($query->result_object()[0])){
+            return $query->result_object()[0];
+        }else{
+            $y = new stdClass();
+            $y->defect_description_name_1 = ''; 
+            $y->defect_description_name_2 = ''; 
+            $y->defect_description_name_3 = '';
+            $y->defect_description_name_4 = '';
+            $y->defect_description_name_5 = '';
+            return $y;
         }
     }
 
@@ -949,6 +1389,57 @@ class Modal_master extends CI_Model{
         return $query->result_object();
     }
 
+    /*function get_total_open_ticket(){
+
+        $this->db->select('COUNT(status) as total_open_ticket'); 
+        $this->db->from('qan_machinebreakdown');
+        $this->db->where("status != '99' AND status != 'NEW' AND status != ''");
+
+        $query = $this->db->get();
+        return $query->result_object();
+        // echo '<pre>';
+        // print_r($return);
+        // echo '</pre>';
+        // exit;
+    }*/
+
+    function get_total_open_ticket(){
+
+        $total_ticket = 0;
+
+        $return = array();
+        $return['total_ticket'] = $total_ticket;
+
+        
+            $this->db->select('COUNT(status) as total_open_ticket'); 
+            $this->db->from('qan_machinebreakdown'); 
+            $this->db->where("status != '99' AND status != 'NEW' AND status != ''");
+
+            $query = $this->db->get();
+            // echo '<pre>'; print_r($this->db->last_query());exit;
+            // print_r($query);
+            // exit;
+            $query_result = $query->result_object();
+            // print_r($query_result);
+            // exit;
+   
+            $return['total_ticket'] = 0;
+
+            if(count($query_result)>0){
+
+                $return['total_ticket'] = $query_result[0]->total_open_ticket;
+   
+                // echo '<pre>';
+                // print_r($return);
+                // echo '</pre>';
+                // exit;
+                
+            }
+        
+
+        return $return;
+    }
+
     function section1_task_informer(){
         
         $section = $this->session->userdata['permission'];
@@ -971,7 +1462,7 @@ class Modal_master extends CI_Model{
 
         }
 
-        if(@$section['S1']['ack']){
+        if(@$section['S1']['ack'] AND @$section['S1.7']['ack']){
 
             $result = array_merge($result,$this->get_list_by_status("3"));
             $task = "Need Your Acknowledge Action";
@@ -1014,14 +1505,15 @@ class Modal_master extends CI_Model{
              * 3) Data: OK & data > 0 = ok else not ok
              * 4) Finalized:!=11 AND & !=1 : >10
              */
-        $result = $this->get_list_by_status(array('4','5','6'));
+        // $result = $this->get_list_by_status(array('4','5','6'));
+        $result = $this->get_list_by_status("5"); 
         // $result = $this->get_list_by_status(array('6')); //both PROD and MRB colobrate in this level
 
         if(@$section['S2.1']['de']){ //PROD
 
             foreach($result as $i=>$row_obj){
 
-                if($this->get_mrb_finalize_score($row_obj->id) !=11 AND $this->get_mrb_finalize_score($row_obj->id) !=1)
+                if($this->get_mrb_finalize_score($row_obj->id) !=13 AND $this->get_mrb_finalize_score($row_obj->id) !=1)
                 {
                     $task = "Please Update Affected Quantity & Finalize";
                 
@@ -1038,6 +1530,20 @@ class Modal_master extends CI_Model{
                 if(count($this->check_purge_data($row_obj->id)) > 0 AND $this->get_mrb_finalize_score($row_obj->id) < 10)
                 {
                     $task = "Please Update Reject Quantity & Finalize";
+                    $data[$row_obj->id]['details'] = $row_obj;
+                    $data[$row_obj->id]['desc'][] = $task;
+                    $data[$row_obj->id]['section'][] = 'S2';
+                }
+            }
+        }
+        if(@$section['S2.6']['de']){
+            
+            foreach($result as $i=>$row_obj){
+
+                if($this->get_mrb_finalize_score($row_obj->id) !=13 AND $this->get_mrb_finalize_score($row_obj->id) !=2)
+                {
+                    $task = "Please Update QA Buy Off Quantity & Finalize";
+                
                     $data[$row_obj->id]['details'] = $row_obj;
                     $data[$row_obj->id]['desc'][] = $task;
                     $data[$row_obj->id]['section'][] = 'S2';
@@ -1078,16 +1584,21 @@ class Modal_master extends CI_Model{
 
                 $task = '';
                 $submit_result = $this->get_submission_validation_result($row_obj->id);
+                $submit_last_machine_status = $this->get_last_machine_status($row_obj->id);
 
                 $total_submission = count($this->get_rootcause_submission($row_obj->id));
                 $total_submission_with_result = $submit_result['total_submission'];
-                $last_submission_result = $submit_result['result'];
+                // $last_submission_result = $submit_result['result'];
+                $total_submission_with_last_machine_status = $submit_last_machine_status['total_submission'];
+                $last_submission_machine_status = $submit_last_machine_status['machine_status'];
 
                 if($total_submission < 1){
                     $task = "Waiting First Submission"; 
-                }else{
-                    if($total_submission_with_result == $total_submission AND $last_submission_result == 'FAILED')
+                }elseif($total_submission_with_last_machine_status == $total_submission AND $last_submission_machine_status == 'STOP'){ //if($total_submission_with_result == $total_submission AND $last_submission_result == 'FAILED')
                     $task = "Waiting For Next Submission";
+                }else{
+                    if($total_submission_with_result == '')
+                    $task = "Ticket Are Still Updatable";
                 }
 
                 if($task!=''){
@@ -1095,7 +1606,7 @@ class Modal_master extends CI_Model{
                     $data[$row_obj->id]['details'] = $row_obj;
                     $data[$row_obj->id]['desc'][] = $task;
                     $data[$row_obj->id]['section'][] = 'S3';
-                    $data[$row_obj->id]['result_raw'][] = $total_submission. "-" .$total_submission_with_result;
+                    $data[$row_obj->id]['result_raw'][] = $total_submission. "-" .$total_submission_with_last_machine_status; //$data[$row_obj->id]['result_raw'][] = $total_submission. "-" .$total_submission_with_result;
                 }
             }
         }
@@ -1106,10 +1617,17 @@ class Modal_master extends CI_Model{
 
                 $task = '';
                 $submit_result = $this->get_submission_validation_result($row_obj->id);
+                $submit_last_machine_status = $this->get_last_machine_status($row_obj->id);
 
                 $total_submission = count($this->get_rootcause_submission($row_obj->id));
                 $total_submission_with_result = $submit_result['total_submission'];
-                $last_submission_result = $submit_result['result'];
+                // $last_submission_result = $submit_result['result'];
+                $total_submission_with_last_machine_status = $submit_last_machine_status['total_submission'];
+                $last_submission_machine_status = $submit_last_machine_status['machine_status'];
+
+                /*if($total_submission > $total_submission_with_last_machine_status){ //if($total_submission > $total_submission_with_result){
+                    $task = "Waiting For Result";
+                }*/
 
                 if($total_submission > $total_submission_with_result){
                     $task = "Waiting For Result";
@@ -1120,7 +1638,38 @@ class Modal_master extends CI_Model{
                     $data[$row_obj->id]['details'] = $row_obj;
                     $data[$row_obj->id]['desc'][] = $task;
                     $data[$row_obj->id]['section'][] = 'S3';
-                    $data[$row_obj->id]['result_raw'][] = $total_submission. "-" .$total_submission_with_result;
+                    $data[$row_obj->id]['result_raw'][] = $total_submission. "-" .$total_submission_with_last_machine_status; //$data[$row_obj->id]['result_raw'][] = $total_submission. "-" .$total_submission_with_result;
+                }
+            }
+        }
+
+        // if(@$section['S3.5']['de']){
+        if(@$section['S3.4']['app'] OR @$section['S3.5']['de']){
+            
+            foreach($result as $i=>$row_obj){
+
+                $task = '';
+                $result = $this->get_list_by_status("5"); 
+                
+                // $submit_result = $this->get_submission_validation_result($row_obj->id);
+                $submit_last_machine_status = $this->get_last_machine_status($row_obj->id);
+                $total_submission = count($this->get_rootcause_submission($row_obj->id));
+                // $total_submission_with_result = $submit_result['total_submission'];
+                // $last_submission_result = $submit_result['result'];
+                $total_submission_with_last_machine_status = $submit_last_machine_status['total_submission'];
+                $last_submission_machine_status = $submit_last_machine_status['machine_status'];
+
+                if($total_submission_with_last_machine_status == $total_submission AND $result AND ($last_submission_machine_status == 'NA' OR $last_submission_machine_status == '')){ 
+                // if(($total_submission > $total_submission_with_last_machine_status) AND ($last_submission_machine_status == 'STOP' OR $last_submission_machine_status == '')){ //if($total_submission > $total_submission_with_result){
+                    $task = "Waiting For Machine Status Approval"; //$task = "Waiting For Result";
+                }
+
+                if($task!=''){
+
+                    $data[$row_obj->id]['details'] = $row_obj;
+                    $data[$row_obj->id]['desc'][] = $task;
+                    $data[$row_obj->id]['section'][] = 'S3';
+                    $data[$row_obj->id]['result_raw'][] = $total_submission. "-" .$total_submission_with_last_machine_status; //$data[$row_obj->id]['result_raw'][] = $total_submission. "-" .$total_submission_with_result;
                 }
             }
         }
@@ -1138,6 +1687,18 @@ class Modal_master extends CI_Model{
                 $data[$row_obj->id]['section'][] = 'S3';
             }
         }
+
+        // if(@$section['S3.5']['de']){
+
+        //     $task = "Need Your Review";
+
+        //     foreach($result as $i=>$row_obj){
+                      
+        //         $data[$row_obj->id]['details'] = $row_obj;
+        //         $data[$row_obj->id]['desc'][] = $task;
+        //         $data[$row_obj->id]['section'][] = 'S3';
+        //     }
+        // }
 
         $i = 0;
         foreach($data as $id=>$details){

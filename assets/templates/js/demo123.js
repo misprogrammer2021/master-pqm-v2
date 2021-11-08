@@ -77,76 +77,81 @@ function activateNotificationAndTasksScroll() {
     });
 }
 
-$('.chosen_section').chosen({ width: '100%' });
+$('.chosen_section').chosen({ width: '100%' }); 
 
 //Datatables Initialization New Task
 var table_task= $('#qan_task_list').DataTable({
     "ajax": '/FrontEnd/ajax_get_task',
-    "searching": false,
+    "searching": true,
     "columns" : [
-        {data : null,
-         render: function( data, type, row, meta ){
-             return meta.row+1;
-         }
-        },
-        {data : null,
-         searchable: true,
-         render: function( data, type, row, meta ){
-             //return data.0.
-           
-            var section = '#section1';
-            if(row.section=='S1') section = '#section1';
-            if(row.section=='S2') section = '#section2';
-            if(row.section=='S3') section = '#section3';
-            if(row.section=='S4') section = '#section4';
-            if(row.section=='S5') section = '#section5';
-
-            // return '<a href="/FrontEnd/mastertemplate/'+ link + '/' + row.details.id +'">'+ row.details.qan_no +'</a>';
-            
-            return '<a href="/FrontEnd/mastertemplate/' + row.details.id + '/' + section + '">'+ row.details.qan_no +'</a>';
-         }
-        },
-        // {data : null,
-        //     searchable: true,
-        //     render: function( data, type, row, meta ){
-        //         //return data.0.
-        //        return row.details.status_name;
-        //     }
-        // },
-        {data : 'status_name',
-        render: function( data, type, row, meta ){
-            var label = 'warning';
-            if(row.details.status_name=="NEW") label = 'info';
-            if(row.details.status_name=="ACKNOWLEDGMENT") label = 'warning';
-            if(row.details.status_name=="SOLVED") label = 'success';
-
-            return '<div class="display: inline-block;"><span class="label label-'+ label +'">'+row.details.status_name+'</span></div>';
-        }
-       },
-    //    {
-    //     "data": null,
-    //     orderable: false,
-    //     searchable: false,
-    //     render: function( data, type, row, meta ){
-    //         var qa_s = data.ack.ack_qa_user>0?'teal':'red';
-    //         var prod_s = data.ack.ack_prod_user>0?'teal':'red';
-    //         var eng_s = data.ack.ack_eng_user>0?'teal':'red';
-
-    //         return '<div class="btn-toolbar" role="toolbar" aria-label="ACK Groups">' +
-    //                     '<div class="btn-group btn-group-xs" role="group" aria-label="QA">' +
-    //                         '<button type="button" class="btn bg-'+qa_s+'" data-toggle="tooltip" data-placement="top" title="QA">Q</button>' +
-    //                         '<button type="button" class="btn bg-'+prod_s+'" data-toggle="tooltip" data-placement="top" title="Production">P</button>' +
-    //                         '<button type="button" class="btn bg-'+eng_s+'" data-toggle="tooltip" data-placement="top" title="Engineering">E</button>' +
-    //                     '</div>' +
-    //                '</div>';
-    //     }
-    //     },
         {
-         data : null,
-         searchable: false,
-         render: function( data, type, row, meta ){
-            return row.desc;
-         }
+            data : null,
+            render: function( data, type, row, meta ){
+                return meta.row+1;
+            }
+        },
+        {
+            data : null,
+            searchable: true,
+            render: function( data, type, row, meta ){
+                //return data.0.
+           
+                var section = '#section1';
+                if(row.section=='S1') section = '#section1';
+                if(row.section=='S2') section = '#section2';
+                if(row.section=='S3') section = '#section3';
+                if(row.section=='S4') section = '#section4';
+                if(row.section=='S5') section = '#section5';
+
+                // return '<a href="/FrontEnd/mastertemplate/'+ link + '/' + row.details.id +'">'+ row.details.qan_no +'</a>';
+            
+                return '<a href="/FrontEnd/mastertemplate/' + row.details.id + '/' + section + '">'+ row.details.qan_no +'</a>';
+            }
+        },
+        /*{
+            data : null,
+            searchable: true,
+            render: function( data, type, row, meta ){
+                //return data.0.
+               return row.details.status_name;
+            }
+        },*/
+        {
+            data : 'status_name',
+            searchable: true,
+            render: function( data, type, row, meta ){
+                var label = 'warning';
+                if(row.details.status_name=="NEW") label = 'info';
+                if(row.details.status_name=="ACKNOWLEDGMENT") label = 'warning';
+                if(row.details.status_name=="SOLVED") label = 'success';
+
+                return '<div class="display: inline-block;"><span class="label label-'+ label +'">'+row.details.status_name+'</span></div>';
+            }
+       },
+       /*{
+            "data": null,
+            orderable: false,
+            searchable: false,
+            render: function( data, type, row, meta ){
+                var qa_s = data.ack.ack_qa_user>0?'teal':'red';
+                var prod_s = data.ack.ack_prod_user>0?'teal':'red';
+                var eng_s = data.ack.ack_eng_user>0?'teal':'red';
+
+                return '<div class="btn-toolbar" role="toolbar" aria-label="ACK Groups">' +
+                            '<div class="btn-group btn-group-xs" role="group" aria-label="QA">' +
+                                '<button type="button" class="btn bg-'+qa_s+'" data-toggle="tooltip" data-placement="top" title="QA">Q</button>' +
+                                '<button type="button" class="btn bg-'+prod_s+'" data-toggle="tooltip" data-placement="top" title="Production">P</button>' +
+                                '<button type="button" class="btn bg-'+eng_s+'" data-toggle="tooltip" data-placement="top" title="Engineering">E</button>' +
+                            '</div>' +
+                        '</div>';
+            }
+        },*/
+        {
+            data : null,
+            searchable: true,
+            render: function( data, type, row, meta ){
+                return row.desc;
+            }
         }
     ],
     responsive: true
@@ -156,44 +161,65 @@ var table_task= $('#qan_task_list').DataTable({
 var table_active = $('#qan_active_list').DataTable({
     "ajax": '/FrontEnd/ajax_active_list',
     "columns" : [
-        {
+        /*{
             "className":      'details-control',
             "data":           null,
             "orderable":      false,
             "searchable":     false,
             "defaultContent": '<i class="material-icons col-teal" style="cursor: pointer;">add_circle</i>'
-        },
-        {data : null,
-         render: function( data, type, row, meta ){
-             return meta.row+1;
-         }
-        },
-        {data : null,
-         searchable: true,
-         render: function( data, type, row, meta ){
-            return '<a href="/FrontEnd/mastertemplate/'+ row.id +'">'+ row.qan_no +'</a>';
-         }
-        },
-        {data : 'status_name',
-         render: function( data, type, row, meta ){
-             var label = 'warning';
-             var machine_icon_status = 'pause_circle_filled';
-             var machine_tooltip = 'Machine Stop';
-             if(data=="NEW") label = 'info';
-             if(data=="SOLVED" || (data=="MRB")){
-                label = 'success';
+        },*/
+        {
+            data : null,
+            render: function( data, type, row, meta ){
+                return meta.row+1;
             }
-            if( (parseInt(row.status) < 4) || row.machine_status==1)  {
-                machine_icon_status = 'play_circle_filled';
-                machine_tooltip = 'Machine Run';
-            }
-            //  return '<span class="label label-'+ label +'">'+data+'</span>'+machine_running_status;
-             return '<div class="display: inline-block;"><a class="my-tool-tip" data-toggle="tooltip" data-placement="top" title="'+machine_tooltip+'"><i class="material-icons col-teal" style="vertical-align: middle;cursor: pointer;">'+machine_icon_status+'</i></a><span class="label label-'+ label +'">'+data+'</span></div>';
-         }
-        },
-        {"data": 'defect.defect_description_name'
         },
         {
+            data : null,
+            searchable: true,
+            render: function( data, type, row, meta ){
+                return '<a href="/FrontEnd/mastertemplate/'+ row.id +'">'+ row.qan_no +'</a>';
+            }
+        },
+        {
+            data : 'status_name',
+            searchable: true,
+            render: function( data, type, row, meta ){
+                var label = 'warning';
+                /*var machine_icon_status = 'pause_circle_filled';
+                var machine_tooltip = 'Machine Stop';*/
+                if(data=="NEW") label = 'info';
+                if(data=="SOLVED" || (data=="MRB")){
+                    label = 'success';
+                }
+                /*if( (parseInt(row.status) < 4) || row.machine_status==1)  {
+                    machine_icon_status = 'play_circle_filled';
+                    machine_tooltip = 'Machine Run';
+                }*/
+                //  return '<span class="label label-'+ label +'">'+data+'</span>'+machine_running_status;
+                /* return '<div class="display: inline-block;"><a class="my-tool-tip" data-toggle="tooltip" data-placement="top" title="'+machine_tooltip+'"><i class="material-icons col-teal" style="vertical-align: middle;cursor: pointer;">'+machine_icon_status+'</i></a><span class="label label-'+ label +'">'+data+'</span></div>';*/
+
+                return '<div class="display: inline-block;"><span class="label label-'+ label +'">'+data+'</span></div>';
+            }
+        },
+        /*{
+            "data": 'defect.defect_description_name_1'
+        },*/
+        {
+            "data": null,
+            orderable: false,
+            searchable: true,
+            render: function( data, type, row, meta ){
+                var defect1 = data.defect1.defect_description_name_1;
+                var defect2 = data.defect2.defect_description_name_2;
+                var defect3 = data.defect3.defect_description_name_3;
+                var defect4 = data.defect4.defect_description_name_4;
+                var defect5 = data.defect5.defect_description_name_5;
+                
+                return [defect1, defect2, defect3, defect4, defect5].filter(Boolean).join(", ");
+            }
+        },
+        /*{
             "data": null,
             orderable: false,
             searchable: false,
@@ -210,8 +236,49 @@ var table_active = $('#qan_active_list').DataTable({
                             '</div>' +
                        '</div>';
             }
+        },*/
+        {
+            "data": null,
+            orderable: false,
+            searchable: true,
+            render: function( data, type, row, meta ){
+                var submission = data.total_submission.total_submission;
+
+                return '<b>'+submission+'</b>';
+            }
         },
         {
+            "data": null,
+            orderable: false,
+            searchable: true,
+            render: function( data, type, row, meta ){
+                var btn = 'primary';
+                var machine_status = data.machine_status.machine_status;
+
+                if(machine_status=="RUN") btn = 'success';
+                if(machine_status=="STOP") btn = 'danger';
+                if(machine_status=="NA") btn = 'primary';
+
+                return '<button type="button" class="btn btn-'+ btn +'">'+machine_status+'</button>';
+            }
+        },
+        {
+            "data": null,
+            orderable: false,
+            searchable: true,
+            render: function( data, type, row, meta ){
+                var label = 'danger';
+                var result = data.result_insepection.result;
+
+                if(result=="PASS") label = 'success';
+                if(result=="FAILED") label = 'danger';
+                if(result=="NA") label = 'info';
+
+                return '<div class="display: inline-block;"><span class="label label-'+ label +'">'+result+'</span></div>';
+                        
+            }
+        }, 
+        /*{
             "data": null,
             orderable: false,
             searchable: false,
@@ -224,8 +291,8 @@ var table_active = $('#qan_active_list').DataTable({
                 
                 return '<div class="progress"><div class="progress-bar progress-'+bar_colour+' progress-bar-striped active" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" style="width: '+ percent +'%"></div></div>'
             }
-        },
-        {
+        },*/
+        /*{
             "data": "aff_rej",
             orderable: false,
             searchable: false,
@@ -233,26 +300,33 @@ var table_active = $('#qan_active_list').DataTable({
                 
                 return data.total_rej_qty+" / "+data.total_aff_qty;
             }
-        },
-        {data : 'created_date',
-         searchable: false
-        },
-        {data : null,
-         searchable: false,
-         render: function( data, type, row, meta ){
-            var now  = moment().format('YYYY-MM-DD H:mm:ss'); 
-            var then = row.created_date;
-            var ms = moment(now,"YYYY-MM-DD H:mm:ss").diff(moment(then,"YYYY-MM-DD H:mm:ss"));
-            var d = moment.duration(ms);
-            return setDiffTimeString(d);
-         }
+        },*/
+        {
+            data : 'created_date',
+            searchable: true
         }
-        // {data : 'id',
-        //  searchable: false,
-        //  render: function( data, type, row, meta ){
-        //     return '<a href="/FrontEnd/mastertemplate/'+ data +'"><i class="material-icons">pageview</i></a>';
-        //  }
-        // }
+        /*{
+            data : 'machine_run_datetime',
+            searchable: false
+        },*/
+        /*{
+            data : null,
+            searchable: false,
+            render: function( data, type, row, meta ){
+                var now  = moment().format('YYYY-MM-DD H:mm:ss'); 
+                var then = row.created_date;
+                var ms = moment(now,"YYYY-MM-DD H:mm:ss").diff(moment(then,"YYYY-MM-DD H:mm:ss"));
+                var d = moment.duration(ms);
+                return setDiffTimeString(d);
+            }
+        },*/
+        /*{
+            data : 'id',
+            searchable: false,
+            render: function( data, type, row, meta ){
+            return '<a href="/FrontEnd/mastertemplate/'+ data +'"><i class="material-icons">pageview</i></a>';
+            }
+        }*/
     ],
     "drawCallback": function( settings ) {
         $('[data-toggle="tooltip"]').tooltip({
@@ -270,41 +344,66 @@ var table_active = $('#qan_active_list').DataTable({
 var table_close = $('#qan_closed_ticket_list').DataTable({
     "ajax": '/FrontEnd/ajax_closed_list',
     "columns" : [
-        {
+        /*{
             "className":      'details-control',
             "data":           null,
             "orderable":      false,
             "searchable":     false,
             "defaultContent": '<i class="material-icons col-teal" style="cursor: pointer;">add_circle</i>'
-        },
-        {data : null,
-         render: function( data, type, row, meta ){
-             return meta.row+1;
-         }
-        },
-        {data : null,
-         searchable: true,
-         render: function( data, type, row, meta ){
-            return '<a href="/FrontEnd/mastertemplate/'+ row.id +'">'+ row.qan_no +'</a>';
-         }
-        },
-        {data : 'status_name',
-         render: function( data, type, row, meta ){
-             var label = 'success';
-             var machine_icon_status = 'pause_circle_filled';
-             var machine_tooltip = 'Machine Stop';
-   
-            if( (parseInt(row.status) < 4) || row.machine_status==1)  {
-                machine_icon_status = 'play_circle_filled';
-                machine_tooltip = 'Machine Run';
+        },*/
+        {
+            data : null,
+            render: function( data, type, row, meta ){
+                return meta.row+1;
             }
-            //  return '<span class="label label-'+ label +'">'+data+'</span>'+machine_running_status;
-             return '<div class="display: inline-block;"><a class="my-tool-tip" data-toggle="tooltip" data-placement="top" title="'+machine_tooltip+'"><i class="material-icons col-teal" style="vertical-align: middle;cursor: pointer;">'+machine_icon_status+'</i></a><span class="label label-'+ label +'">'+data+'</span></div>';
-         }
-        },
-        {"data": 'defect.defect_description_name'
         },
         {
+            data : null,
+            searchable: true,
+            render: function( data, type, row, meta ){
+                return '<a href="/FrontEnd/mastertemplate/'+ row.id +'">'+ row.qan_no +'</a>';
+            }
+        },
+        {
+            data : 'status_name',
+            render: function( data, type, row, meta ){
+                var label = 'warning'; //success
+                /*var machine_icon_status = 'pause_circle_filled';
+                var machine_tooltip = 'Machine Stop';*/
+
+                // if(data=="NEW") label = 'info';
+                // if(data=="SOLVED" || (data=="MRB")){
+                //     label = 'success';
+                // }
+                if(data=="CLOSED") label = 'success';
+                /*if( (parseInt(row.status) < 4) || row.machine_status==1)  {
+                    machine_icon_status = 'play_circle_filled';
+                    machine_tooltip = 'Machine Run';
+                }*/
+                //  return '<span class="label label-'+ label +'">'+data+'</span>'+machine_running_status;
+                /* return '<div class="display: inline-block;"><a class="my-tool-tip" data-toggle="tooltip" data-placement="top" title="'+machine_tooltip+'"><i class="material-icons col-teal" style="vertical-align: middle;cursor: pointer;">'+machine_icon_status+'</i></a><span class="label label-'+ label +'">'+data+'</span></div>';*/
+
+                return '<div class="display: inline-block;"><span class="label label-'+ label +'">'+data+'</span></div>';
+            }
+        },
+        /*{
+            "data": 'defect.defect_description_name'
+        },*/
+        {
+            "data": null,
+            orderable: false,
+            searchable: false,
+            render: function( data, type, row, meta ){
+                var defect1 = data.defect1.defect_description_name_1;
+                var defect2 = data.defect2.defect_description_name_2;
+                var defect3 = data.defect3.defect_description_name_3;
+                var defect4 = data.defect4.defect_description_name_4;
+                var defect5 = data.defect5.defect_description_name_5;
+                
+                return [defect1, defect2, defect3, defect4, defect5].filter(Boolean).join(", ");
+            }
+        },
+        /*{
             "data": null,
             orderable: false,
             searchable: false,
@@ -321,23 +420,67 @@ var table_close = $('#qan_closed_ticket_list').DataTable({
                             '</div>' +
                        '</div>';
             }
+        },*/
+        {
+            "data": null,
+            orderable: false,
+            searchable: true,
+            render: function( data, type, row, meta ){
+                var submission = data.total_submission.total_submission;
+
+                return '<b>'+submission+'</b>';
+            }
         },
         {
+            "data": null,
+            orderable: false,
+            searchable: true,
+            render: function( data, type, row, meta ){
+                var btn = 'primary';
+                var machine_status = data.machine_status.machine_status;
+
+                if(machine_status=="RUN") btn = 'success';
+                if(machine_status=="STOP") btn = 'danger';
+                if(machine_status=="NA") btn = 'primary';
+
+                return '<button type="button" class="btn btn-'+ btn +'">'+machine_status+'</button>';
+            }
+        },
+        {
+            "data": null,
+            orderable: false,
+            searchable: true,
+            render: function( data, type, row, meta ){
+                var label = 'danger';
+                var result = data.result_insepection.result;
+
+                if(result=="PASS") label = 'success';
+                if(result=="FAILED") label = 'danger';
+                if(result=="NA") label = 'info';
+
+                return '<div class="display: inline-block;"><span class="label label-'+ label +'">'+result+'</span></div>';
+            }
+        },
+        {
+            data : 'created_date',
+            searchable: true
+        }
+        /*{
             "data": null,
             orderable: false,
             searchable: false,
             render: function( data, type, row, meta ){
                 var percent = (row.status / 8)*100;
                 var bar_colour = 'bar-success ';
-                // var bar_colour = 'bar-info ';//'bg-red'
-                // if(percent < 100) bar_colour = 'bar-success';//'bg-green'
-                // if(percent < 65) bar_colour = 'bar-warning';//'bg-orange';
-                // if(percent < 26) bar_colour = 'bar-info';//'bg-red'
+                var bar_colour = 'bar-info ';//'bg-red'
+                if(percent < 100) bar_colour = 'bar-success';//'bg-green'
+                if(percent < 65) bar_colour = 'bar-warning';//'bg-orange';
+                if(percent < 26) bar_colour = 'bar-info';//'bg-red'
                 
                 return '<div class="progress"><div class="progress-bar progress-'+bar_colour+' progress-bar-striped active" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" style="width: '+ percent +'%"></div></div>'
             }
-        },
-        {
+        },*/
+        /*{
             "data": "aff_rej",
             orderable: false,
             searchable: false,
@@ -345,20 +488,22 @@ var table_close = $('#qan_closed_ticket_list').DataTable({
                 
                 return data.total_rej_qty+" / "+data.total_aff_qty;
             }
-        },
-        {data : 'datetime',
-         searchable: false
-        },
-        {data : null,
-         searchable: false,
-         render: function( data, type, row, meta ){
-            var first  = row.closed_datetime; 
-            var last = row.datetime;
-            var ms = moment(first,"YYYY-MM-DD H:mm:ss").diff(moment(last,"YYYY-MM-DD H:mm:ss"));
-            var d = moment.duration(ms);
-            return setDiffTimeString(d);
-         }
-        }
+        },*/
+        /*{
+            data : 'datetime',
+            searchable: false
+        },*/
+        /*{
+            data : null,
+            searchable: false,
+            render: function( data, type, row, meta ){
+                var first  = row.closed_datetime; 
+                var last = row.datetime;
+                var ms = moment(first,"YYYY-MM-DD H:mm:ss").diff(moment(last,"YYYY-MM-DD H:mm:ss"));
+                var d = moment.duration(ms);
+                return setDiffTimeString(d);
+            }
+        }*/
     ],
     "drawCallback": function( settings ) {
         $('[data-toggle="tooltip"]').tooltip({
@@ -375,44 +520,64 @@ var table_close = $('#qan_closed_ticket_list').DataTable({
 var table_superuseractive = $('#superuser_qan_active_list').DataTable({
     "ajax": '/SuperUser/superuser_ajax_active_list',
     "columns" : [
-        {
+        /*{
             "className":      'details-control',
             "data":           null,
             "orderable":      false,
             "searchable":     false,
             "defaultContent": '<i class="material-icons col-teal" style="cursor: pointer;">add_circle</i>'
-        },
-        {data : null,
-         render: function( data, type, row, meta ){
-             return meta.row+1;
-         }
-        },
-        {data : null,
-         searchable: true,
-         render: function( data, type, row, meta ){
-            return '<a href="/SuperUser/index/'+ row.id +'">'+ row.qan_no +'</a>';
-         }
-        },
-        {data : 'status_name',
-         render: function( data, type, row, meta ){
-             var label = 'warning';
-             var machine_icon_status = 'pause_circle_filled';
-             var machine_tooltip = 'Machine Stop';
-             if(data=="NEW") label = 'info';
-             if(data=="SOLVED" || (data=="MRB")){
-                label = 'success';
+        },*/
+        {
+            data : null,
+            render: function( data, type, row, meta ){
+                return meta.row+1;
             }
-            if( (parseInt(row.status) < 4) || row.machine_status==1)  {
-                machine_icon_status = 'play_circle_filled';
-                machine_tooltip = 'Machine Run';
-            }
-            //  return '<span class="label label-'+ label +'">'+data+'</span>'+machine_running_status;
-             return '<div class="display: inline-block;"><a class="my-tool-tip" data-toggle="tooltip" data-placement="top" title="'+machine_tooltip+'"><i class="material-icons col-teal" style="vertical-align: middle;cursor: pointer;">'+machine_icon_status+'</i></a><span class="label label-'+ label +'">'+data+'</span></div>';
-         }
-        },
-        {"data": 'defect.defect_description_name'
         },
         {
+            data : null,
+            searchable: true,
+            render: function( data, type, row, meta ){
+                return '<a href="/SuperUser/index/'+ row.id +'">'+ row.qan_no +'</a>';
+            }
+        },
+        {
+            data : 'status_name',
+            render: function( data, type, row, meta ){
+                var label = 'warning';
+                /*var machine_icon_status = 'pause_circle_filled';
+                var machine_tooltip = 'Machine Stop';*/
+                if(data=="NEW") label = 'info';
+                if(data=="SOLVED" || (data=="MRB")){
+                    label = 'success';
+                }
+                /*if( (parseInt(row.status) < 4) || row.machine_status==1)  {
+                    machine_icon_status = 'play_circle_filled';
+                    machine_tooltip = 'Machine Run';
+                }*/
+                //  return '<span class="label label-'+ label +'">'+data+'</span>'+machine_running_status;
+                /*return '<div class="display: inline-block;"><a class="my-tool-tip" data-toggle="tooltip" data-placement="top" title="'+machine_tooltip+'"><i class="material-icons col-teal" style="vertical-align: middle;cursor: pointer;">'+machine_icon_status+'</i></a><span class="label label-'+ label +'">'+data+'</span></div>';*/
+
+                return '<div class="display: inline-block;"><span class="label label-'+ label +'">'+data+'</span></div>';
+            }
+        },
+        /*{
+            "data": 'defect.defect_description_name'
+        },*/
+        {
+            "data": null,
+            orderable: false,
+            searchable: false,
+            render: function( data, type, row, meta ){
+                var defect1 = data.defect1.defect_description_name_1;
+                var defect2 = data.defect2.defect_description_name_2;
+                var defect3 = data.defect3.defect_description_name_3;
+                var defect4 = data.defect4.defect_description_name_4;
+                var defect5 = data.defect5.defect_description_name_5;
+                
+                return [defect1, defect2, defect3, defect4, defect5].filter(Boolean).join(", ");
+            }
+        },
+        /*{
             "data": null,
             orderable: false,
             searchable: false,
@@ -429,8 +594,49 @@ var table_superuseractive = $('#superuser_qan_active_list').DataTable({
                             '</div>' +
                        '</div>';
             }
+        },*/
+        {
+            "data": null,
+            orderable: false,
+            searchable: true,
+            render: function( data, type, row, meta ){
+                var submission = data.total_submission.total_submission;
+
+                return '<b>'+submission+'</b>';
+            }
         },
         {
+            "data": null,
+            orderable: false,
+            searchable: true,
+            render: function( data, type, row, meta ){
+                var btn = 'primary';
+                var machine_status = data.machine_status.machine_status;
+
+                if(machine_status=="RUN") btn = 'success';
+                if(machine_status=="STOP") btn = 'danger';
+                if(machine_status=="NA") btn = 'primary';
+
+                return '<button type="button" class="btn btn-'+ btn +'">'+machine_status+'</button>';
+            }
+        },
+        {
+            "data": null,
+            orderable: false,
+            searchable: true,
+            render: function( data, type, row, meta ){
+                var label = 'danger';
+                var result = data.result_insepection.result;
+
+                if(result=="PASS") label = 'success';
+                if(result=="FAILED") label = 'danger';
+                if(result=="NA") label = 'info';
+
+                return '<div class="display: inline-block;"><span class="label label-'+ label +'">'+result+'</span></div>';
+                        
+            }
+        },
+        /*{
             "data": null,
             orderable: false,
             searchable: false,
@@ -443,8 +649,8 @@ var table_superuseractive = $('#superuser_qan_active_list').DataTable({
                 
                 return '<div class="progress"><div class="progress-bar progress-'+bar_colour+' progress-bar-striped active" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" style="width: '+ percent +'%"></div></div>'
             }
-        },
-        {
+        },*/
+        /*{
             "data": "aff_rej",
             orderable: false,
             searchable: false,
@@ -452,26 +658,29 @@ var table_superuseractive = $('#superuser_qan_active_list').DataTable({
                 
                 return data.total_rej_qty+" / "+data.total_aff_qty;
             }
+        },*/
+        {
+            data : 'created_date',
+            searchable: false
         },
-        {data : 'created_date',
-         searchable: false
-        },
-        {data : null,
-         searchable: false,
-         render: function( data, type, row, meta ){
-            var now  = moment().format('YYYY-MM-DD H:mm:ss'); 
-            var then = row.created_date;
-            var ms = moment(now,"YYYY-MM-DD H:mm:ss").diff(moment(then,"YYYY-MM-DD H:mm:ss"));
-            var d = moment.duration(ms);
-            return setDiffTimeString(d);
-         }
-        }
-        // {data : 'id',
-        //  searchable: false,
-        //  render: function( data, type, row, meta ){
-        //     return '<a href="/FrontEnd/mastertemplate/'+ data +'"><i class="material-icons">pageview</i></a>';
-        //  }
-        // }
+        /*{
+            data : null,
+            searchable: false,
+            render: function( data, type, row, meta ){
+                var now  = moment().format('YYYY-MM-DD H:mm:ss'); 
+                var then = row.created_date;
+                var ms = moment(now,"YYYY-MM-DD H:mm:ss").diff(moment(then,"YYYY-MM-DD H:mm:ss"));
+                var d = moment.duration(ms);
+                return setDiffTimeString(d);
+            }
+        }*/
+        /*{
+            data : 'id',
+            searchable: false,
+            render: function( data, type, row, meta ){
+                return '<a href="/FrontEnd/mastertemplate/'+ data +'"><i class="material-icons">pageview</i></a>';
+            }
+        }*/
     ],
     "drawCallback": function( settings ) {
         $('[data-toggle="tooltip"]').tooltip({
@@ -488,41 +697,66 @@ var table_superuseractive = $('#superuser_qan_active_list').DataTable({
 var table_superuserclose = $('#superuser_qan_closed_ticket_list').DataTable({
     "ajax": '/SuperUser/superuser_ajax_closed_list',
     "columns" : [
-        {
+        /*{
             "className":      'details-control',
             "data":           null,
             "orderable":      false,
             "searchable":     false,
             "defaultContent": '<i class="material-icons col-teal" style="cursor: pointer;">add_circle</i>'
-        },
-        {data : null,
-         render: function( data, type, row, meta ){
-             return meta.row+1;
-         }
-        },
-        {data : null,
-         searchable: true,
-         render: function( data, type, row, meta ){
-            return '<a href="/SuperUser/index/'+ row.id +'">'+ row.qan_no +'</a>';
-         }
-        },
-        {data : 'status_name',
-         render: function( data, type, row, meta ){
-             var label = 'success';
-             var machine_icon_status = 'pause_circle_filled';
-             var machine_tooltip = 'Machine Stop';
-   
-            if( (parseInt(row.status) < 4) || row.machine_status==1)  {
-                machine_icon_status = 'play_circle_filled';
-                machine_tooltip = 'Machine Run';
+        },*/
+        {
+            data : null,
+            render: function( data, type, row, meta ){
+                return meta.row+1;
             }
-            //  return '<span class="label label-'+ label +'">'+data+'</span>'+machine_running_status;
-             return '<div class="display: inline-block;"><a class="my-tool-tip" data-toggle="tooltip" data-placement="top" title="'+machine_tooltip+'"><i class="material-icons col-teal" style="vertical-align: middle;cursor: pointer;">'+machine_icon_status+'</i></a><span class="label label-'+ label +'">'+data+'</span></div>';
-         }
-        },
-        {"data": 'defect.defect_description_name'
         },
         {
+            data : null,
+            searchable: true,
+            render: function( data, type, row, meta ){
+                return '<a href="/SuperUser/index/'+ row.id +'">'+ row.qan_no +'</a>';
+            }
+        },
+        {
+            data : 'status_name',
+            render: function( data, type, row, meta ){
+                var label = 'warning'; //success
+                /*var machine_icon_status = 'pause_circle_filled';
+                var machine_tooltip = 'Machine Stop';*/
+
+                if(data=="NEW") label = 'info';
+                if(data=="SOLVED" || (data=="MRB")){
+                    label = 'success';
+                }
+   
+                /*if( (parseInt(row.status) < 4) || row.machine_status==1)  {
+                    machine_icon_status = 'play_circle_filled';
+                    machine_tooltip = 'Machine Run';
+                }*/
+                //  return '<span class="label label-'+ label +'">'+data+'</span>'+machine_running_status;
+                /*return '<div class="display: inline-block;"><a class="my-tool-tip" data-toggle="tooltip" data-placement="top" title="'+machine_tooltip+'"><i class="material-icons col-teal" style="vertical-align: middle;cursor: pointer;">'+machine_icon_status+'</i></a><span class="label label-'+ label +'">'+data+'</span></div>';*/
+
+                return '<div class="display: inline-block;"><span class="label label-'+ label +'">'+data+'</span></div>';
+            }
+        },
+        /*{
+            "data": 'defect.defect_description_name'
+        },*/
+        {
+            "data": null,
+            orderable: false,
+            searchable: false,
+            render: function( data, type, row, meta ){
+                var defect1 = data.defect1.defect_description_name_1;
+                var defect2 = data.defect2.defect_description_name_2;
+                var defect3 = data.defect3.defect_description_name_3;
+                var defect4 = data.defect4.defect_description_name_4;
+                var defect5 = data.defect5.defect_description_name_5;
+                
+                return [defect1, defect2, defect3, defect4, defect5].filter(Boolean).join(", ");
+            }
+        },
+        /*{
             "data": null,
             orderable: false,
             searchable: false,
@@ -539,8 +773,52 @@ var table_superuserclose = $('#superuser_qan_closed_ticket_list').DataTable({
                             '</div>' +
                        '</div>';
             }
+        },*/
+        {
+            "data": null,
+            orderable: false,
+            searchable: true,
+            render: function( data, type, row, meta ){
+                var submission = data.total_submission.total_submission;
+
+                return '<b>'+submission+'</b>';
+            }
         },
         {
+            "data": null,
+            orderable: false,
+            searchable: true,
+            render: function( data, type, row, meta ){
+                var btn = 'primary';
+                var machine_status = data.machine_status.machine_status;
+
+                if(machine_status=="RUN") btn = 'success';
+                if(machine_status=="STOP") btn = 'danger';
+                if(machine_status=="NA") btn = 'primary';
+
+                return '<button type="button" class="btn btn-'+ btn +'">'+machine_status+'</button>';
+            }
+        },
+        {
+            "data": null,
+            orderable: false,
+            searchable: true,
+            render: function( data, type, row, meta ){
+                var label = 'danger';
+                var result = data.result_insepection.result;
+
+                if(result=="PASS") label = 'success';
+                if(result=="FAILED") label = 'danger';
+                if(result=="NA") label = 'info';
+
+                return '<div class="display: inline-block;"><span class="label label-'+ label +'">'+result+'</span></div>';
+            }
+        },
+        {
+            data : 'created_date',
+            searchable: true
+        }
+        /*{
             "data": null,
             orderable: false,
             searchable: false,
@@ -554,8 +832,8 @@ var table_superuserclose = $('#superuser_qan_closed_ticket_list').DataTable({
                 
                 return '<div class="progress"><div class="progress-bar progress-'+bar_colour+' progress-bar-striped active" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" style="width: '+ percent +'%"></div></div>'
             }
-        },
-        {
+        },*/
+        /*{
             "data": "aff_rej",
             orderable: false,
             searchable: false,
@@ -563,11 +841,8 @@ var table_superuserclose = $('#superuser_qan_closed_ticket_list').DataTable({
                 
                 return data.total_rej_qty+" / "+data.total_aff_qty;
             }
-        },
-        {data : 'datetime',
-         searchable: false
-        },
-        {data : null,
+        },*/
+        /*{data : null,
          searchable: false,
          render: function( data, type, row, meta ){
             var first  = row.closed_datetime; 
@@ -576,7 +851,7 @@ var table_superuserclose = $('#superuser_qan_closed_ticket_list').DataTable({
             var d = moment.duration(ms);
             return setDiffTimeString(d);
          }
-        }
+        }*/
     ],
     "drawCallback": function( settings ) {
         $('[data-toggle="tooltip"]').tooltip({
@@ -599,13 +874,13 @@ $('#qan_active_list tbody').on('click', 'td.details-control', function () {
         // This row is already open - close it
         $('div.slider', row.child()).slideUp( function () {
             row.child.hide();
-            tr.find('td:eq(0)').html('<i class="material-icons col-teal" style="cursor: pointer;">add_circle</i>');
+            // tr.find('td:eq(0)').html('<i class="material-icons col-teal" style="cursor: pointer;">add_circle</i>');
         } );
     }
     else {
         // Open this row
         row.child( details_format(row.data()), 'no-padding' ).show();
-        tr.find('td:eq(0)').html('<i class="material-icons col-pink" style="cursor: pointer;">remove_circle</i>');
+        // tr.find('td:eq(0)').html('<i class="material-icons col-pink" style="cursor: pointer;">remove_circle</i>');
         $('div.slider', row.child()).slideDown();
     }
 } );
@@ -621,13 +896,13 @@ $('#qan_closed_ticket_list tbody').on('click', 'td.details-control', function ()
         // This row is already open - close it
         $('div.slider', row.child()).slideUp( function () {
             row.child.hide();
-            tr.find('td:eq(0)').html('<i class="material-icons col-teal" style="cursor: pointer;">add_circle</i>');
+            // tr.find('td:eq(0)').html('<i class="material-icons col-teal" style="cursor: pointer;">add_circle</i>');
         } );
     }
     else {
         // Open this row
         row.child( details_format(row.data()), 'no-padding' ).show();
-        tr.find('td:eq(0)').html('<i class="material-icons col-pink" style="cursor: pointer;">remove_circle</i>');
+        // tr.find('td:eq(0)').html('<i class="material-icons col-pink" style="cursor: pointer;">remove_circle</i>');
         $('div.slider', row.child()).slideDown();
     }
 } );
@@ -642,14 +917,14 @@ $('#superuser_qan_active_list tbody').on('click', 'td.details-control', function
         // This row is already open - close it
         $('div.slider', row.child()).slideUp( function () {
             row.child.hide();
-            tr.find('td:eq(0)').html('<i class="material-icons col-teal" style="cursor: pointer;">add_circle</i>');
+            // tr.find('td:eq(0)').html('<i class="material-icons col-teal" style="cursor: pointer;">add_circle</i>');
         } );
     }
     else {
         // Open this row
         row.child( details_format(row.data()), 'no-padding' ).show();
         tr.find('td:eq(0)').html('<i class="material-icons col-pink" style="cursor: pointer;">remove_circle</i>');
-        $('div.slider', row.child()).slideDown();
+        // $('div.slider', row.child()).slideDown();
     }
 } );
 
@@ -663,13 +938,13 @@ $('#superuser_qan_closed_ticket_list tbody').on('click', 'td.details-control', f
         // This row is already open - close it
         $('div.slider', row.child()).slideUp( function () {
             row.child.hide();
-            tr.find('td:eq(0)').html('<i class="material-icons col-teal" style="cursor: pointer;">add_circle</i>');
+            // tr.find('td:eq(0)').html('<i class="material-icons col-teal" style="cursor: pointer;">add_circle</i>');
         } );
     }
     else {
         // Open this row
         row.child( details_format(row.data()), 'no-padding' ).show();
-        tr.find('td:eq(0)').html('<i class="material-icons col-pink" style="cursor: pointer;">remove_circle</i>');
+        // tr.find('td:eq(0)').html('<i class="material-icons col-pink" style="cursor: pointer;">remove_circle</i>');
         $('div.slider', row.child()).slideDown();
     }
 } );

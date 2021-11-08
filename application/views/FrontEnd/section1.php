@@ -112,7 +112,7 @@ $jsselect = TRUE;
 
         $form = $data->submit_button->s1[0];
         echo "<!-- Section 1 Form -->\r\n";
-        echo '<form method="post" action="'.$form->action.'">';
+        echo '<form method="post" action="'.$form->action.'" autocomplete="off">';
     }
 ?>
 
@@ -211,7 +211,7 @@ $jsselect = TRUE;
                             </div>
                         </div>
                         <div class="clearfix"></div>
-                        <div id="defect_checkbox">
+                        <!-- <div id="defect_checkbox">
                             <input type="hidden" name="oos" value="0">
                             <input type="hidden" name="ooc" value="0">
                             <input type="hidden" name="visual" value="0">
@@ -221,6 +221,26 @@ $jsselect = TRUE;
                             <label for="ooc">OOC (OUT OF CONTROL)</label>
                             <input type="checkbox" id="visual" name="visual" class="filled-in checkbox-active" data-type="visual" value="1" <?php if (@$data->visual == '1') echo 'checked';?> <?php echo @$section['S1.1']['de']?'':'disabled';?>>
                             <label for="visual">VISUAL</label> 
+                        </div> -->
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <label class="form-label">Rule</label>
+                            </div>
+                            <div class="col-md-8">
+                                <select id="rule_name" name="rule_name" data-show-subtext="true" data-live-search="true" class="<?php echo @$section['S1.1']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S1.1']['de']?'':'disabled';?> required>
+                                <option value="">--Please Select--</option>
+                                <?php
+                                    foreach($data->list_rule as $id => $rule_name)
+                                    {
+                                        $selected = '';
+                                        if (@$data->rule_name == $id){
+                                            $selected = 'selected';
+                                        }
+                                        echo '<option value="'.$id.'" '.$selected.'>'.$rule_name.'</option>';
+                                    }
+                                ?>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -243,7 +263,7 @@ $jsselect = TRUE;
                                         }
                                         echo '<option value="'.$id.'" '.$selected.'>'.$part_name.'</option>';
                                     }
-                                    ?>
+                                ?>
                                 </select>
                             </div>
                         </div><br/> 
@@ -310,19 +330,19 @@ $jsselect = TRUE;
                         </div>
                     </div>
                     <div class="clearfix"></div>                
-                    <div class="col-md-6 col-sm-6">
+                    <div class="col-md-4 col-sm-4">
                         <div class="col-md-4">
-                            <label class="form-label">DEFECT DESCRIPTION <span style="color: red">*</span></label>
+                            <label class="form-label">DEFECT DESCRIPTION (1)</span></label>
                         </div>
                         <div class="col-md-8">
                             <span id="defectives"> <!--style="display:none"-->
-                                <select id="select_defect" name="defect_description_name" data-show-subtext="true" data-live-search="true" class="<?php echo @$section['S1.2']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S1.2']['de']?'':'disabled';?> required>
+                                <select id="select_defect1" name="defect_description_name_1" data-show-subtext="true" data-live-search="true" class="<?php echo @$section['S1.2']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S1.2']['de']?'':'disabled';?>>
                                 <option value="">--Please Select--</option>
                                 <?php
                                     foreach($data->list_defect as $id => $defect_description)
                                     {
                                         $selected = '';
-                                        if (@$data->defect_description_id == $id){
+                                        if (@$data->defect_description_id_1 == $id){
                                             $selected = 'selected';
                                         }
                                         echo '<option value="'.$id.'" '.$selected.'>'.$defect_description.'</option>';
@@ -332,14 +352,144 @@ $jsselect = TRUE;
                             </span>
                         </div>
                     </div>
+                    <div class="col-md-4 col-sm-4">
+                        <div class="col-md-4">
+                            <label class="form-label">DEFECT DESCRIPTION (2)</label>
+                        </div>
+                        <div class="col-md-8">
+                            <span id="defectives"> <!--style="display:none"-->
+                                <select id="select_defect2" name="defect_description_name_2" data-show-subtext="true" data-live-search="true" class="<?php echo @$section['S1.2']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S1.2']['de']?'':'disabled';?>>
+                                <option value="">--Please Select--</option>
+                                <?php
+                                    foreach($data->list_defect as $id => $defect_description)
+                                    {
+                                        $selected = '';
+                                        if (@$data->defect_description_id_2 == $id){
+                                            $selected = 'selected';
+                                        }
+                                        echo '<option value="'.$id.'" '.$selected.'>'.$defect_description.'</option>';
+                                    }
+                                ?>
+                                </select>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        <div class="col-md-4">
+                            <label class="form-label">DEFECT DESCRIPTION (3)</label>
+                        </div>
+                        <div class="col-md-8">
+                            <span id="defectives"> <!--style="display:none"-->
+                                <select id="select_defect3" name="defect_description_name_3" data-show-subtext="true" data-live-search="true" class="<?php echo @$section['S1.2']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S1.2']['de']?'':'disabled';?>>
+                                <option value="">--Please Select--</option>
+                                <?php
+                                    foreach($data->list_defect as $id => $defect_description)
+                                    {
+                                        $selected = '';
+                                        if (@$data->defect_description_id_3 == $id){
+                                            $selected = 'selected';
+                                        }
+                                        echo '<option value="'.$id.'" '.$selected.'>'.$defect_description.'</option>';
+                                    }
+                                ?>
+                                </select>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        <div class="col-md-4">
+                            <label class="form-label">DEFECT DESCRIPTION (4)</label>
+                        </div>
+                        <div class="col-md-8">
+                            <span id="defectives"> <!--style="display:none"-->
+                                <select id="select_defect4" name="defect_description_name_4" data-show-subtext="true" data-live-search="true" class="<?php echo @$section['S1.2']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S1.2']['de']?'':'disabled';?>>
+                                <option value="">--Please Select--</option>
+                                <?php
+                                    foreach($data->list_defect as $id => $defect_description)
+                                    {
+                                        $selected = '';
+                                        if (@$data->defect_description_id_4 == $id){
+                                            $selected = 'selected';
+                                        }
+                                        echo '<option value="'.$id.'" '.$selected.'>'.$defect_description.'</option>';
+                                    }
+                                ?>
+                                </select>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        <div class="col-md-4">
+                            <label class="form-label">DEFECT DESCRIPTION (5)</label>
+                        </div>
+                        <div class="col-md-8">
+                            <span id="defectives"> <!--style="display:none"-->
+                                <select id="select_defect5" name="defect_description_name_5" data-show-subtext="true" data-live-search="true" class="<?php echo @$section['S1.2']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S1.2']['de']?'':'disabled';?>>
+                                <option value="">--Please Select--</option>
+                                <?php
+                                    foreach($data->list_defect as $id => $defect_description)
+                                    {
+                                        $selected = '';
+                                        if (@$data->defect_description_id_5 == $id){
+                                            $selected = 'selected';
+                                        }
+                                        echo '<option value="'.$id.'" '.$selected.'>'.$defect_description.'</option>';
+                                    }
+                                ?>
+                                </select>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        <div class="col-md-4">
+                            
+                        </div>
+                        <div class="col-md-8">
+                           
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>                
                     <div class="col-sm-3">
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <input type="text" id="others" name="defect_description_others" class="form-control" value='<?php echo @$data->defect_description_others;?>' <?php echo @$section['S1.2']['de']?'':'disabled';?> />    
-                                <label class="form-label">DEFECT DESCRIPTION (OTHERS)</label>
+                                <input type="text" id="others1" name="defect_description_others_1" class="form-control" value='<?php echo @$data->defect_description_others_1;?>' <?php echo @$section['S1.2']['de']?'':'disabled';?> />    
+                                <label class="form-label">DEFECT DESCRIPTION (OTHERS) (1)</label>
                             </div> 
                         </div>     
                     </div>   
+                    <div class="col-sm-3">
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="others2" name="defect_description_others_2" class="form-control" value='<?php echo @$data->defect_description_others_2;?>' <?php echo @$section['S1.2']['de']?'':'disabled';?> />    
+                                <label class="form-label">DEFECT DESCRIPTION (OTHERS) (2)</label>
+                            </div> 
+                        </div>     
+                    </div> 
+                    <div class="col-sm-3">
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="others3" name="defect_description_others_3" class="form-control" value='<?php echo @$data->defect_description_others_3;?>' <?php echo @$section['S1.2']['de']?'':'disabled';?> />    
+                                <label class="form-label">DEFECT DESCRIPTION (OTHERS) (3)</label>
+                            </div> 
+                        </div>     
+                    </div> 
+                    <div class="col-sm-3">
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="others4" name="defect_description_others_4" class="form-control" value='<?php echo @$data->defect_description_others_4;?>' <?php echo @$section['S1.2']['de']?'':'disabled';?> />    
+                                <label class="form-label">DEFECT DESCRIPTION (OTHERS) (4)</label>
+                            </div> 
+                        </div>     
+                    </div> 
+                    <div class="col-sm-3">
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="others5" name="defect_description_others_5" class="form-control" value='<?php echo @$data->defect_description_others_5;?>' <?php echo @$section['S1.2']['de']?'':'disabled';?> />    
+                                <label class="form-label">DEFECT DESCRIPTION (OTHERS) (5)</label>
+                            </div> 
+                        </div>     
+                    </div> 
+                    
                     <div class="clearfix"></div> 
                     <div class="col-md-4 col-sm-4">
                         <div class="form-group form-float">
@@ -348,7 +498,7 @@ $jsselect = TRUE;
                                 <label class="form-label">LAST PASSED SAMPLE DATETIME</label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <div class="col-md-4">
                                 <label class="form-label">ACKNOWLEDGED BY ENGINEERING<i>(Tech & Above)</i></label>
                             </div>
@@ -358,7 +508,7 @@ $jsselect = TRUE;
                                     <input type="hidden" name="ack_eng_user_id" value='<?php echo @$data->ack_eng_user;?>'/>
                                 </div>
                             </div>
-                        </div><br/>
+                        </div><br/> -->
                     </div>
                     <div class="col-md-4 col-sm-4">
                         <div class="form-group form-float">
@@ -367,7 +517,7 @@ $jsselect = TRUE;
                                 <label class="form-label">PURGE FROM DATETIME</label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <div class="col-md-4">
                                 <label class="form-label">ACKNOWLEDGED BY PRODUCTION<i>(Leader & Above)</i></label>
                             </div>
@@ -377,7 +527,7 @@ $jsselect = TRUE;
                                     <input type="hidden" name="ack_prod_user_id" value='<?php echo @$data->ack_prod_user;?>'/>
                                 </div>
                             </div>
-                        </div><br/>
+                        </div><br/> -->
                             <div class="col-md-12 col-sm-12">
                                 <!-- <table class="table table-hover table-bordered">
                                     <thead>
@@ -391,35 +541,36 @@ $jsselect = TRUE;
                                     </thead>
                                     <tbody>
                                     <?php 
-                                            $totalProd = 0;
-                                            $tempqty = '';
-                                            if(@$data->prod_loc){
-                                                foreach(@$data->prod_loc as $prodloc)
-                                                {
-                                                    if(@$data->production_qty){
-                                                        
+
+                                        $totalProd = 0;
+                                        $tempqty = '';
+                                        if(@$data->prod_loc){
+                                            foreach(@$data->prod_loc as $prodloc)
+                                            {
+                                                if(@$data->production_qty){
                                                     
-                                                        foreach(@$data->production_qty as $prodqty){
-                                                            if ($prodqty->prod_id == $prodloc->id){
-                                                                $tempqty = $prodqty->prodquantity;
-                                                                $totalProd += $tempqty;
-                                                                break;
-                                                            }else{
-                                                                $tempqty = 0;
-                                                            }
+                                                
+                                                    foreach(@$data->production_qty as $prodqty){
+                                                        if ($prodqty->prod_id == $prodloc->id){
+                                                            $tempqty = $prodqty->prodquantity;
+                                                            $totalProd += $tempqty;
+                                                            break;
+                                                        }else{
+                                                            $tempqty = 0;
                                                         }
                                                     }
-                                                    echo "<tr>";    
-                                                        echo "<td>".$prodloc->location_name."</td>";
-                                                        echo "<td>";
-                                                            echo "<input type='number' value='$tempqty' name='input_qty_prod[$prodloc->id]' class='form-control input_qty_prod'".(@$section['S1.4']['de']?'':'disabled').">";
-                                                        echo "</td>";
-                                                    echo "</tr>";
-                                            
                                                 }
+                                                echo "<tr>";    
+                                                    echo "<td>".$prodloc->location_name."</td>";
+                                                    echo "<td>";
+                                                        echo "<input type='number' value='$tempqty' name='input_qty_prod[$prodloc->id]' class='form-control input_qty_prod'".(@$section['S1.4']['de']?'':'disabled').">";
+                                                    echo "</td>";
+                                                echo "</tr>";
+                                        
                                             }
-                                            
-                                            ?>
+                                        }
+                                        
+                                    ?>
                                         
                                     </tbody>
                                     <tfoot>
@@ -432,7 +583,7 @@ $jsselect = TRUE;
                         <div class="col-md-4 col-sm-4">
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input type="text" id="estimate_qty" name="estimate_qty" class="form-control" value='<?php echo @$data->estimate_qty;?>' <?php echo @$section['S1.2']['de']?'':'disabled';?> required/>
+                                    <input type="number" id="estimate_qty" name="estimate_qty" class="form-control" value='<?php echo @$data->estimate_qty;?>' <?php echo @$section['S1.2']['de']?'':'disabled';?> required/>
                                     <label class="form-label">ESTIMATE QTY</label>
                                 </div>
                             </div>

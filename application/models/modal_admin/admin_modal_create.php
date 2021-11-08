@@ -286,4 +286,35 @@ Class Admin_modal_create extends CI_Model {
 			return array('error','Duplicate');
 		}
 	}
+
+	function save_rule($rule_name,$is_active,$is_delete){ //$constant_no
+
+		// Query to check whether constant_no & correction_action already exist or not
+		$condition = "rule_name = '$rule_name'";
+		$this->db->select('*');
+		$this->db->from('rule_list');
+		$this->db->where($condition);
+		$this->db->limit(1);
+		$query = $this->db->get();
+
+		if ($query->num_rows() == 0) {
+
+			$data = array(
+				'rule_name' => $rule_name,
+				'is_active' => $is_active,
+				'is_delete' => $is_delete
+			  );
+		
+			// Query to insert data in database
+			$this->db->insert('rule_list', $data);
+			
+			if ($this->db->affected_rows() > 0) {
+				return array('ok','Successful');;
+			}else{
+				return array('error','Database Failure');
+			}
+		}else{
+			return array('error','Duplicate');
+		}
+	}
 }

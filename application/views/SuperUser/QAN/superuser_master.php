@@ -1,15 +1,28 @@
 <?php 
 
-if(@$show_section1 == TRUE OR @$show_allsection == TRUE)
-include(APPPATH .'views\SuperUser\QAN\section1.php');
-if(@$show_section3 == TRUE OR @$show_allsection == TRUE)
-include(APPPATH .'views\SuperUser\QAN\section3.php');
-if(@$show_section4 == TRUE OR @$show_allsection == TRUE)
-include(APPPATH .'views\SuperUser\QAN\section4.php');
-if(@$show_section2 == TRUE OR @$show_allsection == TRUE)
-include(APPPATH .'views\SuperUser\QAN\section2.php');
-if(@$show_section5 == TRUE OR @$show_allsection == TRUE)
-include(APPPATH .'views\SuperUser\QAN\section5.php');
+    // if(@$show_section1 == TRUE OR @$show_allsection == TRUE)
+    // include(APPPATH .'views/SuperUser/QAN/section1.php');
+    // if(@$show_section3 == TRUE OR @$show_allsection == TRUE)
+    // include(APPPATH .'views/SuperUser/QAN/section3.php');
+    // if(@$show_section4 == TRUE OR @$show_allsection == TRUE)
+    // include(APPPATH .'views/SuperUser/QAN/section4.php');
+    // if(@$show_section2 == TRUE OR @$show_allsection == TRUE)
+    // include(APPPATH .'views/SuperUser/QAN/section2.php');
+    // if(@$show_section5 == TRUE OR @$show_allsection == TRUE)
+    // include(APPPATH .'views/SuperUser/QAN/section5.php');
+
+    if(@$show_section1 == TRUE OR @$show_allsection == TRUE)
+    include(APPPATH .'views/SuperUser/QAN/section1.php');
+    if(@$show_section3 == TRUE OR @$show_allsection == TRUE)
+    include(APPPATH .'views/SuperUser/QAN/section3.php');
+    // if(@$show_section4 == TRUE OR @$show_allsection == TRUE)
+    // include(APPPATH .'views/FrontEnd/section4.php');
+    if(@$show_section2 == TRUE OR @$show_allsection == TRUE)
+    include(APPPATH .'views/SuperUser/QAN/section2.php');
+    if(@$show_section5 == TRUE OR @$show_allsection == TRUE)
+    include(APPPATH .'views/SuperUser/QAN/section5.php');
+    // if(@$test == TRUE OR @$show_allsection == TRUE)
+    // include(APPPATH .'views/FrontEnd/QAN/machinebreakdown.php');
 
 
 
@@ -25,6 +38,64 @@ include(APPPATH .'views\SuperUser\QAN\section5.php');
 <script>
 
     $( document ).ready(function() {
+
+        $(document).delegate('a.add-record-sublot', 'click', function(e) {
+            e.preventDefault();    
+            var content = $('#clone_tbl_sublot tr'),
+            size = $('#tbl_sublot >tbody >tr').length + 1,
+            element = null,    
+            element = content.clone();
+            element.attr('id', 'rec-'+size);
+            element.find('.delete-record-sublot').attr('data-id', size);
+            element.appendTo('#tbl_sublot_body');
+            element.find('.sn').html(size);
+        });
+        $(document).delegate('a.delete-record-sublot', 'click', function(e) {
+            e.preventDefault();    
+            var didConfirm = confirm("Are you sure You want to delete");
+            if (didConfirm == true) {
+                var id = $(this).attr('data-id');
+                var targetDiv = $(this).attr('targetDiv');
+                $('#rec-' + id).remove();
+                
+                //regnerate index number on table
+                $('#tbl_sublot_body tr').each(function(index){
+                    $(this).find('input.sn').html(index+1);
+                });
+                return true;
+            } else {
+                return false;
+            }
+        });
+
+        $(document).delegate('a.add-record-buyoff', 'click', function(e) {
+            e.preventDefault();    
+            var content = $('#clone_tbl_buyoff tr'),
+            size = $('#tbl_buyoff >tbody >tr').length + 1,
+            element = null,    
+            element = content.clone();
+            element.attr('id', 'rec-'+size);
+            element.find('.delete-record-buyoff').attr('data-id', size);
+            element.appendTo('#tbl_buyoff_body');
+            element.find('.sn').html(size);
+        });
+        $(document).delegate('a.delete-record-buyoff', 'click', function(e) {
+            e.preventDefault();    
+            var didConfirm = confirm("Are you sure You want to delete");
+            if (didConfirm == true) {
+                var id = $(this).attr('data-id');
+                var targetDiv = $(this).attr('targetDiv');
+                $('#rec-' + id).remove();
+                
+                //regnerate index number on table
+                $('#tbl_buyoff_body tr').each(function(index){
+                    $(this).find('input.sn').html(index+1);
+                });
+                return true;
+            } else {
+                return false;
+            }
+        });
 
         if(!$('#scrap').length == 0) enableDisableAll();
 

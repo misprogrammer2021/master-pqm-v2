@@ -1,13 +1,15 @@
 <?php
 
-$section = $this->session->userdata['permission'];
+    $section = $this->session->userdata['permission'];
+    $total_open_ticket = $this->modal_master->get_total_open_ticket();
+    // print_r($total_open_ticket);
+    // exit;
 
 ?>
 
 <section class="content">
     <div class="container-fluid">
         <div class="block-header"><h2>DASHBOARD</h2></div>
-
         <div class="row clearfix">
         <?php 
         
@@ -30,6 +32,20 @@ $section = $this->session->userdata['permission'];
             
                 }
             ?>
+            <!-- <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box bg-light-green hover-expand-effect">
+                    <div class="icon">
+                        <i class="material-icons">forum</i>
+                    </div>
+                    <div class="content">
+                        <div class="text">OPEN TICKETS</div>
+                        <?php
+                            $total_open_ticket = '';
+                        ?>
+                        <div id="total_open_ticket" class="number count-to" data-from="0" data-to="<?php echo @$total_open_ticket->total_open_ticket;?>" data-speed="1000" data-fresh-interval="20"><?php echo @$total_open_ticket['total_open_ticket'] > 0;?></div>
+                    </div>
+                </div>
+            </div> -->
             <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                 <div class="info-box bg-blue hover-expand-effect">
                     <div class="icon">
@@ -265,32 +281,38 @@ $section = $this->session->userdata['permission'];
                             <table id="qan_active_list" class="table table-bordered table-striped table-condensed table-hover dataTable">
                                 <thead>
                                     <tr>
-                                        <th></th>
+                                        <!-- <th></th> -->
                                         <th>Seq</th>
                                         <th>QAN NO</th>
-                                        <th width="15%">Status</th>
+                                        <th width="15%">Ticket Status</th>
                                         <th>Defect Description</th>
-                                        <th width="2%">Acknowledge</th>
-                                        <th>Progress</th>
-                                        <th>Rej/Aff</th>
+                                        <!-- <th width="2%">Acknowledge</th> -->
+                                        <th width="2%">Submission No</th>
+                                        <!-- <th>Progress</th> -->
+                                        <th>Machine Resume</th>
+                                        <th>Result Inspection</th>
+                                        <!-- <th>Rej/Aff</th> -->
                                         <th>Start DateTime</th>
-                                        <th>Elapsed Time</th>
+                                        <!-- <th>Machine Resume</th> -->
                                         <!-- <th>Action</th> -->
                                     </tr>
                                 </thead>
                                 
                                 <tfoot>
                                     <tr>
-                                        <th></th>
+                                        <!-- <th></th> -->
                                         <th>Seq</th>
                                         <th>QAN NO</th>
-                                        <th width="15%">Status</th>
+                                        <th width="15%">Ticket Status</th>
                                         <th>Defect Description</th>
-                                        <th width="2%">Acknowledge</th>
-                                        <th>Progress</th>
-                                        <th>Rej/Aff</th>
+                                        <!-- <th width="2%">Acknowledge</th> -->
+                                        <th width="2%">Submission No</th>
+                                        <!-- <th>Progress</th> -->
+                                        <th>Machine Resume</th>
+                                        <th>Result Inspection</th>
+                                        <!-- <th>Rej/Aff</th> -->
                                         <th>Start DateTime</th>
-                                        <th>Elapsed Time</th>
+                                        <!-- <th>Machine Resume</th> -->
                                         <!-- <th>Action</th> -->
                                     </tr>
                                 </tfoot>

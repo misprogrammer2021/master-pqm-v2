@@ -57,25 +57,25 @@ $jsselect = TRUE;
                         <h5>REVIEW BY QUALITY ENGINEER</h5>
                         <div class="clearfix"></div>
                         <div class="col-md-4 col-sm-4">
-                            <label class="form-label">PURGING COMPLETED?</label>
+                            <!-- <label class="form-label">PURGING COMPLETED?</label>
                             <input type="radio" id="purging_completed1" name="purging_completed" class="with-gap" value="1" <?php if (@$data->purge_status == '1') echo 'checked';?> <?php echo @$section['S5']['de']?'':'disabled';?>>   
                             <label for="purging_completed1">YES</label>
                             <input type="radio" id="purging_completed2" name="purging_completed" class="with-gap" value="0" <?php if (@$data->purge_status == '0') echo 'checked';?> <?php echo @$section['S5']['de']?'':'disabled';?>>    
-                            <label for="purging_completed2">No</label>
+                            <label for="purging_completed2">No</label> -->
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input type="text" id="closed_by" name="closed_by" class="form-control" value='<?php echo @$data->user->{$data->closedby_user_id};?>' <?php echo @$section['S5']['see']?'':'disabled';?>>  
+                                    <input type="text" id="closedby_user_id" name="closedby_user_id" class="form-control" value='<?php echo @$data->user->{$data->closedby_user_id};?>' <?php echo @$section['S5']['see']?'':'disabled';?>>  
                                     <input type="hidden" name="closedby_user_id" value="<?php echo @$data->closedby_user_id;?>" />  
                                     <label class="form-label">REVIEWED AND CLOSED BY <i>(Quality Engineer / Manager)</i></label>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4 col-sm-4">
-                            <label class="form-label">NOTIFY NEXT PROCESS</label>
+                            <!-- <label class="form-label">NOTIFY NEXT PROCESS</label>
                             <input type="radio" id="notify_next1" name="notify_next_process" class="with-gap" value="1" <?php if (@$data->notify_next_process == '1') echo 'checked';?> <?php echo @$section['S5']['de']?'':'disabled';?>>      
                             <label for="notify_next1">YES</label>
                             <input type="radio" id="notify_next2" name="notify_next_process" class="with-gap" value="0" <?php if (@$data->notify_next_process == '0') echo 'checked';?> <?php echo @$section['S5']['de']?'':'disabled';?>>      
-                            <label for="notify_next2">NO</label>
+                            <label for="notify_next2">NO</label> -->
                             <div class="form-group form-float">
                                 <div class="form-line">
                                     <input type="text" id="closed_datetime" name="closed_datetime" class="form-control" value='<?php echo @$data->closed_datetime;?>' disabled>    
@@ -83,13 +83,13 @@ $jsselect = TRUE;
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 col-sm-4">
+                        <!-- <div class="col-md-4 col-sm-4">
                             <label class="form-label">FIX VALIDATION RESULT</label>
                             <input type="radio" id="validation_result1" name="validation_result" class="with-gap" value="1" <?php if (@$data->fix_validation_result == '1') echo 'checked';?> <?php echo @$section['S5']['de']?'':'disabled';?>>      
                             <label for="validation_result1">PASS</label>
                             <input type="radio" id="validation_result2" name="validation_result" class="with-gap" value="0" <?php if (@$data->fix_validation_result == '0') echo 'checked';?> <?php echo @$section['S5']['de']?'':'disabled';?>>      
                             <label for="validation_result2">FAIL</label>
-                        </div>
+                        </div> -->
                     </div>
                     <input type="hidden" name="machine_breakdown_id" value="<?php echo @$data->id;?>" />
                     <div class="pull-right">

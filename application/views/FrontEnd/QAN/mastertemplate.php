@@ -4,12 +4,14 @@ if(@$show_section1 == TRUE OR @$show_allsection == TRUE)
 include(APPPATH .'views/FrontEnd/section1.php');
 if(@$show_section3 == TRUE OR @$show_allsection == TRUE)
 include(APPPATH .'views/FrontEnd/section3.php');
-if(@$show_section4 == TRUE OR @$show_allsection == TRUE)
-include(APPPATH .'views/FrontEnd/section4.php');
+// if(@$show_section4 == TRUE OR @$show_allsection == TRUE)
+// include(APPPATH .'views/FrontEnd/section4.php');
 if(@$show_section2 == TRUE OR @$show_allsection == TRUE)
 include(APPPATH .'views/FrontEnd/section2.php');
 if(@$show_section5 == TRUE OR @$show_allsection == TRUE)
 include(APPPATH .'views/FrontEnd/section5.php');
+// if(@$test == TRUE OR @$show_allsection == TRUE)
+// include(APPPATH .'views/FrontEnd/QAN/machinebreakdown.php');
 
 ?>;
 
@@ -23,6 +25,78 @@ include(APPPATH .'views/FrontEnd/section5.php');
 <script>
 
     $( document ).ready(function() {
+
+        // $("#addNewOnHoldSublot").click(function(){
+		//     $("#sublotform").append('<tr><td><input type="text" id="sublot_no" name="sublot_no[]" class="form-control" value="" /></td><td><input type="text" id="qty_sublot" name="qty_sublot[]" class="form-control" value="" /></td><td><input type="text" id="sorting_good" name="sorting_good[]" class="form-control" value="" /></td><td><input type="text" id="sorting_reject" name="sorting_reject[]" class="form-control" value="" /></td><td><input type="hidden" id="mrb_pic" name="mrb_pic[]" class="form-control" value="" /></td><td><a href="javascript:void(0);" class="btn btn-danger pull-right add-record" id="removeOnHoldSublot" data-added="0"><i class="glyphicon glyphicon-minus"></i> Remove</a></td></tr>');
+        // });
+        // $("#sublotform").on('click','#removeOnHoldSublot',function(){
+        //     $(this).parent().parent().remove();
+        // });
+
+        $(document).delegate('a.add-record-sublot', 'click', function(e) {
+            e.preventDefault();    
+            var content = $('#clone_tbl_sublot tr'),
+            size = $('#tbl_sublot >tbody >tr').length + 1,
+            element = null,    
+            element = content.clone();
+            element.attr('id', 'rec-'+size);
+            element.find('.delete-record-sublot').attr('data-id', size);
+            element.appendTo('#tbl_sublot_body');
+            element.find('.sn').html(size);
+        });
+        $(document).delegate('a.delete-record-sublot', 'click', function(e) {
+            e.preventDefault();    
+            var didConfirm = confirm("Are you sure You want to delete");
+            if (didConfirm == true) {
+                var id = $(this).attr('data-id');
+                var targetDiv = $(this).attr('targetDiv');
+                $('#rec-' + id).remove();
+                
+                //regnerate index number on table
+                $('#tbl_sublot_body tr').each(function(index){
+                    $(this).find('input.sn').html(index+1);
+                });
+                return true;
+            } else {
+                return false;
+            }
+        });
+
+        // $("#addNewQaBuyOff").click(function(){
+		//     $("#qabuyoff").append('<tr><td><input type="text" id="qty" name="qty[]" class="form-control" value="" /></td><td><input type="text" id="good_qty" name="good_qty[]" class="form-control" value="" /></td><td><input type="text" id="ooc_qty" name="ooc_qty[]" class="form-control" value="" /></td><td><input type="text" id="oos_qty" name="oos_qty[]" class="form-control" value="" /></td><td><input type="hidden" id="qa_pic" name="qa_pic[]" class="form-control" value="" /></td><td><a href="javascript:void(0);" class="btn btn-danger pull-right add-record" id="removeQaBuyOff" data-added="0"><i class="glyphicon glyphicon-minus"></i> Remove</a></td></tr>');
+        // });
+        // $("#qabuyoff").on('click','#removeQaBuyOff',function(){
+        //     $(this).parent().parent().remove();
+        // });
+
+        $(document).delegate('a.add-record-buyoff', 'click', function(e) {
+            e.preventDefault();    
+            var content = $('#clone_tbl_buyoff tr'),
+            size = $('#tbl_buyoff >tbody >tr').length + 1,
+            element = null,    
+            element = content.clone();
+            element.attr('id', 'rec-'+size);
+            element.find('.delete-record-buyoff').attr('data-id', size);
+            element.appendTo('#tbl_buyoff_body');
+            element.find('.sn').html(size);
+        });
+        $(document).delegate('a.delete-record-buyoff', 'click', function(e) {
+            e.preventDefault();    
+            var didConfirm = confirm("Are you sure You want to delete");
+            if (didConfirm == true) {
+                var id = $(this).attr('data-id');
+                var targetDiv = $(this).attr('targetDiv');
+                $('#rec-' + id).remove();
+                
+                //regnerate index number on table
+                $('#tbl_buyoff_body tr').each(function(index){
+                    $(this).find('input.sn').html(index+1);
+                });
+                return true;
+            } else {
+                return false;
+            }
+        });
         
         if(!$('#scrap').length == 0) enableDisableAll();
         
@@ -308,6 +382,25 @@ include(APPPATH .'views/FrontEnd/section5.php');
         $("#rework_dispo_output:disabled").val('');
         $("#rework_dispo_rej_scrap:disabled").val('');
     }
+
+    // function yesnoCheck(that) {
+    //     if (that.value == "14") {
+    //         alert("check");
+    //         document.getElementById("ifYes1").style.display = "block";
+    //     } else {
+    //         document.getElementById("ifYes1").style.display = "none";
+    //     }
+    // }
+
+    // $(function () {
+    //     $("#corrective_action").change(function () {
+    //         if ($(this).val() == "14") {
+    //             $("#dvothers").show();
+    //         } else {
+    //             $("#dvothers").hide();
+    //         }
+    //     });
+    // });
 
 </script>
 

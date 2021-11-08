@@ -43,9 +43,10 @@ class Modal_update extends CI_Model{
         if(isset($data->issued_dept)) $savetodb['issued_dept'] = $data->issued_dept;
         if(isset($data->to_dept)) $savetodb['to_dept'] = $data->to_dept;
         if(isset($data->shift)) $savetodb['shift'] = $data->shift;
-        if(isset($data->ooc)) $savetodb['ooc'] = $data->ooc;
-        if(isset($data->oos)) $savetodb['oos'] = $data->oos;
-        if(isset($data->visual)) $savetodb['visual'] = $data->visual;
+        if(isset($data->rule_name)) $savetodb['rule_name'] = $data->rule_name;
+        // if(isset($data->ooc)) $savetodb['ooc'] = $data->ooc;
+        // if(isset($data->oos)) $savetodb['oos'] = $data->oos;
+        // if(isset($data->visual)) $savetodb['visual'] = $data->visual;
         if(isset($data->datetime)) $savetodb['datetime'] = $data->datetime;
 
         $data_table_qan_machinebreakdown = $savetodb;
@@ -62,13 +63,54 @@ class Modal_update extends CI_Model{
         if(isset($data->machine_no_id)) $savetodb['machine_no_id'] = $data->machine_no_id;
         if(isset($data->process)) $savetodb['process'] = $data->process;
         if(isset($data->detectedby_user)) $savetodb['detectedby_user'] = $data->detectedby_user;
-        if(isset($data->defect_description_id)) $savetodb['defect_description_id'] = $data->defect_description_id;
-        if(isset($data->defect_description_id)) {
-            $defect_list = @$this->modal_master->get_defect_desc($data->defect_description_id)[0];
-            $defect_desc = $defect_list->defect_description_name;
-            $savetodb['defect_description_name'] = $defect_desc;
-        } 
-        if(isset($data->defect_description_others)) $savetodb['defect_description_others'] = $data->defect_description_others;
+
+
+        // if(isset($data->defect_description_id_1)) $savetodb['defect_description_id_1'] = $data->defect_description_id_1;
+        // if(isset($data->defect_description_id_2)) $savetodb['defect_description_id_2'] = $data->defect_description_id_2;
+        // if(isset($data->defect_description_id_3)) $savetodb['defect_description_id_3'] = $data->defect_description_id_3;
+        // if(isset($data->defect_description_id_4)) $savetodb['defect_description_id_4'] = $data->defect_description_id_4;
+        // if(isset($data->defect_description_id_5)) $savetodb['defect_description_id_3'] = $data->defect_description_id_5;
+
+        if(isset($data->defect_description_id_1)) $savetodb['defect_description_id_1'] = $data->defect_description_id_1;
+        if(isset($data->defect_description_id_1)) {
+            $defect_list1 = @$this->modal_master->get_defect_desc1($data->defect_description_id_1); //get_defect_desc  //get_defects
+            $defect_desc1 = $defect_list1->defect_description_name;
+            $savetodb['defect_description_name_1'] = $defect_desc1;
+        }
+            
+        if(isset($data->defect_description_id_2)) $savetodb['defect_description_id_2'] = $data->defect_description_id_2;
+        if(isset($data->defect_description_id_2)) {
+            $defect_list2 = @$this->modal_master->get_defect_desc1($data->defect_description_id_2);
+            $defect_desc2 = $defect_list2->defect_description_name;
+            $savetodb['defect_description_name_2'] = $defect_desc2;
+        }
+			
+        if(isset($data->defect_description_id_3)) $savetodb['defect_description_id_3'] = $data->defect_description_id_3;
+        if(isset($data->defect_description_id_3)) {
+            $defect_list3 = @$this->modal_master->get_defect_desc1($data->defect_description_id_3);
+            $defect_desc3 = $defect_list3->defect_description_name;
+            $savetodb['defect_description_name_3'] = $defect_desc3;
+        }
+
+        if(isset($data->defect_description_id_4)) $savetodb['defect_description_id_4'] = $data->defect_description_id_4;
+        if(isset($data->defect_description_id_4)) {
+            $defect_list4 = @$this->modal_master->get_defect_desc1($data->defect_description_id_4);
+            $defect_desc4 = $defect_list4->defect_description_name;
+            $savetodb['defect_description_name_4'] = $defect_desc4;
+        }
+
+        if(isset($data->defect_description_id_5)) $savetodb['defect_description_id_5'] = $data->defect_description_id_5;
+        if(isset($data->defect_description_id_5)) {
+            $defect_list5 = @$this->modal_master->get_defect_desc1($data->defect_description_id_5);
+            $defect_desc5 = $defect_list5->defect_description_name;
+            $savetodb['defect_description_name_5'] = $defect_desc5;
+        }
+
+        if(isset($data->defect_description_others_1)) $savetodb['defect_description_others_1'] = $data->defect_description_others_1;
+        if(isset($data->defect_description_others_2)) $savetodb['defect_description_others_2'] = $data->defect_description_others_2;
+        if(isset($data->defect_description_others_3)) $savetodb['defect_description_others_3'] = $data->defect_description_others_3;
+        if(isset($data->defect_description_others_4)) $savetodb['defect_description_others_4'] = $data->defect_description_others_4;
+        if(isset($data->defect_description_others_5)) $savetodb['defect_description_others_5'] = $data->defect_description_others_5;
         if(isset($data->last_passed_sample)) $savetodb['last_passed_sample'] = $data->last_passed_sample;
         if(isset($data->purge_from)) $savetodb['purge_from'] = $data->purge_from;
         if(isset($data->ack_eng_user)) $savetodb['ack_eng_user'] = $data->ack_eng_user;
@@ -92,6 +134,7 @@ class Modal_update extends CI_Model{
             if($query->num_rows() > 0 ){
                 
                 foreach($query->result_object() as $qasampleqty){
+                    
                     $sampleid_array[$qasampleqty->qa_sample_id] = new stdClass();
                     $sampleid_array[$qasampleqty->qa_sample_id]->action = 'delete';
                     $sampleid_array[$qasampleqty->qa_sample_id]->samplequantity = $qasampleqty->quantity;
@@ -194,6 +237,9 @@ class Modal_update extends CI_Model{
 
         if(isset($data->confirmation)) $savetodb['confirmation'] = $data->confirmation;
         if(isset($data->reportby_user_id)) $savetodb['reportby_user_id'] = $data->reportby_user_id;
+        if(isset($data->washing)) $savetodb['washing'] = $data->washing;
+        if(isset($data->brushing)) $savetodb['brushing'] = $data->brushing;
+        if(isset($data->vmi)) $savetodb['vmi'] = $data->vmi;
 
         $data_table_qan_material_review_board = $savetodb;
 
@@ -215,6 +261,7 @@ class Modal_update extends CI_Model{
             $this->db->where('mrb_id',$data->mrb_id);
             $query = $this->db->get('qan_purge');
             $loc_purgeid_array = array();
+
             if($query->num_rows() > 0 ){
                 
                 foreach($query->result_object() as $qan_purge){
@@ -280,6 +327,178 @@ class Modal_update extends CI_Model{
                 }
             }
         }
+
+        if(is_array(@$data->qan_on_hold_sublot) AND (count($data->qan_on_hold_sublot) > 0)){
+
+            // echo '<pre>';
+            // print_r(@$data->qan_on_hold_sublot);
+            // echo '</pre>';
+            // exit;
+
+            $this->db->where('mrb_id',$data->mrb_id);
+            $query = $this->db->get('qan_on_hold_sublot');
+            // $query_result = $query->result_object();
+            // echo '<pre>';
+            // print_r($query_result);
+            // echo '</pre>';
+            // exit;
+            $sublot_array = array();
+
+            if($query->num_rows() > 0 ){
+                
+                foreach($query->result_object() as $qan_on_hold_sublot){
+
+                    // echo '<pre>';
+                    // print_r($qan_on_hold_sublot);
+                    // echo '</pre>';
+                    // exit;
+                    
+                    $sublot_array[$qan_on_hold_sublot->mrb_id] = new stdClass();
+                    $sublot_array[$qan_on_hold_sublot->mrb_id]->action = 'delete';
+                }
+            }
+     
+            foreach($data->qan_on_hold_sublot as $qan_on_hold_sublot){
+                
+                // echo '<pre>';
+                // print_r($qan_on_hold_sublot);
+                // echo '</pre>';
+                // exit;
+                
+                if($qan_on_hold_sublot->sublot_no > 0 OR $qan_on_hold_sublot->qty_sublot_no > 0 OR $qan_on_hold_sublot->sorting_reject_qty > 0){
+
+                    if(array_key_exists($qan_on_hold_sublot->sublot_no,$sublot_array)){
+                        // echo '<pre>';
+                        // print_r($qan_on_hold_sublot->sublot_no);
+                        // echo '</pre>';
+                        // exit;
+                        $sublot_array[$qan_on_hold_sublot->sublot_no]->action = 'update';
+                    }else{
+                        $sublot_array[$qan_on_hold_sublot->sublot_no] = new stdClass();
+                        $sublot_array[$qan_on_hold_sublot->sublot_no]->action = 'insert';
+                        // echo '<pre>';
+                        // print_r($sublot_array);
+                        // echo '</pre>';
+                        // exit;
+                    }
+                    // echo '<pre>';
+                    // print_r($sublot_array);
+                    // echo '</pre>';
+                    // exit;
+                    $sublot_array[$qan_on_hold_sublot->sublot_no]->sublot_no = $qan_on_hold_sublot->sublot_no;
+                    $sublot_array[$qan_on_hold_sublot->sublot_no]->qty_sublot_no = $qan_on_hold_sublot->qty_sublot_no;
+                    $sublot_array[$qan_on_hold_sublot->sublot_no]->sorting_good_qty = $qan_on_hold_sublot->sorting_good_qty;
+                    $sublot_array[$qan_on_hold_sublot->sublot_no]->sorting_reject_qty = $qan_on_hold_sublot->sorting_reject_qty;
+                    $sublot_array[$qan_on_hold_sublot->sublot_no]->prod_pic_user_id = $qan_on_hold_sublot->prod_pic_user_id;
+                }
+            }
+        }
+
+        if(is_array($sublot_array) AND (count($sublot_array) > 0)){
+
+			foreach($sublot_array as $qan_on_hold_sublot){
+
+                if($qan_on_hold_sublot->action=='delete') {
+
+                    $this->db->where('mrb_id', $data->mrb_id);
+                    $this->db->delete('qan_on_hold_sublot');
+                    // $this->update_mrb_confirmation($data->qan_id,0);
+                    continue;
+                }
+
+                $data_table_qan_on_hold_sublot = array(
+
+					'mrb_id' => $data->mrb_id,
+                    'sublot_no' => $qan_on_hold_sublot->sublot_no,
+                    'qty_sublot_no' => $qan_on_hold_sublot->qty_sublot_no,
+                    'sorting_good_qty' => $qan_on_hold_sublot->sorting_good_qty,
+                    'sorting_reject_qty' => $qan_on_hold_sublot->sorting_reject_qty,
+                    'prod_pic_user_id' => $qan_on_hold_sublot->prod_pic_user_id
+                );
+                
+                if($qan_on_hold_sublot->action=='update') {
+
+                    $this->db->where('mrb_id', $data->mrb_id);
+                    $this->db->update('qan_on_hold_sublot', $data_table_qan_on_hold_sublot);
+                }
+                
+                if($qan_on_hold_sublot->action=='insert') {
+
+                    $this->db->insert('qan_on_hold_sublot', $data_table_qan_on_hold_sublot);
+                    // $this->update_mrb_confirmation($data->qan_id,0);
+                }
+            }
+        }
+
+        if(is_array(@$data->qan_qa_buy_off) AND (count($data->qan_qa_buy_off) > 0)){
+
+            $this->db->where('mrb_id',$data->mrb_id);
+            $query = $this->db->get('qan_qa_buy_off');
+            $buyoff_array = array();
+
+            if($query->num_rows() > 0 ){
+                
+                foreach($query->result_object() as $qan_qa_buy_off){
+
+                    $buyoff_array[$qan_qa_buy_off->mrb_id] = new stdClass();
+                    $buyoff_array[$qan_qa_buy_off->mrb_id]->action = 'delete';
+                }
+            }
+     
+            foreach($data->qan_qa_buy_off as $qan_qa_buy_off){
+                
+                if($qan_qa_buy_off->qty_buyoff > 0 OR $qan_qa_buy_off->sorting_good_qty > 0 OR $qan_qa_buy_off->sorting_ooc_qty > 0 OR $qan_qa_buy_off->sorting_oos_qty > 0){
+
+                    if(array_key_exists($qan_qa_buy_off->qty_buyoff,$buyoff_array)){
+                        $buyoff_array[$qan_qa_buy_off->qty_buyoff]->action = 'update';
+                    }else{
+                        $buyoff_array[$qan_qa_buy_off->qty_buyoff] = new stdClass();
+                        $buyoff_array[$qan_qa_buy_off->qty_buyoff]->action = 'insert';
+                    }
+                    $buyoff_array[$qan_qa_buy_off->qty_buyoff]->qty_buyoff = $qan_qa_buy_off->qty_buyoff;
+                    $buyoff_array[$qan_qa_buy_off->qty_buyoff]->sorting_good_qty = $qan_qa_buy_off->sorting_good_qty;
+                    $buyoff_array[$qan_qa_buy_off->qty_buyoff]->sorting_ooc_qty = $qan_qa_buy_off->sorting_ooc_qty;
+                    $buyoff_array[$qan_qa_buy_off->qty_buyoff]->sorting_oos_qty = $qan_qa_buy_off->sorting_oos_qty;
+                    $buyoff_array[$qan_qa_buy_off->qty_buyoff]->qa_pic_user_id = $qan_qa_buy_off->qa_pic_user_id;
+                }
+            }
+        }
+
+        if(is_array($buyoff_array) AND (count($buyoff_array) > 0)){
+
+			foreach($buyoff_array as $qan_qa_buy_off){
+
+                if($qan_qa_buy_off->action=='delete') {
+
+                    $this->db->where('mrb_id', $data->mrb_id);
+                    $this->db->delete('qan_qa_buy_off');
+                    // $this->update_mrb_confirmation($data->qan_id,0);
+                    continue;
+                }
+
+                $data_table_qan_qa_buy_off = array(
+
+					'mrb_id' => $data->mrb_id,
+                    'qty_buyoff' => $qan_qa_buy_off->qty_buyoff,
+                    'sorting_good_qty' => $qan_qa_buy_off->sorting_good_qty,
+                    'sorting_ooc_qty' => $qan_qa_buy_off->sorting_ooc_qty,
+                    'sorting_oos_qty' => $qan_qa_buy_off->sorting_oos_qty,
+                    'qa_pic_user_id' => $qan_qa_buy_off->qa_pic_user_id
+                );
+                
+                if($qan_qa_buy_off->action=='update') {
+
+                    $this->db->where('mrb_id', $data->mrb_id);
+                    $this->db->update('qan_qa_buy_off', $data_table_qan_qa_buy_off);
+                }
+                
+                if($qan_qa_buy_off->action=='insert') {
+
+                    $this->db->insert('qan_qa_buy_off', $data_table_qan_qa_buy_off);
+                    // $this->update_mrb_confirmation($data->qan_id,0);
+                }
+            }
+        }
     }
 
     function update_section3($data){
@@ -303,12 +522,17 @@ class Modal_update extends CI_Model{
                     $corrective = $corrective_list->corrective_action;
                     $savetodb['corrective_action'] = $corrective;
                 }
-                                
-                if(isset($qan_validation_submission->rcfa_pic_user_id)) $savetodb['rcfa_pic_user_id'] = $qan_validation_submission->rcfa_pic_user_id;
+                    
+                if(isset($qan_validation_submission->others_corrective_action)) $savetodb['others_corrective_action'] = $qan_validation_submission->others_corrective_action;
+                // if(isset($qan_validation_submission->rcfa_pic_user_id)) $savetodb['rcfa_pic_user_id'] = $qan_validation_submission->rcfa_pic_user_id;
                 if(isset($qan_validation_submission->rcfa_ack_user_id)) $savetodb['rcfa_ack_user_id'] = $qan_validation_submission->rcfa_ack_user_id;
                 if(isset($qan_validation_submission->completion_user_id)) $savetodb['completion_user_id'] = $qan_validation_submission->completion_user_id;
                 if(isset($qan_validation_submission->completion_datetime)) $savetodb['completion_datetime'] = $qan_validation_submission->completion_datetime;
                 if(isset($qan_validation_submission->submission_no)) $savetodb['submission_no'] = $qan_validation_submission->submission_no;
+                if(isset($qan_validation_submission->remarks)) $savetodb['remarks'] = $qan_validation_submission->remarks;
+                if(isset($qan_validation_submission->approval_user_id)) $savetodb['approval_user_id'] = $qan_validation_submission->approval_user_id;
+                if(isset($qan_validation_submission->machine_status)) $savetodb['machine_status'] = $qan_validation_submission->machine_status;
+                if(isset($qan_validation_submission->machine_stop_reason)) $savetodb['machine_stop_reason'] = $qan_validation_submission->machine_status==0?$qan_validation_submission->machine_stop_reason:null;
 
                 //override datetime                
                 $data_table_qan_validation_submission = $savetodb;
@@ -319,13 +543,15 @@ class Modal_update extends CI_Model{
                 if(is_array(@$qan_validation_submission->inspection_data) AND (count($qan_validation_submission->inspection_data) > 0))
                 {
                     foreach($qan_validation_submission->inspection_data as $inspection_data){
+
+                        $inspection_data->time_start = date("Y-m-d H:i:s");
                         
                         $data_table_qan_rootcause_item_inspection = array(
 
                             'inspection_machine_id' => $inspection_data->inspection_machine_id,
                             'inspectby_user_id' => $inspection_data->inspectby_user_id,
                             'time_start' => $inspection_data->time_start,
-                            'time_end' => $inspection_data->time_end,
+                            // 'time_end' => $inspection_data->time_end,
                             'result' => $inspection_data->result
                         );
                         $this->db->where('machine_breakdown_id', $data->qan_id);
@@ -373,6 +599,7 @@ class Modal_update extends CI_Model{
         if(isset($data->fix_validation_result)) $savetodb['fix_validation_result'] = $data->fix_validation_result;
         if(isset($data->closedby_user_id)) $savetodb['closedby_user_id'] = $data->closedby_user_id;
         $savetodb['closed_datetime'] = date("Y-m-d H:i:s");
+
         $data_table_qan_machinebreakdown = $savetodb;
 
         if(count($data_table_qan_machinebreakdown) > 0){

@@ -31,31 +31,38 @@
                         <table id="qan_closed_ticket_list" class="table table-bordered table-striped table-hover dataTable">
                             <thead>
                                 <tr>
-                                    <th></th>
+                                    <!-- <th></th> -->
                                     <th>Seq</th>
-                                    <th>Qan No</th>
-                                    <th width="15%">Status</th>
+                                    <th>QAN NO</th>
+                                    <th width="15%">Ticket Status</th>
                                     <th>Defect Description</th>
-                                    <th width="2%">Acknowledge</th>
-                                    <th>Progress</th>
-                                    <th>Rej/Aff</th>
+                                    <!-- <th width="2%">Acknowledge</th> -->
+                                    <th width="2%">Submission No</th>
+                                    <!-- <th>Progress</th> -->
+                                    <th>Machine Resume</th>
+                                    <th>Result Inspection</th>
+                                    <!-- <th>Rej/Aff</th> -->
                                     <th>Start DateTime</th>
-                                    <th>Elapsed Time</th>
+                                    <!-- <th>Machine Resume</th> -->
+                                    <!-- <th>Action</th> -->
                                 </tr>
                             </thead>
                             
                             <tfoot>
                                 <tr>
-                                    <th></th>
                                     <th>Seq</th>
-                                    <th>Qan No</th>
-                                    <th width="15%">Status</th>
+                                    <th>QAN NO</th>
+                                    <th width="15%">Ticket Status</th>
                                     <th>Defect Description</th>
-                                    <th width="2%">Acknowledge</th>
-                                    <th>Progress</th>
-                                    <th>Rej/Aff</th>
+                                    <!-- <th width="2%">Acknowledge</th> -->
+                                    <th width="2%">Submission No</th>
+                                    <!-- <th>Progress</th> -->
+                                    <th>Machine Resume</th>
+                                    <th>Result Inspection</th>
+                                    <!-- <th>Rej/Aff</th> -->
                                     <th>Start DateTime</th>
-                                    <th>Elapsed Time</th>
+                                    <!-- <th>Machine Resume</th> -->
+                                    <!-- <th>Action</th> -->
                                 </tr>
                             </tfoot>
                         </table>
