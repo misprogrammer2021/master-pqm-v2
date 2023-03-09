@@ -25,7 +25,7 @@ Class Login_database extends CI_Model {
         }
     }
 
-    function save_user_registration($username,$password,$email,$fullname,$commodity,$dept_id,$title,$employee_no,$created_date,$modified_date)
+    function save_user_registration($username,$password,$fullname,$commodity,$dept_id,$title,$employee_no,$created_at,$updated_at)
     {
         // Query to check whether username already exist or not
         $condition = "username =" . "'" . $username . "'";
@@ -38,16 +38,18 @@ Class Login_database extends CI_Model {
         if ($query->num_rows() == 0) {
 
             $data = array(
+
                 'username' => $username,
                 'password' => $password,
-                'email' => $email,
+                // 'email' => $email,
                 'fullname' => $fullname,
                 'commodity' => $commodity,
                 'dept_id' => $dept_id,
                 'title' => $title,
                 'employee_no' => $employee_no,
-                'created_date' => $created_date,
-                'modified_date' => $modified_date
+                'created_at' => $created_at,
+                'updated_at' => $updated_at
+
             );
         
             // Query to insert data in database
@@ -79,7 +81,7 @@ Class Login_database extends CI_Model {
     // Read data using username and password
     public function login($data) {
 
-        $condition = "username =" . "'" . $data['username'] . "' AND " . "password =" . "'" . $data['password'] . "'";
+        $condition = "username =" . "'" . $data['username'] . "' AND " . "password =" . "'" . $data['password'] . "' AND  " . "status =" . "'1'";
         $this->db->select('*');
         $this->db->from('users');
         $this->db->where($condition);

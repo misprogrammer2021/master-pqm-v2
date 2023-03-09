@@ -109,7 +109,7 @@ $jsselect = TRUE;
                         </form>
                     </div>
                     <div role="tabpanel" class="tab-pane fade" id="userrole">
-                        <form method="post" class="form-horizontal" role="form" action="<?php echo base_url().'BackEnd/processing_permission' ?>"> <!--'FrontEnd/AddPermision' old -->
+                        <form method="post" class="form-horizontal" role="form" action="<?php echo base_url().'BackEnd/processing_permission' ?>"> <!--'BackEnd/processing_permission / FrontEnd/AddPermision' old -->
                             <div class="table-responsive">
                             <button type="button" data-toggle="modal" data-target="#addNewRole" class="btn btn-success m-t-15 waves-effect"><i class="material-icons">add_circle</i><span class="icon-name">Add New Role</span></button>
                                 <table class="table table-bordered table-striped table-hover js-basic-example dataTable" >
@@ -228,7 +228,7 @@ $jsselect = TRUE;
                     <span class="sr-only">Close</span>
                 </button>
                 <h4 class="modal-title" id="addNewRole">
-                    <i class="material-icons">supervisor_account</i><span class="icon-name">Add Role</span>
+                    <span class="icon-name">Add Role</span>
                 </h4>
             </div>
             <div class="modal-body">
@@ -238,7 +238,7 @@ $jsselect = TRUE;
                             <label class="form-label">Role ID</label>
                         </div>
                         <div class="form-line">
-                            <input type="text" name="role_id" class="form-control" placeholder="Enter Role ID"><br/>
+                            <input type="text" name="role_id" class="form-control"><br/>
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-6">
@@ -246,7 +246,7 @@ $jsselect = TRUE;
                             <label class="form-label">Role Name</label>
                         </div>
                         <div class="form-line">
-                            <input type="text" name="role_name" class="form-control" placeholder="Enter Role Name">
+                            <input type="text" name="role_name" class="form-control">
                         </div>
                     </div>
                     <div class="form-group">

@@ -32,12 +32,6 @@ $jsselect = TRUE;
                                 <input type="password" name="password" class="form-control" placeholder="Password"><?php echo form_error('password'); ?>
                                 </div>
                             </div>
-                            <!-- <div class="form-group form-float">
-                                <div class="form-line">
-                                    <input type="text" id="created_date" name="created_date" class="datetimepicker form-control">
-                                    <label class="form-label">Created Date</label>
-                                </div>
-                            </div> -->
                         </div>
                         <div class="col-md-4 col-sm-4">
                             <div class="form-group form-float">
@@ -50,20 +44,14 @@ $jsselect = TRUE;
                                     <input type="text" name="employee_no" class="form-control" placeholder="Employee No"><?php echo form_error('employee_no'); ?>
                                 </div>
                             </div>
-                            <!-- <div class="form-group form-float">
-                                <div class="form-line">
-                                    <input type="text" id="modified_date" name="modified_date" class="datetimepicker form-control">
-                                    <label class="form-label">Modified Date</label>
-                                </div>
-                            </div> -->
                         </div>
-                        <div class="col-md-4 col-sm-4">
+                        <!-- <div class="col-md-4 col-sm-4">
                             <div class="form-group form-float">
                                 <div class="form-line">
                                     <input type="text" name="email" class="form-control" placeholder="Email">
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="row clearfix">
                         <div class="col-md-4 col-sm-4">
@@ -78,6 +66,7 @@ $jsselect = TRUE;
                                 <option value="Asst Engineer">Assistant Engineer</option>
                                 <option value="Leader">Leader</option>
                                 <option value="Supervisor">Supervisor</option>
+                                <option value="Senior Technician">Senior Technician</option>
                                 <option value="Technician">Technician</option>
                                 <option value="Inspector">Inspector</option>
                             </select>
@@ -125,10 +114,10 @@ $jsselect = TRUE;
                             <div class="col-md-4"> 
                                 <label class="form-label">Status</label>
                             </div>
-                            <select id="is_deleted" name="is_deleted" class="form-control show-tick">
+                            <select id="status" name="status" class="form-control show-tick">
                                 <option value="">--Please Select--</option>
-                                <option value="0">Active</option>
-                                <option value="1">Deactive</option>
+                                <option value="1">Active</option>
+                                <option value="0">Deactive</option>
                             </select>
                         </div> -->
                     </div>

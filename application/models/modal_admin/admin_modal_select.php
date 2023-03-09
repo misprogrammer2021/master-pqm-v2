@@ -19,6 +19,7 @@ Class Admin_modal_select extends CI_Model {
 		$this->db->select('u.*, d.name AS department_name');
 		$this->db->from('users u'); 
 		$this->db->join('department d', 'd.id=u.dept_id', 'left');
+		$this->db->where('dept_id != 4');
 
 		$this->db->order_by('u.id','asc');         
 		$query = $this->db->get(); 
@@ -140,7 +141,7 @@ Class Admin_modal_select extends CI_Model {
 	
 	function get_defect_description(){
 
-		$query = $this->db->query('SELECT * FROM defectives_list ORDER BY id ASC');
+		$query = $this->db->query('SELECT * FROM defectives ORDER BY id ASC');
 		return $query->result();
 	}
 
@@ -148,19 +149,19 @@ Class Admin_modal_select extends CI_Model {
 
 		$this->db->distinct();
 		$this->db->select('defect_type');
-		$query = $this->db->get('defectives_list'); 
+		$query = $this->db->get('defectives'); 
 		return $query->result();
 	}
 
     function get_root_cause(){
 
-		$query = $this->db->query('SELECT * FROM root_cause_list ORDER BY constant_no ASC');
+		$query = $this->db->query('SELECT * FROM root_cause_list ORDER BY id ASC');
         return $query->result();
 	}
 	
 	function get_corrective_action(){
 
-		$query = $this->db->query('SELECT * FROM corrective_action_list ORDER BY constant_no ASC');
+		$query = $this->db->query('SELECT * FROM corrective_action_list ORDER BY id ASC');
         return $query->result();
 	}
 	
@@ -194,5 +195,71 @@ Class Admin_modal_select extends CI_Model {
 		$query = $this->db->query('SELECT * FROM rule_list ORDER BY id ASC');
 		return $query->result();
 	}
+
+	// function get_detected_group(){
+		
+	// 	$query = $this->db->query('SELECT * FROM detected_group ORDER BY id ASC');
+	// 	return $query->result();
+	// }
+
+	function get_detected_group(){
+
+		$this->db->select('*');
+		$this->db->from('detected_group'); 
+		$this->db->order_by('id','ASC');         
+		$query = $this->db->get(); 
+		// $query = $this->db->get_compiled_select();
+		// print_r($query);
+		// exit;
+
+		if($query->num_rows() != 0){
+			return $query->result_object();
+		}
+		else{
+			return false;
+		}
+	}
+
+	function get_detectedby_user_group(){
+
+		$this->db->select('g.id, g.group_name, u.*');
+		$this->db->from('detectedby_user_group u'); 
+		$this->db->join('detected_group g', 'g.id = u.detected_group_id', 'left');
+		$this->db->order_by('u.id','ASC');         
+		$query = $this->db->get(); 
+		// $query = $this->db->get_compiled_select();
+		
+		/* SELECT "g"."id", "g"."group_name", "u"."detected_group_id", "u"."detectedby_user" 
+		FROM "detectedby_user_group" "u" 
+		LEFT JOIN "detected_group" "g" ON "g"."id" = "u"."detected_group_id" 
+		ORDER BY "u"."id" ASC*/ 
+		// print_r($query);
+		// exit;
+
+		if($query->num_rows() != 0){
+			return $query->result_object();
+		}
+		else{
+			return false;
+		}
+	}
+
+	function get_os_us(){
+
+		$query = $this->db->query('SELECT * FROM os_us ORDER BY id ASC');
+        return $query->result();
+    }
+
+	function get_datum(){
+
+		$query = $this->db->query('SELECT * FROM datum ORDER BY id ASC');
+        return $query->result();
+    }
+
+	function get_remarks(){
+
+		$query = $this->db->query('SELECT * FROM remarks ORDER BY id ASC');
+        return $query->result();
+    }
 
 }

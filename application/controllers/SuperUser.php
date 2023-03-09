@@ -72,12 +72,20 @@
                 $result[$i]->submission = $this->superuser_modal_select->get_submission_result($row->id);
                 $result[$i]->total_submission = $this->superuser_modal_select->get_last_machine_status($row->id);
                 $result[$i]->machine_status = $this->superuser_modal_select->get_last_machine_status($row->id);
-                $result[$i]->result_insepection = $this->superuser_modal_select->get_last_result_inspection($row->id);
-                $result[$i]->defect1 = $this->superuser_modal_select->get_defect_info($row->id,'defect_description_name_1');
-                $result[$i]->defect2 = $this->superuser_modal_select->get_defect_info($row->id,'defect_description_name_2');
-                $result[$i]->defect3 = $this->superuser_modal_select->get_defect_info($row->id,'defect_description_name_3');
-                $result[$i]->defect4 = $this->superuser_modal_select->get_defect_info($row->id,'defect_description_name_4');
-                $result[$i]->defect5 = $this->superuser_modal_select->get_defect_info($row->id,'defect_description_name_5');
+                // $result[$i]->result_insepection = $this->superuser_modal_select->get_last_result_inspection($row->id);
+                $result[$i]->last_qa_result = $this->superuser_modal_select->get_submission_validation_result($row->id);
+                $result[$i]->part_name = $this->superuser_modal_select->get_partname($row->id,'part_name');
+                $result[$i]->machine_name = $this->superuser_modal_select->get_machinename($row->id,'machine_name');
+                $result[$i]->sector_name = $this->superuser_modal_select->get_machinename($row->id,'sector_name');
+                // $result[$i]->defect = $this->superuser_modal_select->get_defect_info($row->id,'defect_description_name');
+                $result[$i]->defect_description_name = $this->modal_master->get_defect_info($row->id,'defect_description_name');
+                $result[$i]->defect_type = $this->modal_master->get_defect_info($row->id,'defect_type');
+
+                // $result[$i]->defect1 = $this->superuser_modal_select->get_defect_info($row->id,'defect_description_name_1');
+                // $result[$i]->defect2 = $this->superuser_modal_select->get_defect_info($row->id,'defect_description_name_2');
+                // $result[$i]->defect3 = $this->superuser_modal_select->get_defect_info($row->id,'defect_description_name_3');
+                // $result[$i]->defect4 = $this->superuser_modal_select->get_defect_info($row->id,'defect_description_name_4');
+                // $result[$i]->defect5 = $this->superuser_modal_select->get_defect_info($row->id,'defect_description_name_5');
                 // $result[$i]->ack =  $this->superuser_modal_select->get_sec1_ack_list($row->id);
                 // $result[$i]->submission = $this->superuser_modal_select->get_submission_result($row->id);
                 // $result[$i]->aff_rej = $this->superuser_modal_select->get_aff_rej_qty($row->id);
@@ -100,12 +108,20 @@
                 $result[$i]->submission = $this->superuser_modal_select->get_submission_result($row->id);
                 $result[$i]->total_submission = $this->superuser_modal_select->get_last_machine_status($row->id);
                 $result[$i]->machine_status = $this->superuser_modal_select->get_last_machine_status($row->id);
-                $result[$i]->result_insepection = $this->superuser_modal_select->get_last_result_inspection($row->id);
-                $result[$i]->defect1 = $this->superuser_modal_select->get_defect_info($row->id,'defect_description_name_1');
-                $result[$i]->defect2 = $this->superuser_modal_select->get_defect_info($row->id,'defect_description_name_2');
-                $result[$i]->defect3 = $this->superuser_modal_select->get_defect_info($row->id,'defect_description_name_3');
-                $result[$i]->defect4 = $this->superuser_modal_select->get_defect_info($row->id,'defect_description_name_4');
-                $result[$i]->defect5 = $this->superuser_modal_select->get_defect_info($row->id,'defect_description_name_5');
+                // $result[$i]->result_insepection = $this->superuser_modal_select->get_last_result_inspection($row->id);
+                $result[$i]->last_qa_result = $this->superuser_modal_select->get_submission_validation_result($row->id);
+                $result[$i]->part_name = $this->superuser_modal_select->get_partname($row->id,'part_name');
+                $result[$i]->machine_name = $this->superuser_modal_select->get_machinename($row->id,'machine_name');
+                $result[$i]->sector_name = $this->superuser_modal_select->get_machinename($row->id,'sector_name');
+                // $result[$i]->defect = $this->superuser_modal_select->get_defect_info($row->id,'defect_description_name');
+                $result[$i]->defect_description_name = $this->superuser_modal_select->get_defect_info($row->id,'defect_description_name');
+                $result[$i]->defect_type = $this->superuser_modal_select->get_defect_info($row->id,'defect_type');
+
+                // $result[$i]->defect1 = $this->superuser_modal_select->get_defect_info($row->id,'defect_description_name_1');
+                // $result[$i]->defect2 = $this->superuser_modal_select->get_defect_info($row->id,'defect_description_name_2');
+                // $result[$i]->defect3 = $this->superuser_modal_select->get_defect_info($row->id,'defect_description_name_3');
+                // $result[$i]->defect4 = $this->superuser_modal_select->get_defect_info($row->id,'defect_description_name_4');
+                // $result[$i]->defect5 = $this->superuser_modal_select->get_defect_info($row->id,'defect_description_name_5');
                 // $result[$i]->ack =  $this->superuser_modal_select->get_sec1_ack_list($row->id);
                 // $result[$i]->submission = $this->superuser_modal_select->get_submission_result($row->id);
                 // $result[$i]->aff_rej = $this->superuser_modal_select->get_aff_rej_qty($row->id);
@@ -171,7 +187,7 @@
                 {    
                     $view['data']->submit_button->s1 = array();
 
-                    if((@$this->session->userdata['permission']['QASU1']['de'])){
+                    if(@$this->session->userdata['permission']['QASU1']['de'] OR @$this->session->userdata['permission']['QASU1']['ack']){
                         $button_obj = new stdClass();
                         $button_obj->name = 'UPDATE';
                         $button_obj->value = 'update_section1';
@@ -180,12 +196,17 @@
                     }
                 }
 
-                if( (@$this->session->userdata['permission']['PRODSU2']['de'] OR @$this->session->userdata['permission']['PRODSU2']['ack'] OR @$this->session->userdata['permission']['PRODSU2']['app'] OR @$this->session->userdata['permission']['QASU2.6']['de']) ) //6
+                if(@$this->session->userdata['permission']['PRODSU2']['de'] OR @$this->session->userdata['permission']['PRODSU2']['ack'] OR @$this->session->userdata['permission']['PRODSU2']['app']) //6
                 {
                     $show_create_update = true;
                     $show_finalize = true;
 
                     if(@$view['data']->mrb_id < 1){
+                        $show_finalize = false;
+                    }
+
+                    if(@$view['data']->confirmation >= 11 OR (@$this->session->userdata['permission']['MRBSU2.4']['de'] and @$view['data']->confirmation == 10) OR (@$this->session->userdata['permission']['QASU2.6']['de'] and @$view['data']->confirmation == 1)){ 
+                        $show_create_update = false;
                         $show_finalize = false;
                     }
 
@@ -195,21 +216,24 @@
                         $btn_sec2 = '';
                         $val_sec2 = 'update_section2';
 
-                        if( (@$this->session->userdata['permission']['PRODSU2']['de'] OR @$this->session->userdata['permission']['PRODSU2.1']['de'] OR @$this->session->userdata['permission']['MRBSU2.2']['de'] OR @$this->session->userdata['permission']['MRBSU2.3']['de'] OR @$this->session->userdata['permission']['MRBSU2.4']['de'] OR @$this->session->userdata['permission']['PRODSU2.5']['de'] OR @$this->session->userdata['permission']['QASU2.6']['de']) ) //NEW ADDED and ($view['data']->status == '6')
+                        if($this->session->userdata['permission']['PRODSU2']['de'] OR @$this->session->userdata['permission']['PRODSU2.1']['de'] OR @$this->session->userdata['permission']['MRBSU2.2']['de'] OR @$this->session->userdata['permission']['MRBSU2.3']['de'] OR @$this->session->userdata['permission']['MRBSU2.4']['de'] OR @$this->session->userdata['permission']['QASU2.6']['de']) //NEW ADDED and ($view['data']->status == '6')
                         {
                             $view['data']->submit_button->s2 = array();
 
-                            if( (@$this->session->userdata['permission']['MRBSU2.2']['de'] OR @$this->session->userdata['permission']['MRBSU2.3']['de'] OR @$this->session->userdata['permission']['QASU2.6']['de']) AND (@$view['data']->mrb_id > 0) )
+                            if( (@$this->session->userdata['permission']['MRBSU2.2']['de'] OR @$this->session->userdata['permission']['MRBSU2.3']['de']) AND (@$view['data']->mrb_id > 0) )
                             {
-                                $btn_sec2 = 'UPDATE';
-                                $val_sec2 = 'update_section2';
+                                if(@$view['data']->reportby_user_id > 0){
+                                    $btn_sec2 = 'UPDATE';
+                                    $val_sec2 = 'update_section2';
+                                }
                             }
 
-                            if(@$this->session->userdata['permission']['PRODSU2.1']['de'] OR @$this->session->userdata['permission']['PRODSU2.5']['de']) //@$this->session->userdata['permission']['MRBSU2.2']['de'] OR @$this->session->userdata['permission']['MRBSU2.3']['de'] OR @$this->session->userdata['permission']['MRBSU2.4']['de']
+                            if(@$this->session->userdata['permission']['PRODSU2.1']['de']) //@$this->session->userdata['permission']['MRBSU2.2']['de'] OR @$this->session->userdata['permission']['MRBSU2.3']['de'] OR @$this->session->userdata['permission']['MRBSU2.4']['de']
                             {
                                 if(@$view['data']->mrb_id > 0){
                                     $btn_sec2 = 'UPDATE';
                                     $val_sec2 = 'update_section2';
+                                    $show_finalize = false;
                                 }else{
                                     $btn_sec2 = 'CREATE';
                                     $val_sec2 = 'create_section2';
@@ -221,6 +245,12 @@
                             //     $btn_sec2 = 'UPDATE';
                             //     $val_sec2 = 'update_section2';
                             // }
+
+                            if(@$this->session->userdata['permission']['QASU2.6']['de'])
+                            {
+                                $btn_sec2 = 'UPDATE';
+                                $val_sec2 = 'update_section2';
+                            }
                                 
                             if($btn_sec2 !== ''){
                                 $button_obj->name = $btn_sec2;
@@ -228,8 +258,16 @@
                                 $button_obj->action = base_url().'SuperUser/index/';
                                 array_push($view['data']->submit_button->s2,$button_obj);
                             }
-                            
                         }
+                    }
+
+                    if($show_finalize){
+                   
+                        $button_obj = new stdClass();
+                        $button_obj->name = 'FINALIZE';
+                        $button_obj->value = 'final_section2';
+                        $button_obj->action = base_url().'SuperUser/index/';
+                        array_push($view['data']->submit_button->s2,$button_obj);
                     }
                 }
 
@@ -237,28 +275,50 @@
                 {
                     $view['data']->submit_button->s3 = array();
 
-                    if((@$this->session->userdata['permission']['ENGSU3']['de'] or @$this->session->userdata['permission']['ENGSU3']['ack']))
+                    if(@$this->session->userdata['permission']['ENGSU3']['de'] or @$this->session->userdata['permission']['ENGSU3']['ack'])
                     {
-                        $all_inspection_data = @$view['data']->inspection_machine_data;
+
+                        $button_obj = new stdClass();
+                        $btn = '';
+                        $val = 'update_section3';
+
+                        $last_inspection_data = @$view['data']->inspection_machine_data;
                         if(count( @$view['data']->inspection_machine_data)) 
 
-                        if(@$this->session->userdata['permission']['ENGSU3.1']['de'] OR @$this->session->userdata['permission']['QASU3.2']['de'] OR @$this->session->userdata['permission']['QASU3.4']['de'] OR (is_array(@$all_inspection_data->inspection_data) OR count(@$all_inspection_data->inspection_data) == 0))
+                        $last_inspection_data = array_values(array_slice(@$view['data']->inspection_machine_data, -1))[0];
+
+                        if(@$this->session->userdata['permission']['QASU3.2']['de'])
                         {
-                            $button_obj = new stdClass();
-                            $button_obj->name = 'UPDATE';
-                            $button_obj->value = 'update_section3';
-                            $button_obj->action = base_url().'SuperUser/index/';
-                            array_push($view['data']->submit_button->s3,$button_obj);
+                            $btn = 'UPDATE';
                         }
 
-                        if(@$this->session->userdata['permission']['QASU3.5']['de'] AND (is_array(@$last_inspection_data->inspection_data) AND count(@$last_inspection_data->inspection_data) > 0) AND (@$last_inspection_data->machine_status) == '')
+                        if(@$this->session->userdata['permission']['ENGSU3.1']['de'])
                         {
-                            $btn = 'APPROVE';
+                            if(@$last_inspection_data->root_cause_submission_id < 1){
+                                $btn = 'CREATE';
+                                $val = 'create_section3';
+                            }elseif(is_array(@$last_inspection_data->inspection_data) AND count(@$last_inspection_data->inspection_data) == 0){
+                                $btn = 'UPDATE';
+                            }elseif((is_array(@$last_inspection_data->inspection_data) AND count(@$last_inspection_data->inspection_data) > 0) AND (@$last_inspection_data->root_cause_submission_id > 0) AND (@$last_inspection_data->submission_no > 0) AND (@$last_inspection_data->machine_status !== '')){
+                                $btn = 'CREATE';
+                                $val = 'create_section3';
+                            }else{
+                                if((is_array(@$last_inspection_data->inspection_data) AND count(@$last_inspection_data->inspection_data) > 0) AND (@$last_inspection_data->root_cause_submission_id < 0) AND (@$last_inspection_data->submission_no > 0)){
+                                    $btn = '';
+                                }
+                            }
+                        }
+
+                        if($btn !== ''){
+                            $button_obj->name = $btn;
+                            $button_obj->value = $val;
+                            $button_obj->action = base_url().'SuperUser/index/';
+                            array_push($view['data']->submit_button->s3,$button_obj);
                         }
                     }
                 }
     
-                if( (@$this->session->userdata['permission']['QASU4']['de'] OR @$this->session->userdata['permission']['QASU4']['ack'] OR @$this->session->userdata['permission']['QASU4']['app']) )
+                if(@$this->session->userdata['permission']['QASU4']['de'] OR @$this->session->userdata['permission']['QASU4']['ack'] OR @$this->session->userdata['permission']['QASU4']['app'])
                 {
                     $view['data']->submit_button->s4 = array();
                     $button_obj = new stdClass();
@@ -268,14 +328,16 @@
                     array_push($view['data']->submit_button->s4,$button_obj);
                 }
 
-                if( (@$this->session->userdata['permission']['QASU5']['de'] OR @$this->session->userdata['permission']['QASU5']['ack'] OR @$this->session->userdata['permission']['QASU5']['app']) )
+                if(@$this->session->userdata['permission']['QASU5']['de'] OR @$this->session->userdata['permission']['QASU5']['ack'] OR @$this->session->userdata['permission']['QASU5']['app'])
                 {
                     $view['data']->submit_button->s5 = array();
                     $button_obj = new stdClass();
-                    $button_obj->name = 'CLOSED';
-                    $button_obj->value = 'update_section5';
-                    $button_obj->action = base_url().'SuperUser/index/';
-                    array_push($view['data']->submit_button->s5,$button_obj);
+                    if(@$view['data']->confirmation >= 11 AND @$this->session->userdata['permission']['QASU5']['de'] AND @$view['data']->closedby_user_id == ''){
+                        $button_obj->name = 'CLOSED';
+                        $button_obj->value = 'update_section5';
+                        $button_obj->action = base_url().'SuperUser/index/';
+                        array_push($view['data']->submit_button->s5,$button_obj);
+                    }
                 }
             }
     
@@ -314,7 +376,7 @@
 
             $last_submit_result = $this->superuser_modal_select->get_submission_validation_result($qan_id);
 
-            $last_machine_status = $this->modal_master->get_last_machine_status($qan_id);
+            $last_machine_status = $this->superuser_modal_select->get_last_machine_status($qan_id);
 
             // if($i < 0 OR (@$this->session->userdata['permission']['ENGSU3.1']['de'] and $i<$last_submit_result['total_submission'])){ //and $last_submit_result['result']!='PASS'
             if( $last_machine_status['total_submission'] < 1 or (@$this->session->userdata['permission']['ENGSU3.1']['de'] and $last_machine_status['machine_status']=='STOP') )
@@ -336,34 +398,49 @@
                 $view['data']->inspection_machine_data[$i]->approval_user_id = @$this->session->userdata['permission']['S3.5']['de']?$this->session->userdata['logged_in']['id']:'';
             }
 
+            $view['show_allsection'] = TRUE;
+
+            /*
             if(@$this->session->userdata['permission']['QASU1']['de'] OR @$this->session->userdata['permission']['QASU3']['de'] OR @$this->session->userdata['permission']['QASU4']['de'] OR @$this->session->userdata['permission']['QASU5']['de'] OR @$this->session->userdata['permission']['QASU3.2']['de'] OR @$this->session->userdata['permission']['QASU3.4']['app'] OR @$this->session->userdata['permission']['QASU3.5']['de'])
             {
-                $view['show_section1'] = TRUE;
-                $view['show_section3'] = TRUE;
-                $view['show_section2'] = TRUE;
-                $view['show_section4'] = TRUE;
-                $view['show_section5'] = TRUE;
+                // $view['show_section1'] = TRUE;
+                // $view['show_section3'] = TRUE;
+                // $view['show_section2'] = TRUE;
+                // $view['show_section4'] = TRUE;
+                // $view['show_section5'] = TRUE;
+
+                $view['show_allsection'] = TRUE;
             }
 
             if(@$this->session->userdata['permission']['ENGSU3']['de'] OR @$this->session->userdata['permission']['ENGSU3.1']['de'] OR @$this->session->userdata['permission']['ENGSU3.3']['ack'] OR @$this->session->userdata['permission']['QASU3.4']['app'] OR @$this->session->userdata['permission']['QASU3.5']['de'])
             {
                 // $view['show_section3'] = TRUE;
-                $view['show_section1'] = TRUE;
-                $view['show_section3'] = TRUE;
-                $view['show_section2'] = TRUE;
-                $view['show_section4'] = TRUE;
-                $view['show_section5'] = TRUE;
+
+                // $view['show_section1'] = TRUE;
+                // $view['show_section3'] = TRUE;
+                // $view['show_section2'] = TRUE;
+                // $view['show_section4'] = TRUE;
+                // $view['show_section5'] = TRUE;
+
+                $view['show_allsection'] = TRUE;
             }
 
             if(@$this->session->userdata['permission']['PRODSU2']['de'] OR @$this->session->userdata['permission']['PRODSU2.1']['de'] OR @$this->session->userdata['permission']['PRODSU2.5']['de'] OR @$this->session->userdata['permission']['MRBSU2.2']['de'] OR @$this->session->userdata['permission']['MRBSU2.3']['de'] OR @$this->session->userdata['permission']['MRBSU2.4']['de'] OR @$this->session->userdata['permission']['QASU2.6']['de'])
             {
                 // $view['show_section2'] = TRUE;
-                $view['show_section1'] = TRUE;
+
+                // $view['show_section1'] = TRUE;
+
                 // $view['show_section3'] = TRUE;
-                $view['show_section2'] = TRUE;
-                $view['show_section4'] = TRUE;
-                $view['show_section5'] = TRUE;
+
+                // $view['show_section2'] = TRUE;
+                // $view['show_section3'] = TRUE;
+                // $view['show_section4'] = TRUE;
+                // $view['show_section5'] = TRUE;
+
+                $view['show_allsection'] = TRUE;
             }
+            */
             
             //Check submit button of section 1
             if($this->input->post('submit') == 'create_section1' OR $this->input->post('submit') == 'update_section1') 
@@ -384,6 +461,7 @@
                 if(isset($_POST['machine_no_id'])) $data->machine_no_id = $this->input->post('machine_no_id');
                 if(isset($_POST['process'])) $data->process= $this->input->post('process');
                 if(isset($_POST['detectedby_user'])) $data->detectedby_user = $this->input->post('detectedby_user');
+                /*
                 if(isset($_POST['defect_description_name_1'])) $data->defect_description_id_1 = $this->input->post('defect_description_name_1');
                 if(isset($_POST['defect_description_name_2'])) $data->defect_description_id_2 = $this->input->post('defect_description_name_2');
                 if(isset($_POST['defect_description_name_3'])) $data->defect_description_id_3 = $this->input->post('defect_description_name_3');
@@ -394,9 +472,15 @@
                 if(isset($_POST['defect_description_others_3'])) $data->defect_description_others_3 = $this->input->post('defect_description_others_3');
                 if(isset($_POST['defect_description_others_4'])) $data->defect_description_others_4 = $this->input->post('defect_description_others_4');
                 if(isset($_POST['defect_description_others_5'])) $data->defect_description_others_5 = $this->input->post('defect_description_others_5');
+                */
                 if(isset($_POST['last_passed_sample'])) $data->last_passed_sample = $this->input->post('last_passed_sample');
                 if(isset($_POST['purge_from'])) $data->purge_from = $this->input->post('purge_from');
                 if(isset($_POST['estimate_qty'])) $data->estimate_qty = $this->input->post('estimate_qty');
+                if(isset($_POST['defect_description_id'])) $data->defect_description_id = $this->input->post('defect_description_id');
+                if(isset($_POST['defect_description_others']) )$data->defect_description_others = $this->input->post('defect_description_others');
+                if(isset($_POST['os_us_id']) )$data->os_us_id = $this->input->post('os_us_id');
+                if(isset($_POST['datum_id']) )$data->datum_id = $this->input->post('datum_id');
+                if(isset($_POST['remarks_id']) )$data->remarks_id = $this->input->post('remarks_id');
 
                 $qasample_qty_array = $this->input->post('input_qty_qasample'); 
                 
@@ -425,6 +509,32 @@
                         $i++;
                     }	
                 }
+
+                if(isset($_POST['defect_description_id']) OR ($_POST['defect_description_others']) OR ($_POST['os_us_id']) OR ($_POST['datum_id']) OR ($_POST['remarks_id'])) {
+
+                    $defect_array = $this->input->post('defect_description_id'); 
+    
+                    if(is_array($defect_array) and count($defect_array) > 0){
+    
+                        $i = 0;
+                        foreach($defect_array as $defect_id => $defect){
+    
+                            $defect_others = $data->defect_description_others[$defect_id];
+                            $os_us = $data->os_us_id[$defect_id];
+                            $datum = $data->datum_id[$defect_id];
+                            $remarks = $data->remarks_id[$defect_id];
+                           
+                            $data->qan_defect_description[$i] = new stdClass();
+                            $data->qan_defect_description[$i]->defect_description_id = $defect;
+                            $data->qan_defect_description[$i]->defect_description_others = $defect_others;
+                            $data->qan_defect_description[$i]->os_us_id = $os_us;
+                            $data->qan_defect_description[$i]->datum_id = $datum;
+                            $data->qan_defect_description[$i]->remarks_id = $remarks;
+                            $i++;
+                        }
+                    }
+                }
+
                 //system generate
                 $data->modified_date = date("Y-m-d H:i:s");
                 if($this->input->post('submit') == 'update_section1'){
@@ -435,6 +545,12 @@
                     $this->superuser_modal_update->update_section1($data);
                     
                     $this->session->set_userdata('success_message', 'Record Updated Successfully');
+                }else{
+                    $data->qan_no = $this->superuser_modal_create->get_next_qan_no(@$data->test);
+                    $data->qan_id = '';
+                    $data = $this->superuser_modal_create->save_section1($data);
+                    
+                    $this->session->set_userdata('success_message', 'Record Saved Successfully');
                 }
                 
                 $this->session->set_userdata('last_created_machine_id', $qan_id);
@@ -459,7 +575,6 @@
                 if(isset($_POST['qa_reinsp_select'])) $data->qa_reinsp_status_accept = $this->input->post('qa_reinsp_select');
                 if(isset($_POST['qa_reinsp_select'])) $data->qa_reinsp_status_reject = $this->input->post('qa_reinsp_select');
                 if(isset($_POST['reject_reason'])) $data->reject_reason = $this->input->post('reject_reason');
-                if(isset($_POST['prod_pic_user_id'])) $data->prod_pic_user_id = $this->input->post('prod_pic_user_id');
                 if(isset($_POST['qa_sample_affected_qty'])) $data->qa_sample_affected_qty = $this->input->post('qa_sample_affected_qty');
                 if(isset($_POST['qa_sample_good_qty'])) $data->qa_sample_good_qty = $this->input->post('qa_sample_good_qty');
                 if(isset($_POST['qa_sample_reject_qty'])) $data->qa_sample_reject_qty = $this->input->post('qa_sample_reject_qty');
@@ -479,12 +594,14 @@
                 if(isset($_POST['affected_qty']) )$data->affected_qty = $this->input->post('affected_qty');
                 if(isset($_POST['good_qty']) )$data->good_qty = $this->input->post('good_qty');
                 if(isset($_POST['reject_qty']) )$data->reject_qty = $this->input->post('reject_qty'); 
+                if(isset($_POST['prod_pic_user_id'])) $data->prod_pic_user_id = $this->input->post('prod_pic_user_id');
 
                 if(isset($_POST['loc_purge']) ) {
 
                     $loc_purge_array = $this->input->post('loc_purge');
 
                     if(is_array($loc_purge_array ) and count($loc_purge_array )>0){
+
                         $i = 0;
                         foreach($loc_purge_array as $purge_location_id => $null){
 
@@ -509,14 +626,14 @@
                 if(isset($_POST['washing'])) $data->washing = $this->input->post('washing');
                 if(isset($_POST['brushing'])) $data->brushing = $this->input->post('brushing');
                 if(isset($_POST['vmi'])) $data->vmi = $this->input->post('vmi');
-                if(isset($_POST['sublotprod_pic_user_id'])) $data->prod_pic_user_id = $this->input->post('sublotprod_pic_user_id');
                 
                 if(isset($_POST['sublot_no']) )$data->sublot_no = $this->input->post('sublot_no');
                 if(isset($_POST['qty_sublot_no']) )$data->qty_sublot_no = $this->input->post('qty_sublot_no');
                 if(isset($_POST['sorting_good_qty']) )$data->sorting_good_qty = $this->input->post('sorting_good_qty');
-                if(isset($_POST['sorting_reject_qty']) )$data->sorting_reject_qty = $this->input->post('sorting_reject_qty'); 
+                if(isset($_POST['sorting_reject_qty']) )$data->sorting_reject_qty = $this->input->post('sorting_reject_qty');
+                if(isset($_POST['sublotprod_pic_user_id'])) $data->sublotprod_pic_user_id = $this->input->post('sublotprod_pic_user_id');
 
-                if(isset($_POST['sublot_no'])) { //if(isset($_POST['sublot_no']) OR ($_POST['qty_sublot_no']) OR ($_POST['sorting_reject_qty'])) {
+                if(isset($_POST['sublot_no']) OR ($_POST['qty_sublot_no']) OR ($_POST['sorting_reject_qty'])) {
 
                     $sublot_no_array = $this->input->post('sublot_no'); 
 
@@ -536,7 +653,7 @@
                             $data->qan_on_hold_sublot[$i]->qty_sublot_no = $qtysublotno;
                             $data->qan_on_hold_sublot[$i]->sorting_good_qty = $sortgoodqty;
                             $data->qan_on_hold_sublot[$i]->sorting_reject_qty = $sortrejqty;
-                            $data->qan_on_hold_sublot[$i]->prod_pic_user_id = $data->prod_pic_user_id;
+                            $data->qan_on_hold_sublot[$i]->sublotprod_pic_user_id = $data->sublotprod_pic_user_id;
                             $i++;
                         }
                     }
@@ -575,33 +692,49 @@
 
                 if($this->input->post('submit') == 'update_section2' OR $this->input->post('submit') == 'final_section2')
                 {
-                    if($this->input->post('submit') == 'final_section2'){
+                    // if($this->input->post('submit') == 'final_section2'){
 
                         //allow MRB to fund 10 marks, other only 1
+                        // if(@$this->session->userdata['permission']['MRBSU2.4']['de']){
+                        //     $confirm_weight = 10;
+                        // //PROD
+                        // }else if(@$this->session->userdata['permission']['PRODSU2.1']['de'] OR @$this->session->userdata['permission']['PRODSU2.5']['de']){
+                        //     $confirm_weight = 1;
+                        // //QA    
+                        // }else if(@$this->session->userdata['permission']['QASU2.6']['de']){
+                        //     $confirm_weight = 1;
+                        // }else{
+                        //     $confirm_weight = 0;
+                        // }
+
+                        //allow MRB to fund 10 marks, other only 1
+                        /*
                         if(@$this->session->userdata['permission']['MRBSU2.4']['de']){
                             $confirm_weight = 10;
-                        //PROD
-                        }else if(@$this->session->userdata['permission']['PRODSU2.1']['de'] OR @$this->session->userdata['permission']['PRODSU2.5']['de']){
-                            $confirm_weight = 1;
-                        //QA    
-                        }else if(@$this->session->userdata['permission']['QASU2.6']['de']){
+                        //QA   
+                        }elseif(@$this->session->userdata['permission']['QASU2.6']['de']){
                             $confirm_weight = 1;
                         }else{
                             $confirm_weight = 0;
                         }
+                        */
 
-                        if($data->confirmation > 0) $data->confirmation += $confirm_weight;
-                        else $data->confirmation = $confirm_weight;
-                    }
+                        // if($data->confirmation > 0) $data->confirmation += $confirm_weight;
+                        // else $data->confirmation = $confirm_weight;
+                    // }
                     $data->qan_id = $this->input->post('machine_breakdown_id');
                     $this->superuser_modal_update->update_section2($data);
                     $this->superuser_modal_update->update_qasample_mrb($data->qan_id,$data->qa_sample_reject_qty);
                     $this->session->set_userdata('success_message', 'Record Updated Successfully');
                 }else{
 
-                    $data = $this->superuser_modal_create->save_section2($data);
-                    $this->superuser_modal_update->update_qasample_mrb($qan_id,$data->qa_sample_reject_qty);
-                    $this->session->set_userdata('success_message', 'Record Saved Successfully');
+                    if($this->input->post('submit') == 'create_section2' OR (is_array(@$view['data']->purge_location) AND count(@$view['data']->purge_location) > 0))
+                    {
+                        $data = $this->superuser_modal_create->save_section2($data);
+                        $this->superuser_modal_update->update_qasample_mrb($qan_id,$data->qa_sample_reject_qty);
+                        $this->session->set_userdata('success_message', 'Record Saved Successfully');
+                    }
+                    
                 }
 
                 $this->session->set_userdata('last_created_machine_id', $data->qan_id);
@@ -643,7 +776,7 @@
                 //lets check only previous submission has been given result then we allow to save next new
                 $last_submit_result = $this->superuser_modal_select->get_submission_validation_result($data->qan_id);
 
-                $last_machine_status = $this->modal_master->get_last_machine_status($data->qan_id);
+                $last_machine_status = $this->superuser_modal_select->get_last_machine_status($data->qan_id);
 
                 if(isset($data->rcfa_ack_user_id) and count($data->rcfa_ack_user_id)>0){ //if(isset($data->rcfa_pic_user_id) and count($data->rcfa_pic_user_id)>0){
 
@@ -658,7 +791,7 @@
                         /*if($data->submission_no[$i] > ($last_submit_result['total_submission']+1)){ //and $last_submit_result['result']=='PASS'
                             // continue; //skip if user send more than one submission or result that got pass result
                         }*/
-                        if($data->submission_no[$i] > ($last_machine_status['total_submission']+1)){ //if($data->submission_no[$i] > ($last_submit_result['total_submission']+1) and $last_submit_result['result']=='PASS'){
+                        if($data->submission_no[$i] > ($last_machine_status['total_submission']+1) and $last_machine_status['machine_status']=='RUN'){  //if($data->submission_no[$i] > ($last_submit_result['total_submission']+1) and $last_submit_result['result']=='PASS'){
                             continue; //skip if user send more than one submission or result that got pass result
                         }
                         
@@ -719,11 +852,16 @@
                 $root_cause_submission_id = array();
                 //to find all prev selected checkbox submission_id in hidden input
                 if(isset($data->_inspection_machine_id) and count($data->_inspection_machine_id)>0){
+
                     foreach($data->_inspection_machine_id as $tab_no => $selected_machine){
+
                         if($tab_no==0) continue; //skip tab 0
                         $j=0;
+
                         foreach($selected_machine as $machine_id => $checkbox_state){
+
                             if($checkbox_state=='on'){
+
                                 $root_cause_submission_id[$data->submission_id[$tab_no]] = $tab_no;
                             }
                             $j++;
@@ -736,9 +874,9 @@
 
                 if($this->input->post('submit') == 'create_section3' OR count($data->new_inspection_machine_data)>0 OR count($data->inspection_result_data)>0 OR @count($data->_inspection_machine_id))
                 {
-                    if(count(@$root_cause_submission_id)>0 and count($data->inspection_result_data)>0){
-                        $this->superuser_modal_delete->delete_inspection_data($data->qan_id,array_keys($root_cause_submission_id));
-                    }
+                    // if(count(@$root_cause_submission_id)>0 and count($data->inspection_result_data)>0){
+                    //     $this->superuser_modal_delete->delete_inspection_data($data->qan_id,array_keys($root_cause_submission_id));
+                    // }
                     $this->superuser_modal_create->save_section3($data);
                     $success_msg = 'Record Saved Successfully';
 
@@ -748,13 +886,14 @@
                     $this->superuser_modal_update->update_section3($data);
                     $success_msg = 'Record Updated Successfully';
 
-                    $get_status = $this->superuser_modal_select->get_status_by_ticket_id($qan_id);
-                    $get_status_code = $get_status->status_code;
+                    // $get_status = $this->superuser_modal_select->get_status_by_ticket_id($qan_id);
+                    // $get_status_code = $get_status->status_code;
 
-                    $last_submit_result = $this->superuser_modal_select->get_submission_validation_result($data->qan_id);
+                    // $last_submit_result = $this->superuser_modal_select->get_submission_validation_result($data->qan_id);
             
-                    $last_machine_status = $this->modal_master->get_last_machine_status($data->qan_id);
+                    // $last_machine_status = $this->superuser_modal_master->get_last_machine_status($data->qan_id);
 
+                    /*
                     if($last_machine_status['machine_status'] == 'RUN'){ //if($last_submit_result['result'] == 'PASS'){
 
                         $this->superuser_modal_update->update_status($data->qan_id,'5','4');
@@ -765,6 +904,7 @@
                             $this->superuser_modal_update->update_status($data->qan_id,'4');
                         }
                     }
+                    */
                 }
 
                 $this->session->set_userdata('success_message', ' '.$success_msg);
@@ -773,7 +913,8 @@
             } //end of submit section3
 
             //Check submit button of section 4
-            /*if($this->input->post('submit') == 'update_section4') 
+            /*
+            if($this->input->post('submit') == 'update_section4') 
             {
                 $data = new stdClass();
                 if(isset($_POST['machine_breakdown_id'])) $data->qan_id = $this->input->post('machine_breakdown_id');
@@ -784,7 +925,9 @@
                 $this->superuser_modal_update->update_section4($data);
                 $this->session->set_userdata('last_created_machine_id', $qan_id);
                 redirect("SuperUser/successmaster");
-            }*/ //end of submit section4
+            }
+            */ 
+            //end of submit section4
 
             //Check submit button of section 5
             if($this->input->post('submit') == 'update_section5') 
@@ -795,15 +938,20 @@
                 if(isset($_POST['notify_next_process'])) $data->notify_next_process = $this->input->post('notify_next_process');
                 if(isset($_POST['validation_result'])) $data->fix_validation_result = $this->input->post('validation_result');
                 if(isset($_POST['closedby_user_id'])) $data->closedby_user_id = $this->input->post('closedby_user_id');
+                if(isset($_POST['closed_datetime'])) $data->closed_datetime = $this->input->post('closed_datetime');
 
                 $this->superuser_modal_update->update_section5($data);
-
                 $this->session->set_userdata('last_created_machine_id', $qan_id);
                 redirect("SuperUser/successmaster");
             } //end of submit section5
 
-            $view['machine_no']=$this->superuser_modal_select->get_machine_no();
-            $view['detected_by']=$this->superuser_modal_select->get_detected_by();
+            $view['machine_no'] = $this->superuser_modal_select->get_machine_no();
+            $view['detected_by'] = $this->superuser_modal_select->get_detected_by();
+            $view['defect_desc'] = $this->superuser_modal_select->get_defect_desc();
+            $view['os_us']=$this->superuser_modal_select->get_os_us();
+            $view['datum']=$this->superuser_modal_select->get_datum();
+            $view['remarks']=$this->superuser_modal_select->get_remarks();
+
             $this->load->view('SuperUser/QAN/superuser_master',$view);
             $this->footer($this->data);
         }

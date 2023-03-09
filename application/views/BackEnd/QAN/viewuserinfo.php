@@ -52,7 +52,7 @@ $jsselect = TRUE;
                                     echo "<td>".$row->department_name."</td>";
                                     echo "<td>".$row->title."</td>";
                                     echo "<td>".$row->employee_no."</td>";
-                                    echo "<td>".(($row->status == 0)?"Active":"Deactive")."</td>";
+                                    echo "<td>".(($row->status == 1)?"Active":"Deactive")."</td>";
                                 echo "</tr>";
                             $i++;
                             }

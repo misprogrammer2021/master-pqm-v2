@@ -13,7 +13,9 @@
     }else {
         redirect('/login', 'refresh');
     }
-        $section = $this->session->userdata['permission'];
+
+    $section = $this->session->userdata['permission'];
+    
 ?>
 
 <div class="row clearfix" id="section2">
@@ -217,7 +219,7 @@
                                     <label for="vmi">VMI</label> 
                                 </div><br/><br/>
                                 <div id="toolbar">
-                                    <a class="btn btn-primary <?php echo @$section['PRODSU2.5']['de']?'add-record-sublot':'disabled';?>" data-added="0"><i class="glyphicon glyphicon-plus"></i>&nbsp;Add Row </a>
+                                    <a class="btn btn-primary <?php echo @$section['PRODSU2.5']['de']?'add-record-sublot':'disabled';?>" data-added="0"><i class="glyphicon glyphicon-plus"></i>&nbsp;On Hold Sublot </a>
                                 </div><br/>
                                 <table class="table table-hover table-bordered" id="tbl_sublot">
                                     <thead>
@@ -245,7 +247,7 @@
                                                     
                                                     echo '<tr id="rec-1">';
                                                         echo '<td>
-                                                            <input type="number" id="sublot_no" name="sublot_no[]" class="form-control" value="'.$sublot->sublot_no.'" '.(@$section['PRODSU2.5']['de']?'':'disabled').'>
+                                                            <input type="text" id="sublot_no" name="sublot_no[]" class="form-control" value="'.$sublot->sublot_no.'" '.(@$section['PRODSU2.5']['de']?'':'disabled').'>
                                                         </td>
                                                         <td>
                                                             <input type="number" id="qty_sublot_no" name="qty_sublot_no[]" class="form-control" value="'.$sublot->qty_sublot_no.'" '.(@$section['PRODSU2.5']['de']?'':'disabled').'>
@@ -275,7 +277,7 @@
                                     <table id="clone_tbl_sublot">
                                         <tr id="">
                                             <td>
-                                                <input type="number" id="sublot_no" name="sublot_no[]" class="form-control" value="" <?php echo (@$section['PRODSU2.5']['de']?'':'disabled');?>>
+                                                <input type="text" id="sublot_no" name="sublot_no[]" class="form-control" value="" <?php echo (@$section['PRODSU2.5']['de']?'':'disabled');?>>
                                             </td>
                                             <td>
                                                 <input type="number" id="qty_sublot_no" name="qty_sublot_no[]" class="form-control" value="" <?php echo (@$section['PRODSU2.5']['de']?'':'disabled');?>>
@@ -297,7 +299,7 @@
                             <div class="col-md-8 col-sm-8">
                                 <h4>QA Buy Off</h4><br/><br/>
                                 <div id="toolbar">
-                                    <a class="btn btn-primary <?php echo @$section['QASU2.6']['de']?'add-record-buyoff':'disabled';?>" data-added="0"><i class="glyphicon glyphicon-plus"></i>&nbsp;Add Row</a>
+                                    <a class="btn btn-primary <?php echo @$section['QASU2.6']['de']?'add-record-buyoff':'disabled';?>" data-added="0"><i class="glyphicon glyphicon-plus"></i>&nbsp;QA Buy Off </a>
                                 </div><br/>
                                 <table class="table table-hover table-bordered" id="tbl_buyoff"> <!--id="qabuyoff"-->
                                     <thead>

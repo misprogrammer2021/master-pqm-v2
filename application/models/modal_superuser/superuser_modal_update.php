@@ -38,6 +38,7 @@ Class SuperUser_modal_update extends CI_Model {
         //     $savetodb['defect_description_name'] = $defect_desc;
         // } 
 
+        /*
         if(isset($data->defect_description_id_1)) $savetodb['defect_description_id_1'] = $data->defect_description_id_1;
         if(isset($data->defect_description_id_1)) {
             $defect_list1 = @$this->modal_master->get_defect_desc1($data->defect_description_id_1); //get_defect_desc  //get_defects
@@ -72,14 +73,18 @@ Class SuperUser_modal_update extends CI_Model {
             $defect_desc5 = $defect_list5->defect_description_name;
             $savetodb['defect_description_name_5'] = $defect_desc5;
         }
+        */
 
         // if(isset($data->defect_description_others)) $savetodb['defect_description_others'] = $data->defect_description_others;
 
+        /*
         if(isset($data->defect_description_others_1)) $savetodb['defect_description_others_1'] = $data->defect_description_others_1;
         if(isset($data->defect_description_others_2)) $savetodb['defect_description_others_2'] = $data->defect_description_others_2;
         if(isset($data->defect_description_others_3)) $savetodb['defect_description_others_3'] = $data->defect_description_others_3;
         if(isset($data->defect_description_others_4)) $savetodb['defect_description_others_4'] = $data->defect_description_others_4;
         if(isset($data->defect_description_others_5)) $savetodb['defect_description_others_5'] = $data->defect_description_others_5;
+        */
+        
         if(isset($data->last_passed_sample)) $savetodb['last_passed_sample'] = $data->last_passed_sample;
         if(isset($data->purge_from)) $savetodb['purge_from'] = $data->purge_from;
         if(isset($data->ack_eng_user)) $savetodb['ack_eng_user'] = $data->ack_eng_user;
@@ -148,6 +153,77 @@ Class SuperUser_modal_update extends CI_Model {
                     if ($qasampleqty->action=='insert'){
                         $this->db->insert('qa_sample_records', $data_table_qa_sample_records);
                     }
+                }
+            }
+        }
+
+        if(is_array(@$data->qan_defect_description) AND (count($data->qan_defect_description) > 0)){
+
+            $this->db->where('machine_breakdown_id',$data->qan_id);
+            $query = $this->db->get('qan_defect_description');
+            $defect_array = array();
+
+            if($query->num_rows() > 0 ){
+                
+                foreach($query->result_object() as $qan_defect_description){
+                    
+                    $defect_array[$qan_defect_description->machine_breakdown_id] = new stdClass();
+                    $defect_array[$qan_defect_description->machine_breakdown_id]->action = 'delete';
+                }
+            }
+     
+            foreach($data->qan_defect_description as $qan_defect_description){
+                
+                if($qan_defect_description->defect_description_id > 0 OR $qan_defect_description->defect_description_others > 0 OR $qan_defect_description->os_us_id > 0 OR $qan_defect_description->datum_id > 0 OR $qan_defect_description->remarks_id > 0){
+
+                    if(array_key_exists($qan_defect_description->defect_description_id,$defect_array)){
+        
+                        $defect_array[$qan_defect_description->defect_description_id]->action = 'update';
+
+                    }else{
+
+                        $defect_array[$qan_defect_description->defect_description_id] = new stdClass();
+                        $defect_array[$qan_defect_description->defect_description_id]->action = 'insert';
+                    }
+                    $defect_array[$qan_defect_description->defect_description_id]->defect_description_id = $qan_defect_description->defect_description_id;
+                    $defect_array[$qan_defect_description->defect_description_id]->defect_description_others = $qan_defect_description->defect_description_others;
+                    $defect_array[$qan_defect_description->defect_description_id]->os_us_id = $qan_defect_description->os_us_id;
+                    $defect_array[$qan_defect_description->defect_description_id]->datum_id = $qan_defect_description->datum_id;
+                    $defect_array[$qan_defect_description->defect_description_id]->remarks_id = $qan_defect_description->remarks_id;
+                }
+            }
+        }
+
+        if(is_array($defect_array) AND (count($defect_array) > 0)){
+
+			foreach($defect_array as $qan_defect_description){
+
+                if($qan_defect_description->action=='delete') {
+
+                    $this->db->where('machine_breakdown_id', $data->qan_id);
+                    $this->db->delete('qan_defect_description');
+                    continue;
+                }
+
+                $data_table_qan_defect_description = array(
+
+					'machine_breakdown_id' => $data->qan_id,
+                    'defect_description_id' => $qan_defect_description->defect_description_id,
+                    'defect_description_others' => $qan_defect_description->defect_description_others,
+                    'os_us_id' => $qan_defect_description->os_us_id,
+                    'datum_id' => $qan_defect_description->datum_id,
+                    'remarks_id' => $qan_defect_description->remarks_id
+                );
+                
+                if($qan_defect_description->action=='update') {
+
+                    $this->db->where('machine_breakdown_id', $data->qan_id);
+                    $this->db->update('qan_defect_description', $data_table_qan_defect_description);
+                }
+                
+                if($qan_defect_description->action=='insert') {
+
+                    $this->db->insert('qan_defect_description', $data_table_qan_defect_description);
                 }
             }
         }
@@ -314,7 +390,7 @@ Class SuperUser_modal_update extends CI_Model {
                     $sublot_array[$qan_on_hold_sublot->sublot_no]->qty_sublot_no = $qan_on_hold_sublot->qty_sublot_no;
                     $sublot_array[$qan_on_hold_sublot->sublot_no]->sorting_good_qty = $qan_on_hold_sublot->sorting_good_qty;
                     $sublot_array[$qan_on_hold_sublot->sublot_no]->sorting_reject_qty = $qan_on_hold_sublot->sorting_reject_qty;
-                    $sublot_array[$qan_on_hold_sublot->sublot_no]->prod_pic_user_id = $qan_on_hold_sublot->prod_pic_user_id;
+                    $sublot_array[$qan_on_hold_sublot->sublot_no]->sublotprod_pic_user_id = $qan_on_hold_sublot->sublotprod_pic_user_id;
                 }
             }
         }
@@ -336,7 +412,7 @@ Class SuperUser_modal_update extends CI_Model {
                     'qty_sublot_no' => $qan_on_hold_sublot->qty_sublot_no,
                     'sorting_good_qty' => $qan_on_hold_sublot->sorting_good_qty,
                     'sorting_reject_qty' => $qan_on_hold_sublot->sorting_reject_qty,
-                    'prod_pic_user_id' => $qan_on_hold_sublot->prod_pic_user_id
+                    'sublotprod_pic_user_id' => $qan_on_hold_sublot->sublotprod_pic_user_id
                 );
                 
                 if($qan_on_hold_sublot->action=='update') {
@@ -429,18 +505,18 @@ Class SuperUser_modal_update extends CI_Model {
 
                 $savetodb = array();
                 if(isset($qan_validation_submission->root_cause_id)) $savetodb['root_cause_id'] = $qan_validation_submission->root_cause_id;
-                if(isset($qan_validation_submission->root_cause_id)) {
-                    $rootcause_list = $this->superuser_modal_select->get_rootcause($qan_validation_submission->root_cause_id);
-                    $rootcause = $rootcause_list->root_cause;
-                    $savetodb['root_cause'] = $rootcause;
-                }
+                // if(isset($qan_validation_submission->root_cause_id)) {
+                //     $rootcause_list = $this->superuser_modal_select->get_rootcause($qan_validation_submission->root_cause_id);
+                //     $rootcause = $rootcause_list->root_cause;
+                //     $savetodb['root_cause'] = $rootcause;
+                // }
                 
                 if(isset($qan_validation_submission->corrective_action_id)) $savetodb['corrective_action_id'] = $qan_validation_submission->corrective_action_id;
-                if(isset($qan_validation_submission->corrective_action_id)) {
-                    $corrective_list = $this->superuser_modal_select->get_corrective_action($qan_validation_submission->corrective_action_id);
-                    $corrective = $corrective_list->corrective_action;
-                    $savetodb['corrective_action'] = $corrective;
-                }
+                // if(isset($qan_validation_submission->corrective_action_id)) {
+                //     $corrective_list = $this->superuser_modal_select->get_corrective_action($qan_validation_submission->corrective_action_id);
+                //     $corrective = $corrective_list->corrective_action;
+                //     $savetodb['corrective_action'] = $corrective;
+                // }
                   
                 if(isset($qan_validation_submission->others_corrective_action)) $savetodb['others_corrective_action'] = $qan_validation_submission->others_corrective_action;
                 // if(isset($qan_validation_submission->rcfa_pic_user_id)) $savetodb['rcfa_pic_user_id'] = $qan_validation_submission->rcfa_pic_user_id;
@@ -507,6 +583,8 @@ Class SuperUser_modal_update extends CI_Model {
 		if(isset($data->notify_next_process)) $savetodb['notify_next_process'] = $data->notify_next_process;
         if(isset($data->fix_validation_result)) $savetodb['fix_validation_result'] = $data->fix_validation_result;
         if(isset($data->closedby_user_id)) $savetodb['closedby_user_id'] = $data->closedby_user_id;
+        $savetodb['closed_datetime'] = date("Y-m-d H:i:s");
+        
         $data_table_qan_machinebreakdown = $savetodb;
 
         if(count($data_table_qan_machinebreakdown) > 0){

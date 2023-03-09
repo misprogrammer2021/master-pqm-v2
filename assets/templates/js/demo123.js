@@ -117,7 +117,7 @@ var table_task= $('#qan_task_list').DataTable({
             }
         },*/
         {
-            data : 'status_name',
+            data : 'ticket_status_name',
             searchable: true,
             render: function( data, type, row, meta ){
                 var label = 'warning';
@@ -182,14 +182,14 @@ var table_active = $('#qan_active_list').DataTable({
             }
         },
         {
-            data : 'status_name',
+            data : 'ticket_status_name',
             searchable: true,
             render: function( data, type, row, meta ){
                 var label = 'warning';
                 /*var machine_icon_status = 'pause_circle_filled';
                 var machine_tooltip = 'Machine Stop';*/
                 if(data=="NEW") label = 'info';
-                if(data=="SOLVED" || (data=="MRB")){
+                if(data=="FINALIZE" || (data=="REVIEW")){
                     label = 'success';
                 }
                 /*if( (parseInt(row.status) < 4) || row.machine_status==1)  {
@@ -202,21 +202,36 @@ var table_active = $('#qan_active_list').DataTable({
                 return '<div class="display: inline-block;"><span class="label label-'+ label +'">'+data+'</span></div>';
             }
         },
-        /*{
-            "data": 'defect.defect_description_name_1'
-        },*/
+        {
+            "data": 'part_name.part_name'
+        },
         {
             "data": null,
             orderable: false,
             searchable: true,
             render: function( data, type, row, meta ){
-                var defect1 = data.defect1.defect_description_name_1;
-                var defect2 = data.defect2.defect_description_name_2;
-                var defect3 = data.defect3.defect_description_name_3;
-                var defect4 = data.defect4.defect_description_name_4;
-                var defect5 = data.defect5.defect_description_name_5;
+                var machine_name = data.machine_name.machine_name;
+                var sector_name = data.machine_name.sector_name;
+                return machine_name + ' ' + '[' + sector_name + ']'
+            }
+        },
+        {
+            "data": null,
+            orderable: false,
+            searchable: true,
+            render: function( data, type, row, meta ){
+                var defect_description_name = data.defect_description_name.defect_description_name;
+                var defect_type = data.defect_description_name.defect_type;
+                return defect_description_name + ' ' + '[' + defect_type + ']'
+
+                // var defect1 = data.defect1.defect_description_name_1;
+                // var defect2 = data.defect2.defect_description_name_2;
+                // var defect3 = data.defect3.defect_description_name_3;
+                // var defect4 = data.defect4.defect_description_name_4;
+                // var defect5 = data.defect5.defect_description_name_5;
                 
-                return [defect1, defect2, defect3, defect4, defect5].filter(Boolean).join(", ");
+                // return [defect1, defect2, defect3, defect4, defect5].filter(Boolean).join(", ");
+                // return [defect].filter(Boolean).join(", ");
             }
         },
         /*{
@@ -268,7 +283,7 @@ var table_active = $('#qan_active_list').DataTable({
             searchable: true,
             render: function( data, type, row, meta ){
                 var label = 'danger';
-                var result = data.result_insepection.result;
+                var result = data.last_qa_result.result;
 
                 if(result=="PASS") label = 'success';
                 if(result=="FAILED") label = 'danger';
@@ -365,7 +380,7 @@ var table_close = $('#qan_closed_ticket_list').DataTable({
             }
         },
         {
-            data : 'status_name',
+            data : 'ticket_status_name',
             render: function( data, type, row, meta ){
                 var label = 'warning'; //success
                 /*var machine_icon_status = 'pause_circle_filled';
@@ -386,21 +401,38 @@ var table_close = $('#qan_closed_ticket_list').DataTable({
                 return '<div class="display: inline-block;"><span class="label label-'+ label +'">'+data+'</span></div>';
             }
         },
-        /*{
-            "data": 'defect.defect_description_name'
-        },*/
+        {
+            "data": 'part_name.part_name'
+        },
+        {
+            "data": null,
+            orderable: false,
+            searchable: true,
+            render: function( data, type, row, meta ){
+                var machine_name = data.machine_name.machine_name;
+                var sector_name = data.machine_name.sector_name;
+                return machine_name + ' ' + '[' + sector_name + ']'
+            }
+        },
         {
             "data": null,
             orderable: false,
             searchable: false,
             render: function( data, type, row, meta ){
-                var defect1 = data.defect1.defect_description_name_1;
-                var defect2 = data.defect2.defect_description_name_2;
-                var defect3 = data.defect3.defect_description_name_3;
-                var defect4 = data.defect4.defect_description_name_4;
-                var defect5 = data.defect5.defect_description_name_5;
+                // var defect = data.defect.defect_description_name;
+
+                var defect_description_name = data.defect_description_name.defect_description_name;
+                var defect_type = data.defect_description_name.defect_type;
+                return defect_description_name + ' ' + '[' + defect_type + ']'
+
+                // var defect1 = data.defect1.defect_description_name_1;
+                // var defect2 = data.defect2.defect_description_name_2;
+                // var defect3 = data.defect3.defect_description_name_3;
+                // var defect4 = data.defect4.defect_description_name_4;
+                // var defect5 = data.defect5.defect_description_name_5;
                 
-                return [defect1, defect2, defect3, defect4, defect5].filter(Boolean).join(", ");
+                // return [defect1, defect2, defect3, defect4, defect5].filter(Boolean).join(", ");
+                // return [defect].filter(Boolean).join(", ");
             }
         },
         /*{
@@ -452,15 +484,16 @@ var table_close = $('#qan_closed_ticket_list').DataTable({
             searchable: true,
             render: function( data, type, row, meta ){
                 var label = 'danger';
-                var result = data.result_insepection.result;
+                var result = data.last_qa_result.result;
 
                 if(result=="PASS") label = 'success';
                 if(result=="FAILED") label = 'danger';
                 if(result=="NA") label = 'info';
 
                 return '<div class="display: inline-block;"><span class="label label-'+ label +'">'+result+'</span></div>';
+                        
             }
-        },
+        }, 
         {
             data : 'created_date',
             searchable: true
@@ -541,7 +574,7 @@ var table_superuseractive = $('#superuser_qan_active_list').DataTable({
             }
         },
         {
-            data : 'status_name',
+            data : 'ticket_status_name',
             render: function( data, type, row, meta ){
                 var label = 'warning';
                 /*var machine_icon_status = 'pause_circle_filled';
@@ -560,21 +593,38 @@ var table_superuseractive = $('#superuser_qan_active_list').DataTable({
                 return '<div class="display: inline-block;"><span class="label label-'+ label +'">'+data+'</span></div>';
             }
         },
-        /*{
-            "data": 'defect.defect_description_name'
-        },*/
+        {
+            "data": 'part_name.part_name'
+        },
+        {
+            "data": null,
+            orderable: false,
+            searchable: true,
+            render: function( data, type, row, meta ){
+                var machine_name = data.machine_name.machine_name;
+                var sector_name = data.machine_name.sector_name;
+                return machine_name + ' ' + '[' + sector_name + ']'
+            }
+        },
         {
             "data": null,
             orderable: false,
             searchable: false,
             render: function( data, type, row, meta ){
-                var defect1 = data.defect1.defect_description_name_1;
-                var defect2 = data.defect2.defect_description_name_2;
-                var defect3 = data.defect3.defect_description_name_3;
-                var defect4 = data.defect4.defect_description_name_4;
-                var defect5 = data.defect5.defect_description_name_5;
+                // var defect = data.defect.defect_description_name;
+
+                var defect_description_name = data.defect_description_name.defect_description_name;
+                var defect_type = data.defect_description_name.defect_type;
+                return defect_description_name + ' ' + '[' + defect_type + ']'
+
+                // var defect1 = data.defect1.defect_description_name_1;
+                // var defect2 = data.defect2.defect_description_name_2;
+                // var defect3 = data.defect3.defect_description_name_3;
+                // var defect4 = data.defect4.defect_description_name_4;
+                // var defect5 = data.defect5.defect_description_name_5;
                 
-                return [defect1, defect2, defect3, defect4, defect5].filter(Boolean).join(", ");
+                // return [defect1, defect2, defect3, defect4, defect5].filter(Boolean).join(", ");
+                // return [defect].filter(Boolean).join(", ");
             }
         },
         /*{
@@ -626,7 +676,7 @@ var table_superuseractive = $('#superuser_qan_active_list').DataTable({
             searchable: true,
             render: function( data, type, row, meta ){
                 var label = 'danger';
-                var result = data.result_insepection.result;
+                var result = data.last_qa_result.result;
 
                 if(result=="PASS") label = 'success';
                 if(result=="FAILED") label = 'danger';
@@ -718,16 +768,17 @@ var table_superuserclose = $('#superuser_qan_closed_ticket_list').DataTable({
             }
         },
         {
-            data : 'status_name',
+            data : 'ticket_status_name',
             render: function( data, type, row, meta ){
                 var label = 'warning'; //success
                 /*var machine_icon_status = 'pause_circle_filled';
                 var machine_tooltip = 'Machine Stop';*/
 
-                if(data=="NEW") label = 'info';
-                if(data=="SOLVED" || (data=="MRB")){
-                    label = 'success';
-                }
+                // if(data=="NEW") label = 'info';
+                // if(data=="SOLVED" || (data=="MRB")){
+                //     label = 'success';
+                // }
+                if(data=="CLOSED") label = 'success';
    
                 /*if( (parseInt(row.status) < 4) || row.machine_status==1)  {
                     machine_icon_status = 'play_circle_filled';
@@ -739,21 +790,38 @@ var table_superuserclose = $('#superuser_qan_closed_ticket_list').DataTable({
                 return '<div class="display: inline-block;"><span class="label label-'+ label +'">'+data+'</span></div>';
             }
         },
-        /*{
-            "data": 'defect.defect_description_name'
-        },*/
+        {
+            "data": 'part_name.part_name'
+        },
+        {
+            "data": null,
+            orderable: false,
+            searchable: true,
+            render: function( data, type, row, meta ){
+                var machine_name = data.machine_name.machine_name;
+                var sector_name = data.machine_name.sector_name;
+                return machine_name + ' ' + '[' + sector_name + ']'
+            }
+        },
         {
             "data": null,
             orderable: false,
             searchable: false,
             render: function( data, type, row, meta ){
-                var defect1 = data.defect1.defect_description_name_1;
-                var defect2 = data.defect2.defect_description_name_2;
-                var defect3 = data.defect3.defect_description_name_3;
-                var defect4 = data.defect4.defect_description_name_4;
-                var defect5 = data.defect5.defect_description_name_5;
+                // var defect = data.defect.defect_description_name;
+
+                var defect_description_name = data.defect_description_name.defect_description_name;
+                var defect_type = data.defect_description_name.defect_type;
+                return defect_description_name + ' ' + '[' + defect_type + ']'
+
+                // var defect1 = data.defect1.defect_description_name_1;
+                // var defect2 = data.defect2.defect_description_name_2;
+                // var defect3 = data.defect3.defect_description_name_3;
+                // var defect4 = data.defect4.defect_description_name_4;
+                // var defect5 = data.defect5.defect_description_name_5;
                 
-                return [defect1, defect2, defect3, defect4, defect5].filter(Boolean).join(", ");
+                // return [defect1, defect2, defect3, defect4, defect5].filter(Boolean).join(", ");
+                // return [defect].filter(Boolean).join(", ");
             }
         },
         /*{
@@ -805,15 +873,16 @@ var table_superuserclose = $('#superuser_qan_closed_ticket_list').DataTable({
             searchable: true,
             render: function( data, type, row, meta ){
                 var label = 'danger';
-                var result = data.result_insepection.result;
+                var result = data.last_qa_result.result;
 
                 if(result=="PASS") label = 'success';
                 if(result=="FAILED") label = 'danger';
                 if(result=="NA") label = 'info';
 
                 return '<div class="display: inline-block;"><span class="label label-'+ label +'">'+result+'</span></div>';
+                        
             }
-        },
+        }, 
         {
             data : 'created_date',
             searchable: true

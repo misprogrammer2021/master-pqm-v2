@@ -1,6 +1,6 @@
 <?php
 
-$jsselect = TRUE;
+    $jsselect = TRUE;
 
 ?>
 
@@ -12,8 +12,8 @@ $jsselect = TRUE;
         $password = ($this->session->userdata['logged_in']['password']);
         $fullname = ($this->session->userdata['logged_in']['fullname']);
     }else{
-          redirect('/login', 'refresh');
-        }
+        redirect('/login', 'refresh');
+    }
         $section = $this->session->userdata['permission'];
         // $data = '{
         //     "qan_no": 123,
@@ -153,7 +153,8 @@ $jsselect = TRUE;
                     <li>
                         <button class="btn bg-green btn-lg btn-block waves-effect pull-right" type="button">
                             Status
-                            <input type='text' id='status' name='status' class='form-control' value='<?php echo @$data->status_name;?>' readonly/>
+                            <input type='text' id='status' name='status' class='form-control' value='<?php echo @$data->ticket_status_name;?>' readonly/>
+                            <!-- @$data->status_name -->
                         </button>
                     </li>
                 </ul>
@@ -224,12 +225,13 @@ $jsselect = TRUE;
                         </div> -->
                         <div class="form-group">
                             <div class="col-md-4">
-                                <label class="form-label">Rule</label>
+                                <label class="form-label">RULE</label>
                             </div>
                             <div class="col-md-8">
                                 <select id="rule_name" name="rule_name" data-show-subtext="true" data-live-search="true" class="<?php echo @$section['S1.1']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S1.1']['de']?'':'disabled';?> required>
                                 <option value="">--Please Select--</option>
                                 <?php
+
                                     foreach($data->list_rule as $id => $rule_name)
                                     {
                                         $selected = '';
@@ -255,6 +257,7 @@ $jsselect = TRUE;
                                 <select id="part_name" name="part_name" data-show-subtext="true" data-live-search="true" class="<?php echo @$section['S1.2']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S1.2']['de']?'':'disabled';?> required>
                                 <option value="">--Please Select--</option>
                                 <?php
+
                                     foreach($data->list_partname as $id => $part_name)
                                     {
                                         $selected = '';
@@ -277,6 +280,7 @@ $jsselect = TRUE;
                                 <select id="select_machine_no" name="machine_no_id" data-show-subtext="true" data-live-search="true" class="<?php echo @$section['S1.2']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S1.2']['de']?'':'disabled';?> required>
                                     <option value="">--Please Select--</option>
                                     <?php
+
                                         $selected = '';
                                         foreach($machine_no as $index => $machine_row){
 
@@ -297,6 +301,7 @@ $jsselect = TRUE;
                                 <select id="process" name="process" data-show-subtext="true" data-live-search="true" class="<?php echo @$section['S1.2']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S1.2']['de']?'':'disabled';?> required>
                                 <option value="">--Please Select--</option>
                                 <?php
+                                
                                     foreach($data->list_process as $id => $purge)
                                     {
                                         $selected = '';
@@ -317,25 +322,131 @@ $jsselect = TRUE;
                                 <select id="detectedby_user" name="detectedby_user" data-show-subtext="true" data-live-search="true" class="<?php echo @$section['S1.2']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S1.2']['de']?'':'disabled';?> required>
                                 <option value="">--Please Select--</option>
                                 <?php
+                                    // $selected = '';
+                                    // foreach($detected_by as $index => $detectedby_row){
+                                    //     if($detectedby_row->show_detectedby == 0){
+                                    //         $selected = $data->detectedby_user == $detectedby_row->id?'selected':'';
+                                    //         echo '<option value="'.$detectedby_row->id.'" '.$selected.'>'.$detectedby_row->detected_by_name.' ['.$detectedby_row->detected_group.']</option>';
+                                    //     }
+                                    // }
+                                    
                                     $selected = '';
-                                    foreach($detected_by as $index => $detectedby_row){
-                                        if($detectedby_row->show_detectedby == 0){
-                                            $selected = $data->detectedby_user == $detectedby_row->id?'selected':'';
-                                            echo '<option value="'.$detectedby_row->id.'" '.$selected.'>'.$detectedby_row->detected_by_name.' ['.$detectedby_row->detected_group.']</option>';
-                                        }
+                                    foreach($detected_by as $index => $detected_by_row){
+
+                                        $selected = $data->detectedby_user == $detected_by_row->id?'selected':'';
+                                        echo '<option value="'.$detected_by_row->id.'" '.$selected.'>'.$detected_by_row->detectedby_user.' ['.$detected_by_row->group_name.']</option>';
                                     }
                                 ?>
                                 </select>
                             </div>
                         </div>
                     </div>
-                    <div class="clearfix"></div>                
-                    <div class="col-md-4 col-sm-4">
+                    <div class="clearfix"></div>
+
+                    <!-- https://codepen.io/AdamActual/pen/rvYrxN -->
+                    <!-- http://jsfiddle.net/HZp5M/ -->
+                    <!-- https://stackoverflow.com/questions/33722048/how-to-add-dynamic-row-jquery-having-dynamic-dropdown-in-php -->
+                    <!-- https://stackoverflow.com/questions/21395183/showing-a-hidden-div-within-a-cloned-div -->
+                    <!-- https://stackoverflow.com/questions/39641732/append-additional-html-to-cloned-object-in-jquery -->
+                    <!-- https://stackoverflow.com/questions/41415776/clone-a-div-in-display-none-mode -->
+                    <!-- https://www.aspsnippets.com/Articles/Dynamically-Add-Row-with-DropDownList-using-jQuery.aspx -->
+                    
+                    <!-- <div id="toolbar">
+                        <a class="btn btn-primary add-defect"><i class="glyphicon glyphicon-plus"></i>&nbsp; ADD DEFECT DESCRIPTION</a>
+                    </div><br/><br/>  
+                    <div class="col-md-8 new-defects">
+                        <span id="defectives" class="new-defect"> 
+                            <select class="test">
+                                <option value="1">option 1</option>
+                                <option value="2">option 2</option>
+                                <option value="3">option 3</option>
+                                <option value="4">option 4</option>
+                                <option value="5">option 5</option>
+                            </select>
+                        </span>&nbsp;
+                        <span id="defectives">
+                            <select class='category-select-sub' style="display:none;">
+                                <option value="1">option 1</option>
+                                <option value="2">option 2</option>
+                                <option value="3">option 3</option>
+                                <option value="4">option 4</option>
+                                <option value="5">option 5</option>
+                            </select>
+                        </span>
+                    </div>   -->
+                             
+                    <!-- <div class="row clearfix">
+                    <div class="clearfix"></div>
+                    <div class="col-md-12 col-sm-12">
+                        <div class="col-md-8 col-sm-8">
+                            <h4>DEFECT DESCRIPTION</h4><br/><br/>
+                            <div id="toolbar">
+                                <a class="btn btn-primary add-record-defect" data-added="0"><i class="glyphicon glyphicon-plus"></i>&nbsp;Add Row </a>
+                            </div><br/>
+                            <table class="table table-hover table-bordered" id="tbl_defect">
+                                <thead>
+                                    <tr>
+                                        <th>DEFECT DESCRIPTION</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbl_defect_body">
+                                  
+                                    
+                                        <span id="defectives">
+                                        <?php 
+
+                                            echo '<select id="select_defect1" name="defect_description_name_1" data-show-subtext="true" data-live-search="true" class="show-tick form-control">';
+                                            echo '<option value="">--Please Select--</option>';
+                                            
+                                                foreach($data->list_defect as $id => $defect_description)
+                                                {
+                                                    $selected = '';
+                                                    if (@$data->defect_description_id_1 == $id){
+                                                        $selected = 'selected';
+                                                    }
+                                                    echo '<option value="'.$id.'" '.$selected.'>'.$defect_description.'</option>';
+                                                }
+                                            echo '</select>';
+                                        ?>
+                                        
+                                    </span>
+                                    ?>
+                                </tbody>
+                            </table>
+                            <div style="display:none;">
+                                <table id="clone_tbl_defect">
+                                    <tr id="">
+                                        <td>
+                                            <div class="col-md-8">
+                                            <?php 
+
+                                                echo '<select id="select_defect1" name="defect_description_name_1" data-show-subtext="true" data-live-search="true" class="show-tick form-control">';
+                                                echo '<option value="">--Please Select--</option>';
+
+                                                    foreach($data->list_defect as $id => $defect_description)
+                                                    {
+                                                        $selected = '';
+                                                        if (@$data->defect_description_id_1 == $id){
+                                                            $selected = 'selected';
+                                                        }
+                                                        echo '<option value="'.$id.'" '.$selected.'>'.$defect_description.'</option>';
+                                                    }
+                                                echo '</select>';
+                                            ?>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div> -->
+                   
+                    <!-- <div class="col-md-4 col-sm-4">
                         <div class="col-md-4">
                             <label class="form-label">DEFECT DESCRIPTION (1)</span></label>
                         </div>
                         <div class="col-md-8">
-                            <span id="defectives"> <!--style="display:none"-->
+                            <span id="defectives">
                                 <select id="select_defect1" name="defect_description_name_1" data-show-subtext="true" data-live-search="true" class="<?php echo @$section['S1.2']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S1.2']['de']?'':'disabled';?>>
                                 <option value="">--Please Select--</option>
                                 <?php
@@ -357,7 +468,7 @@ $jsselect = TRUE;
                             <label class="form-label">DEFECT DESCRIPTION (2)</label>
                         </div>
                         <div class="col-md-8">
-                            <span id="defectives"> <!--style="display:none"-->
+                            <span id="defectives">
                                 <select id="select_defect2" name="defect_description_name_2" data-show-subtext="true" data-live-search="true" class="<?php echo @$section['S1.2']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S1.2']['de']?'':'disabled';?>>
                                 <option value="">--Please Select--</option>
                                 <?php
@@ -379,7 +490,7 @@ $jsselect = TRUE;
                             <label class="form-label">DEFECT DESCRIPTION (3)</label>
                         </div>
                         <div class="col-md-8">
-                            <span id="defectives"> <!--style="display:none"-->
+                            <span id="defectives">
                                 <select id="select_defect3" name="defect_description_name_3" data-show-subtext="true" data-live-search="true" class="<?php echo @$section['S1.2']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S1.2']['de']?'':'disabled';?>>
                                 <option value="">--Please Select--</option>
                                 <?php
@@ -401,7 +512,7 @@ $jsselect = TRUE;
                             <label class="form-label">DEFECT DESCRIPTION (4)</label>
                         </div>
                         <div class="col-md-8">
-                            <span id="defectives"> <!--style="display:none"-->
+                            <span id="defectives">
                                 <select id="select_defect4" name="defect_description_name_4" data-show-subtext="true" data-live-search="true" class="<?php echo @$section['S1.2']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S1.2']['de']?'':'disabled';?>>
                                 <option value="">--Please Select--</option>
                                 <?php
@@ -423,7 +534,7 @@ $jsselect = TRUE;
                             <label class="form-label">DEFECT DESCRIPTION (5)</label>
                         </div>
                         <div class="col-md-8">
-                            <span id="defectives"> <!--style="display:none"-->
+                            <span id="defectives">
                                 <select id="select_defect5" name="defect_description_name_5" data-show-subtext="true" data-live-search="true" class="<?php echo @$section['S1.2']['de']?'show-tick':'';?>  form-control" <?php echo @$section['S1.2']['de']?'':'disabled';?>>
                                 <option value="">--Please Select--</option>
                                 <?php
@@ -488,8 +599,212 @@ $jsselect = TRUE;
                                 <label class="form-label">DEFECT DESCRIPTION (OTHERS) (5)</label>
                             </div> 
                         </div>     
-                    </div> 
-                    
+                    </div>  -->
+
+                    <!-- <input type="button" id = "btnAdd" onclick = "AddDropDownList()" value = "Add DropDownList" />
+                    <hr />
+                    <div id = "dvContainer"></div> -->
+                                
+                    <!-- http://jsfiddle.net/bMyGY/1137/ -->
+                    <!-- <button id="myButton">Add New Row</button>               
+                    <table id="myTable">
+                        <?php 
+
+                            // if(@$data->defect_description){
+                                                
+                            //     foreach(@$data->defect_description as $defect){
+
+                            //         // print_r($defect);
+                            //         // exit;
+
+                            //         echo '<tr>
+                            //             <td>
+                            //                 <select class="test">';
+
+                            //                     foreach($data->list_defect_desc as $id => $defect_name)
+                            //                     {
+                            //                         $selected = '';
+                            //                         if (@$defect->defect_description_id == $id){
+                            //                             $selected = 'selected';
+                            //                         }
+                            //                         echo '<option value="'.$id.'" '.$selected.'>'.$defect_name.'</option>';
+                            //                     }
+                            //                 '</select>
+                            //             </td>
+                            //             <td>
+                            //                 <input type="text" id="defect_description_others" name="defect_description_others[]" class="form-control" value="'.$defect->defect_description_others.'">
+                            //             </td>
+                            //         </tr>';
+                            //     }
+                            // }
+                        ?>
+
+                    </table> -->
+
+                    <div class="col-md-12 col-sm-12">
+                        <!-- <h4>Defect Description</h4><br/><br/> -->
+                        <div id="toolbar">
+                            <!-- <a class="btn btn-primary add-defect-decs" data-added="0"><i class="glyphicon glyphicon-plus"></i>&nbsp;Defect Description </a> -->
+                            <a class="btn btn-primary <?php echo @$section['S1.2']['de']?'add-defect-decs':'disabled';?>" data-added="0"><i class="glyphicon glyphicon-plus"></i>&nbsp;Defect Description </a>
+                        </div><br/>
+                        <table class="table table-hover table-bordered" id="tbl_defect"> 
+                            <thead>
+                                <tr>
+                                    <th>DEFECT DESCRIPTION</th>
+                                    <th>DEFECT DESCRIPTION (OTHERS)</th>
+                                    <th>O/S OR U/S</th>
+                                    <th>DATUM</th>
+                                    <th>REMARKS</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbl_defect_body">
+                                <?php 
+
+                                    if(@$data->qan_defect_description){
+                                                      
+                                        foreach(@$data->qan_defect_description as $defect){
+
+                                            echo '<tr>';
+                                                echo '<td>
+                                                    <select id="select_defect" name="defect_description_id[]" data-show-subtext="true" data-live-search="true"  class=" '.(@$section['S1.2']['de']?'show-tick':'').' form-control" '.(@$section['S1.2']['de']?'':'disabled').'>
+                                                        <option value="">--Please Select--</option>';
+                                                       
+                                                        $selected = '';
+                                                        foreach($defect_desc as $index => $defect_desc_row){
+
+                                                            $selected = $defect->defect_description_id == $defect_desc_row->id?'selected':'';
+                                                            // echo '<option value="'.$defect_desc_row->id.'" '.$selected.'>'.$defect_desc_row->defect_description_name.'</option>';
+                                                            echo '<option value="'.$defect_desc_row->id.'" '.$selected.'>'.$defect_desc_row->defect_description_name.' ['.$defect_desc_row->defect_type.']</option>';
+                                                        }
+                                                    '</select>
+                                                </td>';
+                                                echo '<td><input type="text" id="defect_description_others" name="defect_description_others[]" class="form-control" value="'.$defect->defect_description_others.'" '.(@$section['S1.2']['de']?'':'disabled').'></td>';
+                                                echo '<td>
+                                                        <select id="select_osus" name="os_us_id[]" data-show-subtext="true" data-live-search="true"  class=" '.(@$section['S1.2']['de']?'show-tick':'').' form-control" '.(@$section['S1.2']['de']?'':'disabled').'>
+                                                            <option value="">--Please Select--</option>';
+                                                            
+                                                            $selected = '';
+                                                            foreach($os_us as $index => $os_us_row){
+
+                                                                $selected = $defect->os_us_id == $os_us_row->id?'selected':'';
+                                                                echo '<option value="'.$os_us_row->id.'" '.$selected.'>'.$os_us_row->name.'</option>';
+                                                            }
+                                                        '</select>
+                                                </td>';
+                                                echo '<td>
+                                                        <select id="select_datum" name="datum_id[]" data-show-subtext="true" data-live-search="true"  class=" '.(@$section['S1.2']['de']?'show-tick':'').' form-control" '.(@$section['S1.2']['de']?'':'disabled').'>
+                                                            <option value="">--Please Select--</option>';
+                                                            
+                                                            $selected = '';
+                                                            foreach($datum as $index => $datum_row){
+
+                                                                $selected = $defect->datum_id == $datum_row->id?'selected':'';
+                                                                echo '<option value="'.$datum_row->id.'" '.$selected.'>'.$datum_row->name.'</option>';
+                                                            }
+                                                        '</select>
+                                                </td>';
+                                                echo '<td>
+                                                        <select id="select_remarks" name="remarks_id[]" data-show-subtext="true" data-live-search="true"  class=" '.(@$section['S1.2']['de']?'show-tick':'').' form-control" '.(@$section['S1.2']['de']?'':'disabled').'>
+                                                            <option value="">--Please Select--</option>';
+                                                            
+                                                            $selected = '';
+                                                            foreach($remarks as $index => $remarks_row){
+
+                                                                $selected = $defect->remarks_id == $remarks_row->id?'selected':'';
+                                                                echo '<option value="'.$remarks_row->id.'" '.$selected.'>'.$remarks_row->name.'</option>';
+                                                            }
+                                                        '</select>
+                                                </td>';
+                                            echo '</tr>';
+                                        }
+                                    }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- <div class="col-md-8 col-sm-8">
+                        <h4>Defect Description</h4><br/><br/>
+                        <div id="toolbar">
+                            <a class="btn btn-primary add-defect-decs" data-added="0"><i class="glyphicon glyphicon-plus"></i>&nbsp;Add Row </a>
+                        </div><br/>
+                        <table class="table table-hover table-bordered" id="tbl_defect">
+                            <thead>
+                                <tr>
+                                    <th>DEFECT DESCRIPTION</th>
+                                    <th>DEFECT DESCRIPTION (OTHERS)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbl_defect_body">
+                                <?php 
+                                
+                                    // if(@$data->defect_description){ 
+
+                                    //     foreach(@$data->defect_description as $defect){ 
+
+                                    //         echo '<tr id="rec-1">'; 
+                                    //             echo '<td>
+                                    //                 <select id="select_defect" name="defect_description_name[]" data-show-subtext="true" data-live-search="true" class="show-tick form-control"';
+                                    //                 echo '<option value="">--Please Select--</option>';
+                                    //                 foreach($data->list_defect_desc as $id => $defect_name)
+                                    //                 {
+                                    //                     $selected = '';
+                                    //                     if (@$defect->defect_description_id == $id){
+                                    //                         $selected = 'selected';
+                                    //                     }
+                                    //                     echo '<option value="'.$id.'" '.$selected.'>'.$defect_name.'</option>';
+                                    //                 }
+                                    //                 '</select>
+                                    //             </td>';
+                                    //             echo '<td><input type="text" id="defect_description_others" name="defect_description_others[]" class="form-control" value="'.$defect->defect_description_others.'"></td>';
+                                    //         echo '</tr>';
+                                    //     }
+                                    // }
+                                ?>
+                            </tbody>
+                        </table>
+                        <div style="display:none;">
+                            <table id="clone_tbl_defect">
+                            <?php 
+
+                                // if(@$data->defect_description){
+
+                                    // foreach(@$data->defect_description as $defect){
+                                        // echo '<tr id="">';
+                                        //     echo '<td>
+                                        //         <select id="defect_description_name" name="defect_description_name[]" data-show-subtext="true" data-live-search="true" class="show-tick form-control">';
+                                        //         echo '<option value="">--Please Select--</option>';
+                                        //             // foreach(@$data->list_defect_desc as $id => $defect_name)
+                                        //             // {
+                                                        
+                                        //             //     $selected = '';
+                                        //             //     if (@$defect->defect_description_id == $id){
+                                        //             //         $selected = 'selected';
+                                        //             //     }
+                                        //             //     echo '<option value="'.$id.'" '.$selected.'>'.$defect_name.'</option>';
+                                        //             // }
+                                                
+                                        //             foreach($data->list_defect_desc as $id => $defect_name)
+                                        //             {
+                                        //                 $selected = '';
+                                        //                 if (@$data->defect_description_id == $id){
+                                        //                     $selected = 'selected';
+                                        //                 }
+                                        //                 echo '<option value="'.$id.'" '.$selected.'>'.$defect_name.'</option>';
+                                        //             }
+                                                
+                                                    
+                                        //         '</select>
+                                        //     </td>';
+                                        //     echo '<td><input type="text" id="defect_description_others" name="defect_description_others[]" class="form-control" value=""></td>';
+                                        // echo '</tr>';
+                                    // }
+                                // }
+                            ?>
+                            </table>
+                        </div>
+                    </div> -->
+            
                     <div class="clearfix"></div> 
                     <div class="col-md-4 col-sm-4">
                         <div class="form-group form-float">
@@ -593,8 +908,13 @@ $jsselect = TRUE;
                                 </div>
                                 <div class="col-md-8">
                                     <div class="form-line">
+                                        <!-- <input type="text" name="ack_qa_user" class="form-control" value='<?php //echo @$data->user->{$data->ack_qa_user};?>' disabled/>
+                                        <input type="hidden" name="ack_qa_user_id" value='<?php //echo @$data->ack_qa_user;?>'/> -->
+
+                                        <!-- <input type="text" name="ack_qa_user" class="form-control" value="<?php //echo @$section['S1.7']['ack']?@$data->user->{$this->session->userdata['logged_in']['id']}:''; ?>" disabled>
+                                        <input type="hidden" name="ack_qa_user_id" value="<?php //echo @$section['S1.7']['ack']?$this->session->userdata['logged_in']['id']:'';?>" /> -->
                                         <input type="text" name="ack_qa_user" class="form-control" value='<?php echo @$data->user->{$data->ack_qa_user};?>' disabled/>
-                                        <input type="hidden" name="ack_qa_user_id" value='<?php echo @$data->ack_qa_user;?>'/>
+                                        <input type="hidden" name="ack_qa_user_id" value='<?php echo @$section['S1.7']['ack']?@$data->ack_qa_user:''; ?>'/>
                                     </div>
                                 </div>
                             </div><br/>

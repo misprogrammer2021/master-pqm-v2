@@ -345,8 +345,8 @@ $jsselect = TRUE;
                                 
                                     echo "<!-- TAB $subno -->"; 
                                     echo '<div role="tabpanel" class="tab-pane fade '.($subno==1?'active in':'').'" id="sub'.$subno.'">';
-                                        echo '<input type="hidden" name="submission_id['.$subno.']" value="'.$rcsubmissiondata->submission_id.'">';  
-                                        echo '<input type="hidden" name="submission_no['.$subno.']" value="'.$subno.'">';      
+                                    echo '<input type="hidden" name="submission_id['.$subno.']" value="'.$rcsubmissiondata->submission_id.'">';  
+                                    echo '<input type="hidden" name="submission_no['.$subno.']" value="'.$subno.'">';      
                             ?>
                                         <br/>
                                         <div class="clearfix"></div>
@@ -546,7 +546,8 @@ $jsselect = TRUE;
                                                         $inspect_by_group = array();
 
                                                         foreach($detected_by as $key => $obj){
-                                                            $inspect_by_group[$obj->detected_group][$obj->id] = $obj->detected_by_name;
+                                                            // $inspect_by_group[$obj->detected_group][$obj->id] = $obj->detected_by_name;
+                                                            $inspect_by_group[$obj->group_name][$obj->id] = $obj->detectedby_user;
                                                         }
 
                                                         if($tablerow==1){
@@ -561,10 +562,11 @@ $jsselect = TRUE;
                                                                 echo '<select id="'.$insp_id_val.'" class="form-control show-tick"'.(@$section['S3.2']['de']?'':'disabled').' '.$disabled_input.' name="inspect_by['.$subno.']['.$cb_id.']">';
                                                                     echo '<option value="" disabled '.$select_default.'>-- Please Select --</option>';
                                                             
-                                                                    foreach($inspect_by_group[$cb_name] as $id => $detected_by_name)
+                                                                    // foreach($inspect_by_group[$cb_name] as $id => $detected_by_name)
+                                                                    foreach($inspect_by_group[$cb_name] as $id => $detectedby_user)
                                                                     {
                                                                         $selected = ($input_insp_by != '' AND $id==$input_insp_by)?'selected':'';
-                                                                        echo '<option value="'.$id.'" '.$selected.'>'.$detected_by_name.'</option>';
+                                                                        echo '<option value="'.$id.'" '.$selected.'>'.$detectedby_user.'</option>';
                                                                     }
                                                                 echo '</select>';
                                                             echo '</div>';

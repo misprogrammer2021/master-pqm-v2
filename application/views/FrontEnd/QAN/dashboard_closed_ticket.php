@@ -31,20 +31,16 @@
                         <table id="qan_closed_ticket_list" class="table table-bordered table-striped table-hover dataTable">
                             <thead>
                                 <tr>
-                                    <!-- <th></th> -->
                                     <th>Seq</th>
                                     <th>QAN NO</th>
-                                    <th width="15%">Ticket Status</th>
-                                    <th>Defect Description</th>
-                                    <!-- <th width="2%">Acknowledge</th> -->
+                                    <th width="1%">Ticket Status</th>
+                                    <th width="5%">Part Name</th>
+                                    <th width="5%">MC/No</th>
+                                    <th width="30%">Defect Description</th>
                                     <th width="2%">Submission No</th>
-                                    <!-- <th>Progress</th> -->
-                                    <th>Machine Resume</th>
+                                    <th>Machine Status</th>
                                     <th>Result Inspection</th>
-                                    <!-- <th>Rej/Aff</th> -->
                                     <th>Start DateTime</th>
-                                    <!-- <th>Machine Resume</th> -->
-                                    <!-- <th>Action</th> -->
                                 </tr>
                             </thead>
                             
@@ -52,17 +48,14 @@
                                 <tr>
                                     <th>Seq</th>
                                     <th>QAN NO</th>
-                                    <th width="15%">Ticket Status</th>
-                                    <th>Defect Description</th>
-                                    <!-- <th width="2%">Acknowledge</th> -->
+                                    <th width="1%">Ticket Status</th>
+                                    <th width="5%">Part Name</th>
+                                    <th width="5%">MC/No</th>
+                                    <th width="30%">Defect Description</th>
                                     <th width="2%">Submission No</th>
-                                    <!-- <th>Progress</th> -->
-                                    <th>Machine Resume</th>
+                                    <th>Machine Status</th>
                                     <th>Result Inspection</th>
-                                    <!-- <th>Rej/Aff</th> -->
                                     <th>Start DateTime</th>
-                                    <!-- <th>Machine Resume</th> -->
-                                    <!-- <th>Action</th> -->
                                 </tr>
                             </tfoot>
                         </table>

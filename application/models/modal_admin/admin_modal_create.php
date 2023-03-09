@@ -36,7 +36,7 @@ Class Admin_modal_create extends CI_Model {
 		}
 	}
 
-    function save_role($role_id,$role_name) {
+    function save_role($id,$role_id,$role_name) {
 
 		// Query to check whether role_id & name already exist or not
 		$condition = "role_id = $role_id OR name = '$role_name'";
@@ -79,8 +79,10 @@ Class Admin_modal_create extends CI_Model {
 		if ($query->num_rows() == 0) {
 
 			$data = array(
+
 				'section_name' => $section,
 				'description' => $description
+
 			);
 		
 			// Query to insert data in database
@@ -96,7 +98,7 @@ Class Admin_modal_create extends CI_Model {
 		}
 	}
 
-	function save_part_name($part_name,$is_deleted_partname){
+	function save_part_name($part_name,$is_active,$is_delete){
 
 		// Query to check whether constant_no & correction_action already exist or not
 		$condition = "part_name = $part_name";
@@ -109,9 +111,12 @@ Class Admin_modal_create extends CI_Model {
 		if ($query->num_rows() == 0) {
 
 			$data = array(
+
 				'part_name' => $part_name,
-				'is_deleted' => $is_deleted_partname
-			  );
+				'is_active' => $is_active,
+				'is_delete' => $is_delete
+
+			);
 		
 			// Query to insert data in database
 			$this->db->insert('model_name', $data);
@@ -126,9 +131,9 @@ Class Admin_modal_create extends CI_Model {
 		}
 	}
 
-	function save_purge_location($purge_name,$order_no,$show_process,$is_active,$is_deleted_purge_name){
+	function save_purge_location($purge_name,$order_no,$show_process,$is_active,$is_delete){
 
-		// Query to check whether constant_no & correction_action already exist or not
+		// Query to check whether purge_name & order_no already exist or not
 		$condition = "purge_name = '$purge_name' OR order_no = '$order_no'";
 		$this->db->select('*');
 		$this->db->from('purge_location');
@@ -139,12 +144,14 @@ Class Admin_modal_create extends CI_Model {
 		if ($query->num_rows() == 0) {
 
 			$data = array(
+
 				'purge_name' => $purge_name,
 				'order_no' => $order_no,
 				'show_process' => $show_process,
                 'is_active' => $is_active,
-				'is_deleted' => $is_deleted_purge_name
-			  );
+				'is_delete' => $is_delete
+
+			);
 		
 			// Query to insert data in database
 			$this->db->insert('purge_location', $data);
@@ -159,12 +166,12 @@ Class Admin_modal_create extends CI_Model {
 		}
 	}
 
-	function save_defect_description($defect_description,$defect_type,$is_active,$is_deleted_defect_description){
+	function save_defect_description($defect_description_name,$defect_type,$is_active,$is_delete){
 
-		// Query to check whether constant_no & correction_action already exist or not
-		$condition = "defect_description_name = '$defect_description'";
+		// Query to check whether defect_description_name already exist or not
+		$condition = "defect_description_name = '$defect_description_name'";
 		$this->db->select('*');
-		$this->db->from('defectives_list');
+		$this->db->from('defectives');
 		$this->db->where($condition);
 		$this->db->limit(1);
 		$query = $this->db->get();
@@ -172,14 +179,16 @@ Class Admin_modal_create extends CI_Model {
 		if ($query->num_rows() == 0) {
 
 			$data = array(
-				'defect_description_name' => $defect_description,
+
+				'defect_description_name' => $defect_description_name,
 				'defect_type' => $defect_type,
 				'is_active' => $is_active,
-				'is_deleted' => $is_deleted_defect_description
-			  );
+				'is_delete' => $is_delete
+
+			);
 		
 			// Query to insert data in database
-			$this->db->insert('defectives_list', $data);
+			$this->db->insert('defectives', $data);
 			
 			if ($this->db->affected_rows() > 0) {
 				return array('ok','Successful');;
@@ -191,10 +200,10 @@ Class Admin_modal_create extends CI_Model {
 		}
 	}
 
-	function save_root_cause($constant_no,$root_cause,$is_deleted_root_cause){
+	function save_root_cause($root_cause,$is_active,$is_delete){
 
 		// Query to check whether constant_no & correction_action already exist or not
-		$condition = "constant_no = '$constant_no' OR root_cause = '$root_cause'";
+		$condition = "root_cause = '$root_cause'";
 		$this->db->select('*');
 		$this->db->from('root_cause_list');
 		$this->db->where($condition);
@@ -204,10 +213,13 @@ Class Admin_modal_create extends CI_Model {
 		if ($query->num_rows() == 0) {
 
 			$data = array(
-				'constant_no' => $constant_no,
+
+				// 'constant_no' => $constant_no,
 				'root_cause' => $root_cause,
-				'is_deleted' => $is_deleted_root_cause
-			  );
+				'is_active' => $is_active,
+				'is_delete' => $is_delete
+
+			);
 		
 			// Query to insert data in database
 			$this->db->insert('root_cause_list', $data);
@@ -222,10 +234,43 @@ Class Admin_modal_create extends CI_Model {
 		}
 	}
 
-	function save_machine_no($machine_name,$sector_id,$order_no,$is_deleted_machine_no){ //$constant_no
+	function save_corrective_action($corrective_action,$is_active,$is_delete){
 
 		// Query to check whether constant_no & correction_action already exist or not
-		// $condition = "constant_no = '$constant_no' AND machine_no = '$machine_no'";
+		$condition = "corrective_action = '$corrective_action'";
+		$this->db->select('*');
+		$this->db->from('corrective_action_list');
+		$this->db->where($condition);
+		$this->db->limit(1);
+		$query = $this->db->get();
+	
+		if ($query->num_rows() == 0) {
+
+			$data = array(
+
+				// 'constant_no' => $constant_no,
+				'corrective_action' => $corrective_action,
+				'is_active' => $is_active,
+				'is_delete' => $is_delete
+				
+			);
+		
+			// Query to insert data in database
+			$this->db->insert('corrective_action_list', $data);
+			
+			if ($this->db->affected_rows() > 0) {
+				return array('ok','Successful');;
+			}else{
+				return array('error','Database Failure');
+			}
+		}else{
+			return array('error','Duplicate');
+		}
+	}
+
+	function save_machine_no($machine_name,$sector_id,$order_no,$is_active,$is_delete){ //$constant_no
+
+		// Query to check whether machine_no already exist or not
 		$condition = "machine_no = '$machine_no'";
 		$this->db->select('*');
 		$this->db->from('machine_no_list');
@@ -236,11 +281,14 @@ Class Admin_modal_create extends CI_Model {
 		if ($query->num_rows() == 0) {
 
 			$data = array(
+
 				'machine_name' => $machine_name,
 				'sector_id' => $sector_id,
 				'order_no' => $order_no,
-				'is_deleted' => $is_deleted_machine_no
-			  );
+				'is_active' => $is_active,
+				'is_delete' => $is_delete
+
+			);
 		
 			// Query to insert data in database
 			$this->db->insert('machine_no_list', $data);
@@ -255,10 +303,9 @@ Class Admin_modal_create extends CI_Model {
 		}
 	}
 
-	function save_sector($sector_name,$is_active,$is_deleted_sector){ //$constant_no
+	function save_sector($sector_name,$is_active,$is_delete){ //$constant_no
 
-		// Query to check whether constant_no & correction_action already exist or not
-		// $condition = "constant_no = '$constant_no' AND machine_no = '$machine_no'";
+		// Query to check whether sector_name already exist or not
 		$condition = "sector_name = '$sector_name'";
 		$this->db->select('*');
 		$this->db->from('sector_list');
@@ -269,10 +316,11 @@ Class Admin_modal_create extends CI_Model {
 		if ($query->num_rows() == 0) {
 
 			$data = array(
+
 				'sector_name' => $machine_name,
 				'is_active' => $is_active,
-				'is_deleted' => $is_deleted_sector
-			  );
+				'is_delete' => $is_delete
+			);
 		
 			// Query to insert data in database
 			$this->db->insert('sector_list', $data);
@@ -289,7 +337,7 @@ Class Admin_modal_create extends CI_Model {
 
 	function save_rule($rule_name,$is_active,$is_delete){ //$constant_no
 
-		// Query to check whether constant_no & correction_action already exist or not
+		// Query to check correction_action already exist or not
 		$condition = "rule_name = '$rule_name'";
 		$this->db->select('*');
 		$this->db->from('rule_list');
@@ -300,13 +348,215 @@ Class Admin_modal_create extends CI_Model {
 		if ($query->num_rows() == 0) {
 
 			$data = array(
+
 				'rule_name' => $rule_name,
 				'is_active' => $is_active,
 				'is_delete' => $is_delete
-			  );
+
+			);
 		
 			// Query to insert data in database
 			$this->db->insert('rule_list', $data);
+			
+			if ($this->db->affected_rows() > 0) {
+				return array('ok','Successful');;
+			}else{
+				return array('error','Database Failure');
+			}
+		}else{
+			return array('error','Duplicate');
+		}
+	}
+
+	function save_detected_group($group_name,$is_active,$is_delete){ 
+
+		// Query to check group_name already exist or not
+		$condition = "group_name = '$group_name'";
+		$this->db->select('*');
+		$this->db->from('detected_group');
+		$this->db->where($condition);
+		$this->db->limit(1);
+		$query = $this->db->get();
+
+		if ($query->num_rows() == 0) {
+
+			$data = array(
+
+				'group_name' => $group_name,
+				'is_active' => $is_active,
+				'is_delete' => $is_delete
+
+			);
+		
+			// Query to insert data in database
+			$this->db->insert('detected_group', $data);
+			
+			if ($this->db->affected_rows() > 0) {
+				return array('ok','Successful');;
+			}else{
+				return array('error','Database Failure');
+			}
+		}else{
+			return array('error','Duplicate');
+		}
+	}
+
+	function save_detected_user_group($detectedby_user,$detected_group_id,$show_detectedby,$is_active,$is_delete){ 
+
+		// Query to check detectedby_user already exist or not
+		$condition = "detectedby_user = '$detectedby_user'";
+		$this->db->select('*');
+		$this->db->from('detectedby_user_group');
+		$this->db->where($condition);
+		$this->db->limit(1);
+		$query = $this->db->get();
+
+		if ($query->num_rows() == 0) {
+
+			$data = array(
+
+				'detectedby_user' => $detectedby_user,
+				'detected_group_id' => $detected_group_id,
+				'show_detectedby' => $show_detectedby,
+				'is_active' => $is_active,
+				'is_delete' => $is_delete
+
+			);
+		
+			// Query to insert data in database
+			$this->db->insert('detectedby_user_group', $data);
+			
+			if ($this->db->affected_rows() > 0) {
+				return array('ok','Successful');;
+			}else{
+				return array('error','Database Failure');
+			}
+		}else{
+			return array('error','Duplicate');
+		}
+	}
+
+	function save_os_us($name,$is_active,$is_delete){
+
+		// Query to check name already exist or not
+		$condition = "name = '$name'";
+		$this->db->select('*');
+		$this->db->from('os_us');
+		$this->db->where($condition);
+		$this->db->limit(1);
+		$query = $this->db->get();
+
+		if ($query->num_rows() == 0) {
+
+			$data = array(
+
+				'name' => $name,
+				'is_active' => $is_active,
+				'is_delete' => $is_delete
+
+			);
+		
+			// Query to insert data in database
+			$this->db->insert('os_us', $data);
+			
+			if ($this->db->affected_rows() > 0) {
+				return array('ok','Successful');;
+			}else{
+				return array('error','Database Failure');
+			}
+		}else{
+			return array('error','Duplicate');
+		}
+	}
+
+	function save_datum($name,$is_active,$is_delete){
+
+		// Query to check name already exist or not
+		$condition = "name = '$name'";
+		$this->db->select('*');
+		$this->db->from('datum');
+		$this->db->where($condition);
+		$this->db->limit(1);
+		$query = $this->db->get();
+
+		if ($query->num_rows() == 0) {
+
+			$data = array(
+
+				'name' => $name,
+				'is_active' => $is_active,
+				'is_delete' => $is_delete
+
+			);
+		
+			// Query to insert data in database
+			$this->db->insert('datum', $data);
+			
+			if ($this->db->affected_rows() > 0) {
+				return array('ok','Successful');;
+			}else{
+				return array('error','Database Failure');
+			}
+		}else{
+			return array('error','Duplicate');
+		}
+	}
+
+	function save_remarks($name,$is_active,$is_delete){
+
+		// Query to check name already exist or not
+		$condition = "name = '$name'";
+		$this->db->select('*');
+		$this->db->from('remarks');
+		$this->db->where($condition);
+		$this->db->limit(1);
+		$query = $this->db->get();
+
+		if ($query->num_rows() == 0) {
+
+			$data = array(
+
+				'name' => $name,
+				'is_active' => $is_active,
+				'is_delete' => $is_delete
+
+			);
+		
+			// Query to insert data in database
+			$this->db->insert('remarks', $data);
+			
+			if ($this->db->affected_rows() > 0) {
+				return array('ok','Successful');;
+			}else{
+				return array('error','Database Failure');
+			}
+		}else{
+			return array('error','Duplicate');
+		}
+	}
+
+	function save_defect_type($defect_type_name,$is_active,$is_delete){
+
+		// Query to check name already exist or not
+		$condition = "defect_type_name = '$defect_type_name'";
+		$this->db->select('*');
+		$this->db->from('defect_type');
+		$this->db->where($condition);
+		$this->db->limit(1);
+		$query = $this->db->get();
+
+		if ($query->num_rows() == 0) {
+
+			$data = array(
+
+				'defect_type_name' => $defect_type_name,
+				'is_active' => $is_active,
+				'is_delete' => $is_delete
+
+			);
+		
+			// Query to insert data in database
+			$this->db->insert('defect_type', $data);
 			
 			if ($this->db->affected_rows() > 0) {
 				return array('ok','Successful');;

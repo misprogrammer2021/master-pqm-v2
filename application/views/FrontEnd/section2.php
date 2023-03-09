@@ -1,66 +1,66 @@
 <?php
 
-$jsselect = TRUE;
+    $jsselect = TRUE;
 
 ?>
 
 <?php
+
     if (isset($this->session->userdata['logged_in'])) {
         $username = ($this->session->userdata['logged_in']['username']);
         $password = ($this->session->userdata['logged_in']['password']);
         $fullname = ($this->session->userdata['logged_in']['fullname']);
-        } 
-        else {
-          redirect('/login', 'refresh');
-        }
-        $section = $this->session->userdata['permission'];
+    }else {
+        redirect('/login', 'refresh');
+    }
+    $section = $this->session->userdata['permission'];
 
-        // $data = '{
-        //     "loc_to_purge":[
-        //         {"id":"1","process_name":"M/C-P1"},
-        //         {"id":"2","process_name":"M/C-P2"},
-        //         {"id":"3","process_name":"M/C-P3"}
-        //     ],
-        //     "purge_location":[
-        //         {"purge_location_id":1,"affected_qty":"20","good_qty":"10","reject_qty":"10"},
-        //         {"purge_location_id":2,"affected_qty":"20","good_qty":"10","reject_qty":"10"},
-        //         {"purge_location_id":3,"affected_qty":"20","good_qty":"10","reject_qty":"10"}
-        //     ],
-        //     "totalSample": 100,
-        //     "qa_sample_good_qty": 100,
-        //     "qa_sample_reject_qty": 50,
-        //     "scrap": 1,
-        //     "rework": 1,
-        //     "uai": 1,
-        //     "rework_order_no": "test",
-        //     "scrap_no": "test",
-        //     "uai_no": "test",
-        //     "rework_dispo_input": "test",
-        //     "rework_dispo_output": "test",
-        //     "rework_dispo_rej_scrap": "test",
-        //     "user":{
-        //         "1":"asma",
-        //         "2":"Jaidul",
-        //         "3":"ashok"
-        //     },
-        //     "reportby_user_id": 1,
-        //     "qa_reinsp_verification_user_id": 2,
-        //     "qa_reinsp_status_accept": 1,
-        //     "qa_reinsp_status_reject": 0,
-        //     "reject_reason": "test",
-        //     "form_start":"yes",
-        //        "form_end":"no",
-        //         "submit_button":{
-        //         "name":"submit",
-        //         "url":"/controller"
-        //     },
-                // "machine_breakdown_id": 1,
+    // $data = '{
+    //     "loc_to_purge":[
+    //         {"id":"1","process_name":"M/C-P1"},
+    //         {"id":"2","process_name":"M/C-P2"},
+    //         {"id":"3","process_name":"M/C-P3"}
+    //     ],
+    //     "purge_location":[
+    //         {"purge_location_id":1,"affected_qty":"20","good_qty":"10","reject_qty":"10"},
+    //         {"purge_location_id":2,"affected_qty":"20","good_qty":"10","reject_qty":"10"},
+    //         {"purge_location_id":3,"affected_qty":"20","good_qty":"10","reject_qty":"10"}
+    //     ],
+    //     "totalSample": 100,
+    //     "qa_sample_good_qty": 100,
+    //     "qa_sample_reject_qty": 50,
+    //     "scrap": 1,
+    //     "rework": 1,
+    //     "uai": 1,
+    //     "rework_order_no": "test",
+    //     "scrap_no": "test",
+    //     "uai_no": "test",
+    //     "rework_dispo_input": "test",
+    //     "rework_dispo_output": "test",
+    //     "rework_dispo_rej_scrap": "test",
+    //     "user":{
+    //         "1":"asma",
+    //         "2":"Jaidul",
+    //         "3":"ashok"
+    //     },
+    //     "reportby_user_id": 1,
+    //     "qa_reinsp_verification_user_id": 2,
+    //     "qa_reinsp_status_accept": 1,
+    //     "qa_reinsp_status_reject": 0,
+    //     "reject_reason": "test",
+    //     "form_start":"yes",
+    //        "form_end":"no",
+    //         "submit_button":{
+    //         "name":"submit",
+    //         "url":"/controller"
+    //     },
+            // "machine_breakdown_id": 1,
 
-        // }';
+    // }';
 
-        // $data = json_decode($data);
-        // print_r($data);
-        // exit;
+    // $data = json_decode($data);
+    // print_r($data);
+    // exit;
 ?>
 
 <div class="row clearfix" id="section2">
@@ -257,9 +257,6 @@ $jsselect = TRUE;
                             <div class="col-md-8 col-sm-8">
                                 <h4>On Hold Sublot</h4><br/><br/>
                                 <div id="sublot_checkbox">
-                                    <!-- <input type="hidden" name="washing" value="0">
-                                    <input type="hidden" name="brushing" value="0">
-                                    <input type="hidden" name="vmi" value="0"> -->
                                     <input type="checkbox" id="washing" name="washing" class="filled-in" value="1" <?php if (@$data->washing == '1') echo 'checked' ;?> <?php echo @$section['S2.5']['de']?'':'disabled';?>>
                                     <label for="washing">WASHING</label>
                                     <input type="checkbox" id="brushing" name="brushing" class="filled-in" value="1" <?php if (@$data->brushing == '1') echo 'checked' ;?> <?php echo @$section['S2.5']['de']?'':'disabled';?>>
@@ -268,8 +265,7 @@ $jsselect = TRUE;
                                     <label for="vmi">VMI</label> 
                                 </div><br/><br/>
                                 <div id="toolbar">
-                                    <a class="btn btn-primary <?php echo @$section['S2.5']['de']?'add-record-sublot':'disabled';?>" data-added="0"><i class="glyphicon glyphicon-plus"></i>&nbsp;Add Row </a>
-                                    <!-- <a class="btn btn-danger delete-record-sublot" data-id="0"><i class="glyphicon glyphicon-minus"></i> Delete Selected</a> -->
+                                    <a class="btn btn-primary <?php echo @$section['S2.5']['de']?'add-record-sublot':'disabled';?>" data-added="0"><i class="glyphicon glyphicon-plus"></i>&nbsp;On Hold Sublot </a>
                                 </div><br/>
                                 <table class="table table-hover table-bordered" id="tbl_sublot"> <!--id="sublotform"-->
                                     <thead>
@@ -279,7 +275,6 @@ $jsselect = TRUE;
                                             <th>SORTING RESULT - GOOD QTY</th>
                                             <th>SORTING RESULT - REJ QTY</th>
                                             <th>PROD.PIC (LEADER & ABOVE)</th>
-                                            <!-- <th>ACTION</th> -->
                                         </tr>
                                     </thead>
                                     <tbody id="tbl_sublot_body">
@@ -289,54 +284,9 @@ $jsselect = TRUE;
                                                
                                                 foreach(@$data->onhold_sublot as $sublot){
                                                     
-                                                    // if($sublot->sublot_no > 0){
-                                                        
-                                                    //     $tempqty1 = $sublot->sublot_no;
-                                                    //     $tempqty2 = $sublot->qty_sublot_no;
-                                                    //     $tempqty3 = $sublot->sorting_good_qty;
-                                                    //     $tempqty4 = $sublot->sorting_reject_qty;
-                                                    //     break;
-                                                    // }else{
-                                                    //     $tempqty1 = 0;
-                                                    //     $tempqty2 = 0;
-                                                    //     $tempqty3 = 0;
-                                                    //     $tempqty4 = 0;
-                                                    // }
-
-                                                    // echo '<pre>';
-                                                    // print_r(@$data->onhold_sublot);
-                                                    // echo '</pre>';
-                                                    // exit;
-
-                                                    /*Array
-                                                    (
-                                                        [0] => stdClass Object
-                                                            (
-                                                                [id] => 30
-                                                                [mrb_id] => 2145
-                                                                [sublot_no] => 34
-                                                                [qty_sublot_no] => 300
-                                                                [sorting_good_qty] => 297
-                                                                [sorting_reject_qty] => 3
-                                                                [prod_pic_user_id] => 34
-                                                            )
-
-                                                        [1] => stdClass Object
-                                                            (
-                                                                [id] => 31
-                                                                [mrb_id] => 2145
-                                                                [sublot_no] => 400
-                                                                [qty_sublot_no] => 400
-                                                                [sorting_good_qty] => 396
-                                                                [sorting_reject_qty] => 4
-                                                                [prod_pic_user_id] => 34
-                                                            )
-
-                                                    )*/
-                                                    
                                                     echo '<tr id="rec-1">';
                                                         echo '<td>
-                                                            <input type="number" id="sublot_no" name="sublot_no[]" class="form-control" value="'.$sublot->sublot_no.'" '.(@$section['S2.5']['de']?'':'disabled').'>
+                                                            <input type="text" id="sublot_no" name="sublot_no[]" class="form-control" value="'.$sublot->sublot_no.'" '.(@$section['S2.5']['de']?'':'disabled').'>
                                                         </td>
                                                         <td>
                                                             <input type="number" id="qty_sublot_no" name="qty_sublot_no[]" class="form-control" value="'.$sublot->qty_sublot_no.'" '.(@$section['S2.5']['de']?'':'disabled').'>
@@ -348,8 +298,8 @@ $jsselect = TRUE;
                                                             <input type="number" id="sorting_reject_qty" name="sorting_reject_qty[]" class="form-control" value="'.$sublot->sorting_reject_qty.'" '.(@$section['S2.5']['de']?'':'disabled').'>
                                                         </td>
                                                         <td>
-                                                            <p>'.@$data->user->{$data->prod_pic_user_id}.'</p>
-                                                            <input type="hidden" name="prod_pic_user_id" class="form-control" value="'.@$data->prod_pic_user_id.'">
+                                                            <p>'.@$data->user->{@$data->sublotprod_pic_user_id}.'</p>
+                                                            <input type="hidden" name="sublotprod_pic_user_id" class="form-control" value="'.@$data->sublotprod_pic_user_id.'">
                                                         </td>
                                                         <!--<td>
                                                             <a class="btn btn-danger delete-record-sublot" data-id="0"><i class="glyphicon glyphicon-minus"></i> Remove</a>
@@ -357,92 +307,16 @@ $jsselect = TRUE;
                                                         ';
                                                     echo '</tr>';
                                                 }
-                                                // echo '<pre>';
-                                                // print_r($sublot);
-                                                // echo '</pre>';
-                                                // exit;
                                             }
 
                                         ?>
-
-                                        <!-- <tr id="rec-1">
-                                            <td>
-                                                <input type="text" id="sublot_no" name="sublot_no[]" class="form-control" value="" />
-                                            </td>  
-                                            <td>
-                                                <input type="text" id="qty_sublot_no" name="qty_sublot_no[]" class="form-control" value=""/>
-                                            </td>
-                                            <td>
-                                                <input type="text" id="sorting_good_qty" name="sorting_good_qty[]" class="form-control" value="" disabled/>
-                                            </td>
-                                            <td>
-                                                <input type="text" id="sorting_reject_qty" name="sorting_reject_qty[]" class="form-control" value=""/>
-                                            </td>
-                                            <td>
-                                                <input type="hidden" name="prod_pic_user_id" class="form-control" value="">
-                                            </td>
-                                            <td>
-                                                <a class="btn btn-danger delete-record-sublot" data-id="0"><i class="glyphicon glyphicon-minus"></i> Remove</a>
-                                            </td>
-                                        </tr> -->
                                     </tbody>
                                 </table>
                                 <div style="display:none;">
                                     <table id="clone_tbl_sublot">
-                                        <?php 
-
-                                            /*$tempqty1 = '';
-                                            $tempqty2 = '';
-                                            $tempqty3 = '';
-                                            $tempqty4 = '';
-
-                                            if(@$data->onhold_sublot){
-
-                                                foreach(@$data->onhold_sublot as $onholdsublot){
-
-                                                    if ($onholdsublot->mrb_id == $onholdsublot->id){
-                                                        
-                                                        $tempqty1 = $onholdsublot->sublot_no;
-                                                        $tempqty2 = $onholdsublot->qty_sublot_no;
-                                                        $tempqty3 = $onholdsublot->sorting_good_qty;
-                                                        $tempqty4 = $onholdsublot->sorting_reject_qty;
-                                                        break;
-                                                    }else{
-                                                        $tempqty1 = 0;
-                                                        $tempqty2 = 0;
-                                                        $tempqty3 = 0;
-                                                        $tempqty4 = 0;
-                                                    }
-                                                }
-                                                
-                                            }
-                                            echo '<tr id="">
-                                                <td>
-                                                    <input type="text" id="sublot_no" name="sublot_no[]" class="form-control" value="'.$tempqty1.'" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" id="qty_sublot_no" name="qty_sublot_no[]" class="form-control" value="'.$tempqty2.'"/>
-                                                </td>
-                                                <td>
-                                                    <input type="text" id="sorting_good_qty" name="sorting_good_qty[]" class="form-control" value="'.$tempqty3.'"/>
-                                                </td>
-                                                <td>
-                                                    <input type="text" id="sorting_reject_qty" name="sorting_reject_qty[]" class="form-control" value="'.$tempqty4.'"/>
-                                                </td>
-                                                <td>
-                                                    <p>'.@$data->user->{$data->prod_pic_user_id}.'</p>
-                                                    <input type="hidden" name="prod_pic_user_id" class="form-control" value="'.@$data->prod_pic_user_id.'">
-                                                </td>
-                                                <td>
-                                                    <a class="btn btn-danger delete-record-sublot" data-id="0"><i class="glyphicon glyphicon-minus"></i> Remove</a>
-                                                </td>
-                                                ';
-                                            echo '</tr>';*/
-                                                
-                                        ?>
                                         <tr id="">
                                             <td>
-                                                <input type="number" id="sublot_no" name="sublot_no[]" class="form-control" value="" <?php echo (@$section['S2.5']['de']?'':'disabled');?>>
+                                                <input type="text" id="sublot_no" name="sublot_no[]" class="form-control" value="" <?php echo (@$section['S2.5']['de']?'':'disabled');?>>
                                             </td>
                                             <td>
                                                 <input type="number" id="qty_sublot_no" name="qty_sublot_no[]" class="form-control" value="" <?php echo (@$section['S2.5']['de']?'':'disabled');?>>
@@ -454,12 +328,9 @@ $jsselect = TRUE;
                                                 <input type="number" id="sorting_reject_qty" name="sorting_reject_qty[]" class="form-control" value="" <?php echo (@$section['S2.5']['de']?'':'disabled');?>>
                                             </td>
                                             <td>
-                                                <p><?php echo @$data->user->{$data->prod_pic_user_id};?></p>
-                                                <input type="hidden" name="prod_pic_user_id" class="form-control" value="<?php echo @$data->prod_pic_user_id;?>">
+                                                <p><?php echo @$data->user->{$data->sublotprod_pic_user_id};?></p>
+                                                <input type="hidden" name="sublotprod_pic_user_id" class="form-control" value="<?php echo @$data->sublotprod_pic_user_id; ?>">
                                             </td>
-                                            <!-- <td>
-                                                <a class="btn btn-danger delete-record-sublot" data-id="0"><i class="glyphicon glyphicon-minus"></i> Remove</a>
-                                            </td>  -->
                                         </tr>
                                     </table>
                                 </div>
@@ -467,10 +338,9 @@ $jsselect = TRUE;
                             <div class="col-md-8 col-sm-8">
                                 <h4>QA Buy Off</h4><br/><br/>
                                 <div id="toolbar">
-                                    <a class="btn btn-primary <?php echo @$section['S2.6']['de']?'add-record-buyoff':'disabled';?>" data-added="0"><i class="glyphicon glyphicon-plus"></i>&nbsp;Add Row</a>
-                                    <!-- <a class="btn btn-danger delete-record-sublot" data-id="0"><i class="glyphicon glyphicon-minus"></i> Delete Selected</a> -->
+                                    <a class="btn btn-primary <?php echo @$section['S2.6']['de']?'add-record-buyoff':'disabled';?>" data-added="0"><i class="glyphicon glyphicon-plus"></i>&nbsp;QA Buy Off </a>
                                 </div><br/>
-                                <table class="table table-hover table-bordered" id="tbl_buyoff"> <!--id="qabuyoff"-->
+                                <table class="table table-hover table-bordered" id="tbl_buyoff">
                                     <thead>
                                         <tr>
                                             <th>QTY</th>
@@ -478,68 +348,14 @@ $jsselect = TRUE;
                                             <th>SORTING RESULT - OOC QTY</th>
                                             <th>SORTING RESULT - OOS QTY</th>
                                             <th>QA.PIC (LEADER & ABOVE)</th>
-                                            <!-- <th>ACTION</th> -->
                                         </tr>
                                     </thead>
                                     <tbody id="tbl_buyoff_body">
-
                                         <?php 
 
-                                            $tempqty1 = '';
-                                            $tempqty2 = '';
-                                            $tempqty3 = '';
-                                            $tempqty4 = '';
-                                            $row_num = 0;
-
-                                            $row_num++;
                                             if(@$data->buy_off){
                                             
                                                 foreach(@$data->buy_off as $buyoff){
-                                                    
-                                                    // if($sublot->sublot_no > 0){
-                                                        
-                                                    //     $tempqty1 = $sublot->sublot_no;
-                                                    //     $tempqty2 = $sublot->qty_sublot_no;
-                                                    //     $tempqty3 = $sublot->sorting_good_qty;
-                                                    //     $tempqty4 = $sublot->sorting_reject_qty;
-                                                    //     break;
-                                                    // }else{
-                                                    //     $tempqty1 = 0;
-                                                    //     $tempqty2 = 0;
-                                                    //     $tempqty3 = 0;
-                                                    //     $tempqty4 = 0;
-                                                    // }
-
-                                                    // echo '<pre>';
-                                                    // print_r(@$data->buy_off);
-                                                    // echo '</pre>';
-                                                    // exit;
-
-                                                    /*Array
-                                                    (
-                                                        [0] => stdClass Object
-                                                            (
-                                                                [id] => 30
-                                                                [mrb_id] => 2145
-                                                                [sublot_no] => 34
-                                                                [qty_sublot_no] => 300
-                                                                [sorting_good_qty] => 297
-                                                                [sorting_reject_qty] => 3
-                                                                [prod_pic_user_id] => 34
-                                                            )
-
-                                                        [1] => stdClass Object
-                                                            (
-                                                                [id] => 31
-                                                                [mrb_id] => 2145
-                                                                [sublot_no] => 400
-                                                                [qty_sublot_no] => 400
-                                                                [sorting_good_qty] => 396
-                                                                [sorting_reject_qty] => 4
-                                                                [prod_pic_user_id] => 34
-                                                            )
-
-                                                    )*/
                                                     
                                                     echo '<tr id="rec-1">';
                                                         echo '<td>
@@ -564,34 +380,10 @@ $jsselect = TRUE;
                                                         ';
                                                     echo '</tr>';
                                                 }
-                                                // echo '<pre>';
-                                                // print_r($lot->sublot_no);
-                                                // echo '</pre>';
-                                                // exit;
                                             }
 
                                         ?>
 
-                                        <!-- <tr id="rec-1">
-                                            <td>
-                                                <input type="text" id="qty" name="qty[]" class="form-control" value='' />
-                                            </td>
-                                            <td>
-                                                <input type="text" id="good_qty" name="good_qty[]" class="form-control" value='' />
-                                            </td>
-                                            <td>
-                                                <input type="text" id="ooc_qty" name="ooc_qty[]" class="form-control" value='' />
-                                            </td>
-                                            <td>
-                                                <input type="text" id="oos_qty" name="oos_qty[]" class="form-control" value='' />
-                                            </td>
-                                            <td>
-                                                <input type="hidden" id="qa_pic" name="qa_pic[]" class="form-control" value='' />
-                                            </td>
-                                            <td>
-                                                <a class="btn btn-danger delete-record-buyoff" data-id="0"><i class="glyphicon glyphicon-minus"></i> Remove</a>
-                                            </td>
-                                        </tr> -->
                                     </tbody>
                                 </table>
                                 <div style="display:none;">
@@ -612,11 +404,7 @@ $jsselect = TRUE;
                                             <td>
                                                 <p><?php echo @$data->user->{$data->qa_pic_user_id};?></p>
                                                 <input type="hidden" name="qa_pic_user_id" class="form-control" value="<?php echo @$data->qa_pic_user_id;?>">
-                                                <!-- <input type="hidden" id="qa_pic_user_id" name="qa_pic_user_id" class="form-control" value=" <?php //echo @$data->qa_pic_user_id ;?>" /> -->
                                             </td>
-                                            <!-- <td>
-                                                <a class="btn btn-danger delete-record-buyoff" data-id="0"><i class="glyphicon glyphicon-minus"></i> Remove</a>
-                                            </td> -->
                                         </tr>
                                     </table>
                                 </div>

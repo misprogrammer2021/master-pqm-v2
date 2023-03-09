@@ -2,20 +2,21 @@
 
 Class Admin_modal_update extends CI_Model {
 
-    function update_user_records($id,$username,$password,$email,$fullname,$commodity,$dept_id,$title,$employee_no,$role_id,$modified_date,$status)
+    function update_user_records($id,$username,$password,$fullname,$commodity,$dept_id,$title,$employee_no,$status,$role_id,$updated_at)
 	{
 		$data = array(
+
 			'username' => $username,
 			'password' => $password,
-			'email' => $email,
+			// 'email' => $email,
 			'fullname' => $fullname,
 			'commodity' => $commodity,
 			'dept_id' => $dept_id,
 			'title' => $title,
 			'employee_no' => $employee_no,
-			// 'created_date' => $created_date,
-			'modified_date' => $modified_date,
-			'status' => $status
+			'status' => $status,
+			'updated_at' => $updated_at
+			
 		  );
 
 		  $this->db->where('id',$id);
@@ -94,7 +95,7 @@ Class Admin_modal_update extends CI_Model {
 	function update_defect_description($id,$data){
 
 		$this->db->where('id',$id);
-		$this->db->update('defectives_list', $data);
+		$this->db->update('defectives', $data);
 		
 		if ($this->db->affected_rows() > 0) {
 			return true;
@@ -156,6 +157,78 @@ Class Admin_modal_update extends CI_Model {
 		$this->db->where('id',$id);
 		$this->db->update('rule_list', $data);
 		
+		if ($this->db->affected_rows() > 0) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	function update_detected_group($id,$data){
+
+		$this->db->where('id',$id);
+		$this->db->update('detected_group', $data);
+		
+		if ($this->db->affected_rows() > 0) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	function update_detected_user_group($id,$data){
+
+		$this->db->where('id',$id);
+		$this->db->update('detectedby_user_group', $data);
+		
+		if ($this->db->affected_rows() > 0) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	function update_os_us($id,$data){
+
+		$this->db->where('id',$id);
+		$this->db->update('os_us', $data);
+
+		if ($this->db->affected_rows() > 0) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	function update_datum($id,$data){
+
+		$this->db->where('id',$id);
+		$this->db->update('datum', $data);
+
+		if ($this->db->affected_rows() > 0) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	function update_remarks($id,$data){
+
+		$this->db->where('id',$id);
+		$this->db->update('remarks', $data);
+
+		if ($this->db->affected_rows() > 0) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	function update_defect_type($id,$data){
+
+		$this->db->where('id',$id);
+		$this->db->update('defect_type', $data);
+
 		if ($this->db->affected_rows() > 0) {
 			return true;
 		}else{

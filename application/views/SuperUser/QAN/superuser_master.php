@@ -11,19 +11,35 @@
     // if(@$show_section5 == TRUE OR @$show_allsection == TRUE)
     // include(APPPATH .'views/SuperUser/QAN/section5.php');
 
+    /* latest 22/22/2022
     if(@$show_section1 == TRUE OR @$show_allsection == TRUE)
     include(APPPATH .'views/SuperUser/QAN/section1.php');
     if(@$show_section3 == TRUE OR @$show_allsection == TRUE)
     include(APPPATH .'views/SuperUser/QAN/section3.php');
+    */
+    
     // if(@$show_section4 == TRUE OR @$show_allsection == TRUE)
     // include(APPPATH .'views/FrontEnd/section4.php');
+
+    /* latest 22/22/2022
     if(@$show_section2 == TRUE OR @$show_allsection == TRUE)
     include(APPPATH .'views/SuperUser/QAN/section2.php');
     if(@$show_section5 == TRUE OR @$show_allsection == TRUE)
     include(APPPATH .'views/SuperUser/QAN/section5.php');
+    */
+
     // if(@$test == TRUE OR @$show_allsection == TRUE)
     // include(APPPATH .'views/FrontEnd/QAN/machinebreakdown.php');
 
+
+    if(@$show_section1 == TRUE OR @$show_allsection == TRUE)
+    include(APPPATH .'views/SuperUser/QAN/section1.php');
+    if(@$show_section2 == TRUE OR @$show_allsection == TRUE)
+    include(APPPATH .'views/SuperUser/QAN/section2.php');
+    if(@$show_section3 == TRUE OR @$show_allsection == TRUE)
+    include(APPPATH .'views/SuperUser/QAN/section3.php');
+    if(@$show_section5 == TRUE OR @$show_allsection == TRUE)
+    include(APPPATH .'views/SuperUser/QAN/section5.php');    
 
 
 ?>
@@ -171,6 +187,55 @@
             });
         }
     }
+
+    // Bind the click event, to the Add button
+    $("a.add-defect-decs").click(function () {
+
+        // Create elements dynamically
+        var newRow = '<tr><td><?php echo '<select id="select_defect" name="defect_description_id[]" data-show-subtext="true" data-live-search="true" class="show-tick form-control"><option value="">--Please Select--</option>';
+
+                                    foreach($defect_desc as $index => $defect_desc_row){
+
+                                        // echo '<option value="'.$defect_desc_row->id.'">'.$defect_desc_row->defect_description_name.'</option>';
+                                        
+                                        echo '<option value="'.$defect_desc_row->id.'">'.$defect_desc_row->defect_description_name.' ['.$defect_desc_row->defect_type.']</option>';
+                                    }
+                                echo '</select>';
+                                ?>
+                            </td><td><input type="text" id="defect_description_others" name="defect_description_others[]" class="form-control" value=""></td><td><?php echo '<select id="select_osus" name="os_us_id[]" data-show-subtext="true" data-live-search="true" class="show-tick form-control"><option value="">--Please Select--</option>';
+
+                                foreach($os_us as $index => $os_us_row){
+
+                                    echo '<option value="'.$os_us_row->id.'">'.$os_us_row->name.'</option>';
+                                }
+                                echo '</select>';
+                                ?>
+                            </td><td><?php echo '<select id="select_datum" name="datum_id[]" data-show-subtext="true" data-live-search="true" class="show-tick form-control"><option value="">--Please Select--</option>';
+
+                                foreach($datum as $index => $datum_row){
+
+                                    echo '<option value="'.$datum_row->id.'">'.$datum_row->name.'</option>';
+                                }
+                                echo '</select>';
+                                ?>
+                            </td><td><?php echo '<select id="select_remarks" name="remarks_id[]" data-show-subtext="true" data-live-search="true" class="show-tick form-control"><option value="">--Please Select--</option>';
+
+                                foreach($remarks as $index => $remarks_row){
+
+                                    echo '<option value="'.$remarks_row->id.'">'.$remarks_row->name.'</option>';
+                                }
+                                echo '</select>';
+                                ?>
+                            </td></tr>';
+                            
+
+
+        // Add the new dynamic row after the last row
+        $('#tbl_defect tr:last').after(newRow);
+        $.AdminBSB.dropdownMenu.activate();
+        $.AdminBSB.input.activate();
+        $.AdminBSB.select.activate();
+    });
 
     //Datetimepicker plugin
     $('.datetimepicker').bootstrapMaterialDatePicker({

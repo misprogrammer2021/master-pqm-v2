@@ -186,7 +186,7 @@
 
         <!-- QAN New Task -->
         <div class="row clearfix">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="card">
                     <div class="header">
                         <div class="row clearfix">
@@ -206,7 +206,6 @@
                                     <th width="2%">Seq</th>
                                     <th>QAN NO</th>
                                     <th>Status</th>
-                                    <!-- <th>Acknowledge</th> -->
                                     <th>Description</th>
                                 </tr>
                             </thead>
@@ -216,7 +215,6 @@
                                     <th width="2%">Seq</th>
                                     <th>QAN NO</th>
                                     <th>Status</th>
-                                    <!-- <th>Acknowledge</th> -->
                                     <th>Description</th>
                                 </tr>
                             </tfoot>
@@ -224,7 +222,7 @@
 
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!-- END QAN New Task -->
 
             <!-- <div class="col-md-6">
@@ -269,7 +267,7 @@
                         <div class="header">
                             <div class="row clearfix">
                                 <div class="col-xs-12 col-sm-6">
-                                    <h2>Active QAN (%)</h2>
+                                    <h2>Active QAN</h2>
                                 </div>
                                 <div class="col-xs-12 col-sm-6 align-right">
                                     
@@ -281,39 +279,31 @@
                             <table id="qan_active_list" class="table table-bordered table-striped table-condensed table-hover dataTable">
                                 <thead>
                                     <tr>
-                                        <!-- <th></th> -->
                                         <th>Seq</th>
                                         <th>QAN NO</th>
-                                        <th width="15%">Ticket Status</th>
-                                        <th>Defect Description</th>
-                                        <!-- <th width="2%">Acknowledge</th> -->
+                                        <th width="1%">Ticket Status</th>
+                                        <th width="5%">Part Name</th>
+                                        <th width="5%">MC/No</th>
+                                        <th width="30%">Defect Description</th>
                                         <th width="2%">Submission No</th>
-                                        <!-- <th>Progress</th> -->
-                                        <th>Machine Resume</th>
+                                        <th>Machine Status</th>
                                         <th>Result Inspection</th>
-                                        <!-- <th>Rej/Aff</th> -->
                                         <th>Start DateTime</th>
-                                        <!-- <th>Machine Resume</th> -->
-                                        <!-- <th>Action</th> -->
                                     </tr>
                                 </thead>
                                 
                                 <tfoot>
                                     <tr>
-                                        <!-- <th></th> -->
                                         <th>Seq</th>
                                         <th>QAN NO</th>
-                                        <th width="15%">Ticket Status</th>
-                                        <th>Defect Description</th>
-                                        <!-- <th width="2%">Acknowledge</th> -->
+                                        <th width="1%">Ticket Status</th>
+                                        <th width="5%">Part Name</th>
+                                        <th width="5%">MC/No</th>
+                                        <th width="30%">Defect Description</th>
                                         <th width="2%">Submission No</th>
-                                        <!-- <th>Progress</th> -->
-                                        <th>Machine Resume</th>
+                                        <th>Machine Status</th>
                                         <th>Result Inspection</th>
-                                        <!-- <th>Rej/Aff</th> -->
                                         <th>Start DateTime</th>
-                                        <!-- <th>Machine Resume</th> -->
-                                        <!-- <th>Action</th> -->
                                     </tr>
                                 </tfoot>
                             </table>

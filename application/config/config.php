@@ -33,15 +33,15 @@ if($_SERVER['HTTP_HOST'] == "jcypqm.local") {
 
 	$config['base_url'] = 'http://jcypqm.jcyhdd.local/';
 
-} elseif($_SERVER['HTTP_HOST'] == "10.0.0.151:8080") {
+} elseif($_SERVER['HTTP_HOST'] == "10.0.0.202:8484") {
 
 	//tempo for extrenal
-	$config['base_url'] = 'http://10.0.0.151:8080/';
+	$config['base_url'] = 'http://10.0.0.202:8484/';
 
-} elseif($_SERVER['HTTP_HOST'] == "10.0.0.151:1111") {
+} elseif($_SERVER['HTTP_HOST'] == "10.0.0.202:1111") {
 
 	//tempo for extrenal
-	$config['base_url'] = 'http://10.0.0.151:1111/';
+	$config['base_url'] = 'http://10.0.0.202:1111/';
 
 } else {
 
